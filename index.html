@@ -48,7 +48,7 @@ const slowButton=(w)=>`<button class="secondary sound slow-repeat" data-play="${
 const img=(w,small=false)=>`<div class="picture${small?' small':''}"><img src="${EMBEDDED_IMAGES[w]}" alt="Ilustración para identificar una palabra" draggable="false"></div>`;
 // Audio is unlocked only after a real tap on iOS/iPadOS. Do not auto-play on the home screen.
 const hasTTS=('speechSynthesis' in window)&&('SpeechSynthesisUtterance' in window);
-let audioUnlocked=false,voiceRetry=null,speechSeq=0;
+let audioUnlocked=false,voiceRetry=null,speechSeq=0,firstWordPending=null;
 function pickVoice(){
  if(!hasTTS)return null;
  voices=window.speechSynthesis.getVoices()||[];
@@ -72,12 +72,13 @@ function say(word,rate=.58){
   let u=new SpeechSynthesisUtterance(word);
   u.lang='en-US';u.rate=rate;u.pitch=1;u.volume=1;
   const voice=pickVoice();if(voice)u.voice=voice;
-  u.onerror=(e)=>{if(id===speechSeq)console.warn('Pronunciación no disponible:',e.error)};
+  u.onstart=()=>{if(firstWordPending&&firstWordPending.word===word&&firstWordPending.token===epoch)firstWordPending=null};
+  u.onerror=(e)=>{if(id===speechSeq){console.warn('Pronunciación no disponible:',e.error);if(firstWordPending&&firstWordPending.word===word&&firstWordPending.token===epoch){const pending=firstWordPending;firstWordPending=null;if(e.error!=='not-allowed')setTimeout(()=>{if(epoch===pending.token&&!answered&&!document.hidden)say(pending.word,rate)},650)}}};
   synth.speak(u);
   return true;
  }catch(e){console.warn('Audio no disponible',e);return false}
 }
-if(hasTTS){pickVoice();window.speechSynthesis.addEventListener?.('voiceschanged',pickVoice)}
+if(hasTTS){pickVoice();window.speechSynthesis.addEventListener?.('voiceschanged',()=>{pickVoice();if(firstWordPending&&firstWordPending.token===epoch&&!answered&&!document.hidden){const pending=firstWordPending;firstWordPending=null;say(pending.word,.58)}})}
 function stopSpeech(){if(hasTTS){try{speechSeq++;window.speechSynthesis.cancel()}catch(e){}}}
 // iOS may pause speech while the app is backgrounded; avoid stale speech on return.
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopSpeech()});
@@ -86,17 +87,17 @@ function setScreen(id){['home','game','finish'].forEach(x=>$(x).classList.toggle
 if(!hasTTS){const notice=document.createElement('p');notice.className='audio-note';notice.textContent='La voz no está disponible en este visor. Abre el archivo con Safari o Chrome.';$('modes').parentNode.insertBefore(notice,$('modes'));}
 updateHome();
 $('modes').onclick=e=>{let b=e.target.closest('[data-mode]');if(b)start(+b.dataset.mode)};
-function start(m,only=null){if(!only&&completed[m]){setScreen('home');updateHome();return}unlockAudio();epoch++;stopSpeech();mode=m;deck=shuffle(only||WORDS.map(x=>x.w));pos=0;correctCount=0;misses=[];reviewMode=!!only;roundAnswers=[];setScreen('game');render()}
+function start(m,only=null){if(!only&&completed[m]){setScreen('home');updateHome();return}unlockAudio();epoch++;stopSpeech();mode=m;deck=shuffle(only||WORDS.map(x=>x.w));pos=0;correctCount=0;misses=[];reviewMode=!!only;roundAnswers=[];setScreen('game');render();if(m!==3&&hasTTS){try{const primer=new SpeechSynthesisUtterance(' ');primer.lang='en-US';primer.volume=0;window.speechSynthesis.speak(primer)}catch(e){}}}
 function current(){return deck[pos]}
 function makeLetters(w,n){let arr=w.toUpperCase().split('');const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ';while(arr.length<n){let ch=alphabet[Math.floor(Math.random()*alphabet.length)];if(!arr.includes(ch)||Math.random()<.25)arr.push(ch)}return shuffle(arr.map((ch,i)=>({id:i,ch})))}
 function otherWords(w,n){return shuffle(WORDS.filter(x=>x.w!==w).map(x=>x.w)).slice(0,n)}
-function render(){showingGameEnd=false;epoch++;answered=false;selected=null;assembled=[];let w=current();$('modeLabel').textContent=MODES[mode][0]+' '+MODES[mode][1];$('count').textContent=`${pos+1} / ${deck.length}`;$('bar').style.width=`${pos/deck.length*100}%`;$('action').disabled=true;$('action').textContent='Comprobar ✓';let q=$('question');let html='';
+function render(){showingGameEnd=false;epoch++;firstWordPending=null;answered=false;selected=null;assembled=[];let w=current();$('modeLabel').textContent=MODES[mode][0]+' '+MODES[mode][1];$('count').textContent=`${pos+1} / ${deck.length}`;$('bar').style.width=`${pos/deck.length*100}%`;$('action').disabled=true;$('action').textContent='Comprobar ✓';let q=$('question');let html='';
 if(mode===0){$('prompt').textContent='Which word matches the picture?';let opts=shuffle([w,...otherWords(w,3)]);html=img(w)+slowButton(w)+`<div class="choices">${opts.map(x=>`<button class="choice" data-word="${x}">${x.toUpperCase()}</button>`).join('')}</div>`}
 if(mode===1||mode===2){$('prompt').textContent=mode===1?'Build the word!':'Put the letters in order!';letters=makeLetters(w,mode===1?6:w.length);html=img(w)+slowButton(w)+`<div id="slots" class="slots"></div><div id="letters" class="letters"></div><p class="hint">Toca las letras para formar la palabra. Toca una letra colocada para quitarla.</p>`}
 if(mode===3){$('prompt').textContent='Which sound matches the picture?';let opts=shuffle([w,...otherWords(w,2)]);html=img(w)+`<div class="audiochoices">${opts.map((x,i)=>`<div class="audiochoice" data-choice="${x}"><button class="secondary sound" data-play="${x}">🔊 Escuchar ${i+1}</button><button class="secondary pick" data-select="${x}">Elegir</button></div>`).join('')}</div><p class="hint">Escucha cada opción y elige el sonido correcto.</p>`}
 if(mode===4){$('prompt').textContent='Listen and find the picture!';let opts=shuffle([w,...otherWords(w,3)]);html=`<button class="primary wide sound" data-play="${w}" style="margin-top:14px">🔊 Play word</button>${slowButton(w)}<div class="choices">${opts.map(x=>`<button class="choice" data-word="${x}" aria-label="Seleccionar imagen">${img(x,true)}</button>`).join('')}</div>`}
 if(mode===5){$('prompt').textContent='Listen and build the word!';letters=makeLetters(w,10);html=`<button class="primary wide sound" data-play="${w}" style="margin-top:14px">🔊 Play word</button>${slowButton(w)}<div id="slots" class="slots" style="margin-top:18px"></div><div id="letters" class="letters"></div><p class="hint">Escucha y selecciona las letras en orden.</p>`}
-q.innerHTML=html;if([1,2,5].includes(mode))drawLetters();if(mode!==3){const token=epoch;setTimeout(()=>{if(epoch===token&&audioUnlocked&&!document.hidden&&!answered&&current()===w&&!$('game').classList.contains('hide'))say(w,.58)},1000)} }
+q.innerHTML=html;if([1,2,5].includes(mode))drawLetters();if(mode!==3){const token=epoch;setTimeout(()=>{if(epoch===token&&audioUnlocked&&!document.hidden&&!answered&&current()===w&&!$('game').classList.contains('hide')){say(w,.58);if(pos===0){firstWordPending={word:w,token};}}},1000)} }
 function drawLetters(){let w=current(),slot=$('slots'),bank=$('letters');slot.innerHTML=Array.from({length:w.length},(_,i)=>`<button class="slot ${assembled[i]!==undefined?'filled':''}" data-remove="${i}" ${answered?'disabled':''}>${assembled[i]!==undefined?letters[assembled[i]].ch:'·'}</button>`).join('');bank.innerHTML=letters.map((x,i)=>`<button class="letter" data-letter="${i}" ${assembled.includes(i)||answered?'disabled':''}>${x.ch}</button>`).join('');$('action').disabled=assembled.length!==w.length||answered}
 $('question').addEventListener('click',e=>{let b=e.target.closest('button');if(!b)return;if(b.dataset.play){unlockAudio();say(b.dataset.play,.58);return}if(answered)return;if(b.dataset.letter!==undefined){if(assembled.length<current().length)assembled.push(+b.dataset.letter);drawLetters();return}if(b.dataset.remove!==undefined){let i=+b.dataset.remove;if(i<assembled.length){assembled.splice(i,1);drawLetters()}return}let w=b.dataset.word||b.dataset.select;if(w){selected=w;document.querySelectorAll('.choice,.audiochoice').forEach(x=>x.classList.toggle('selected',x.dataset.word===w||x.dataset.choice===w));$('action').disabled=false}});
 function escapeHtml(x){return String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
