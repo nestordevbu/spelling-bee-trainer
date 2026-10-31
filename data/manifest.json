@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "defaultWeek": "week-01",
+  "weeks": [
+    {
+      "id": "week-01",
+      "title": "Semana 1 · Original",
+      "file": "data/week-01.json"
+    }
+  ]
+}

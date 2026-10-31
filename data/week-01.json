@@ -1,0 +1,66 @@
+{
+  "id": "week-01",
+  "title": "Semana 1 · Original",
+  "words": [
+    {
+      "word": "ask",
+      "spanish": "preguntar",
+      "sentence": "I ask my teacher.",
+      "image": "assets/words/ask.webp"
+    },
+    {
+      "word": "desk",
+      "spanish": "pupitre",
+      "sentence": "My book is on the desk.",
+      "image": "assets/words/desk.webp"
+    },
+    {
+      "word": "fast",
+      "spanish": "rápido",
+      "sentence": "The rabbit is fast.",
+      "image": "assets/words/fast.webp"
+    },
+    {
+      "word": "dust",
+      "spanish": "polvo",
+      "sentence": "I see dust on the table.",
+      "image": "assets/words/dust.webp"
+    },
+    {
+      "word": "camp",
+      "spanish": "campamento",
+      "sentence": "We camp near the lake.",
+      "image": "assets/words/camp.webp"
+    },
+    {
+      "word": "jump",
+      "spanish": "saltar",
+      "sentence": "I can jump high.",
+      "image": "assets/words/jump.webp"
+    },
+    {
+      "word": "help",
+      "spanish": "ayudar",
+      "sentence": "I help my friend.",
+      "image": "assets/words/help.webp"
+    },
+    {
+      "word": "wasp",
+      "spanish": "avispa",
+      "sentence": "A wasp can fly.",
+      "image": "assets/words/wasp.webp"
+    },
+    {
+      "word": "milk",
+      "spanish": "leche",
+      "sentence": "I drink milk.",
+      "image": "assets/words/milk.webp"
+    },
+    {
+      "word": "melt",
+      "spanish": "derretir",
+      "sentence": "The ice will melt.",
+      "image": "assets/words/melt.webp"
+    }
+  ]
+}
