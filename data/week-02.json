@@ -1,0 +1,66 @@
+{
+  "id": "week-02",
+  "title": "Semana 2 · Nov 2–6",
+  "words": [
+    {
+      "word": "bank",
+      "spanish": "banco",
+      "sentence": "I put money in the bank.",
+      "image": "assets/words/week-02-bank.webp"
+    },
+    {
+      "word": "hand",
+      "spanish": "mano",
+      "sentence": "I raise my hand.",
+      "image": "assets/words/week-02-hand.webp"
+    },
+    {
+      "word": "hint",
+      "spanish": "pista",
+      "sentence": "Can you give me a hint?",
+      "image": "assets/words/week-02-hint.webp"
+    },
+    {
+      "word": "king",
+      "spanish": "rey",
+      "sentence": "The king wears a crown.",
+      "image": "assets/words/week-02-king.webp"
+    },
+    {
+      "word": "land",
+      "spanish": "tierra",
+      "sentence": "The land is green.",
+      "image": "assets/words/week-02-land.webp"
+    },
+    {
+      "word": "sand",
+      "spanish": "arena",
+      "sentence": "I play in the sand.",
+      "image": "assets/words/week-02-sand.webp"
+    },
+    {
+      "word": "sing",
+      "spanish": "cantar",
+      "sentence": "I like to sing.",
+      "image": "assets/words/week-02-sing.webp"
+    },
+    {
+      "word": "tent",
+      "spanish": "tienda de campaña",
+      "sentence": "We sleep in a tent.",
+      "image": "assets/words/week-02-tent.webp"
+    },
+    {
+      "word": "thank",
+      "spanish": "agradecer",
+      "sentence": "I thank my friend.",
+      "image": "assets/words/week-02-thank.webp"
+    },
+    {
+      "word": "wing",
+      "spanish": "ala",
+      "sentence": "The bird has a wing.",
+      "image": "assets/words/week-02-wing.webp"
+    }
+  ]
+}

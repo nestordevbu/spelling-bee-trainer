@@ -1,11 +1,16 @@
 {
   "schemaVersion": 1,
-  "defaultWeek": "week-01",
+  "defaultWeek": "week-02",
   "weeks": [
     {
       "id": "week-01",
-      "title": "Semana 1 · Oct 26-30",
+      "title": "Semana 1 · Oct 26–30",
       "file": "data/week-01.json"
+    },
+    {
+      "id": "week-02",
+      "title": "Semana 2 · Nov 2–6",
+      "file": "data/week-02.json"
     }
   ]
 }
