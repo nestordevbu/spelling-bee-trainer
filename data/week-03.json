@@ -1,0 +1,66 @@
+{
+  "id": "week-03",
+  "title": "Semana 3 · Nov 9–13",
+  "words": [
+    {
+      "word": "bench",
+      "spanish": "banca",
+      "sentence": "We sit on the bench.",
+      "image": "assets/words/week-03-bench.webp"
+    },
+    {
+      "word": "catch",
+      "spanish": "atrapar",
+      "sentence": "Can you catch the ball?",
+      "image": "assets/words/week-03-catch.webp"
+    },
+    {
+      "word": "chat",
+      "spanish": "charlar",
+      "sentence": "I chat with my friend.",
+      "image": "assets/words/week-03-chat.webp"
+    },
+    {
+      "word": "graph",
+      "spanish": "gráfica",
+      "sentence": "We made a graph in class.",
+      "image": "assets/words/week-03-graph.webp"
+    },
+    {
+      "word": "kitchen",
+      "spanish": "cocina",
+      "sentence": "We cook in the kitchen.",
+      "image": "assets/words/week-03-kitchen.webp"
+    },
+    {
+      "word": "phonics",
+      "spanish": "fonética",
+      "sentence": "We learn letter sounds in phonics.",
+      "image": "assets/words/week-03-phonics.webp"
+    },
+    {
+      "word": "photo",
+      "spanish": "foto",
+      "sentence": "I took a photo of my dog.",
+      "image": "assets/words/week-03-photo.webp"
+    },
+    {
+      "word": "switch",
+      "spanish": "interruptor",
+      "sentence": "Flip the switch to turn on the light.",
+      "image": "assets/words/week-03-switch.webp"
+    },
+    {
+      "word": "when",
+      "spanish": "cuándo",
+      "sentence": "When is your birthday?",
+      "image": "assets/words/week-03-when.webp"
+    },
+    {
+      "word": "whiskers",
+      "spanish": "bigotes",
+      "sentence": "The cat has long whiskers.",
+      "image": "assets/words/week-03-whiskers.webp"
+    }
+  ]
+}

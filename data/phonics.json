@@ -1,0 +1,253 @@
+{
+  "locale": "en-US",
+  "letters": [
+    {
+      "id": "a",
+      "label": "A a",
+      "ipa": "æ",
+      "examples": ["apple", "ant"]
+    },
+    {
+      "id": "b",
+      "label": "B b",
+      "ipa": "b",
+      "examples": ["ball", "bed"]
+    },
+    {
+      "id": "c",
+      "label": "C c",
+      "ipa": "k",
+      "examples": ["cat", "cup"],
+      "note": "Como en cat. También puede sonar /s/ en city."
+    },
+    {
+      "id": "d",
+      "label": "D d",
+      "ipa": "d",
+      "examples": ["dog", "desk"]
+    },
+    {
+      "id": "e",
+      "label": "E e",
+      "ipa": "ɛ",
+      "examples": ["egg", "elf"]
+    },
+    {
+      "id": "f",
+      "label": "F f",
+      "ipa": "f",
+      "examples": ["fish", "fan"]
+    },
+    {
+      "id": "g",
+      "label": "G g",
+      "ipa": "ɡ",
+      "examples": ["goat", "gum"],
+      "note": "Como en goat. También puede sonar /dʒ/ en gem."
+    },
+    {
+      "id": "h",
+      "label": "H h",
+      "ipa": "h",
+      "examples": ["hat", "hand"]
+    },
+    {
+      "id": "i",
+      "label": "I i",
+      "ipa": "ɪ",
+      "examples": ["igloo", "ink"]
+    },
+    {
+      "id": "j",
+      "label": "J j",
+      "ipa": "dʒ",
+      "examples": ["jam", "jump"]
+    },
+    {
+      "id": "k",
+      "label": "K k",
+      "ipa": "k",
+      "examples": ["kite", "king"]
+    },
+    {
+      "id": "l",
+      "label": "L l",
+      "ipa": "l",
+      "examples": ["leaf", "lamp"]
+    },
+    {
+      "id": "m",
+      "label": "M m",
+      "ipa": "m",
+      "examples": ["moon", "milk"]
+    },
+    {
+      "id": "n",
+      "label": "N n",
+      "ipa": "n",
+      "examples": ["nest", "nose"]
+    },
+    {
+      "id": "o",
+      "label": "O o",
+      "ipa": "ɑ",
+      "examples": ["octopus", "otter"]
+    },
+    {
+      "id": "p",
+      "label": "P p",
+      "ipa": "p",
+      "examples": ["pig", "pen"]
+    },
+    {
+      "id": "q",
+      "label": "Q q",
+      "ipa": "kw",
+      "examples": ["queen", "quick"],
+      "note": "En estas palabras, q va con u. Se oyen /k/ y /w/."
+    },
+    {
+      "id": "r",
+      "label": "R r",
+      "ipa": "ɹ",
+      "examples": ["rabbit", "red"]
+    },
+    {
+      "id": "s",
+      "label": "S s",
+      "ipa": "s",
+      "examples": ["sun", "sand"]
+    },
+    {
+      "id": "t",
+      "label": "T t",
+      "ipa": "t",
+      "examples": ["top", "tent"]
+    },
+    {
+      "id": "u",
+      "label": "U u",
+      "ipa": "ʌ",
+      "examples": ["umbrella", "up"]
+    },
+    {
+      "id": "v",
+      "label": "V v",
+      "ipa": "v",
+      "examples": ["van", "vet"]
+    },
+    {
+      "id": "w",
+      "label": "W w",
+      "ipa": "w",
+      "examples": ["web", "wing"]
+    },
+    {
+      "id": "x",
+      "label": "X x",
+      "ipa": "ks",
+      "examples": ["box", "fox"],
+      "note": "Escucha /k/ y /s/ al final de box y fox."
+    },
+    {
+      "id": "y",
+      "label": "Y y",
+      "ipa": "j",
+      "examples": ["yes", "yarn"]
+    },
+    {
+      "id": "z",
+      "label": "Z z",
+      "ipa": "z",
+      "examples": ["zip", "zoo"]
+    }
+  ],
+  "patterns": [
+    {
+      "id": "sh",
+      "label": "sh",
+      "ipa": "ʃ",
+      "examples": ["ship", "wish"]
+    },
+    {
+      "id": "ch",
+      "label": "ch",
+      "ipa": "tʃ",
+      "examples": ["chat", "chair"]
+    },
+    {
+      "id": "th-thin",
+      "label": "th",
+      "ipa": "θ",
+      "examples": ["thumb", "think"],
+      "note": "Sin vibración de la voz"
+    },
+    {
+      "id": "th-this",
+      "label": "th",
+      "ipa": "ð",
+      "examples": ["this", "that"],
+      "note": "Con vibración de la voz"
+    },
+    {
+      "id": "ph",
+      "label": "ph",
+      "ipa": "f",
+      "examples": ["photo", "phonics"]
+    },
+    {
+      "id": "wh",
+      "label": "wh",
+      "ipa": "w",
+      "examples": ["when", "whiskers"]
+    },
+    {
+      "id": "ck",
+      "label": "ck",
+      "ipa": "k",
+      "examples": ["duck", "back"]
+    },
+    {
+      "id": "ng",
+      "label": "ng",
+      "ipa": "ŋ",
+      "examples": ["sing", "wing"]
+    },
+    {
+      "id": "ee",
+      "label": "ee",
+      "ipa": "i",
+      "examples": ["see", "green"]
+    },
+    {
+      "id": "oo-moon",
+      "label": "oo",
+      "ipa": "u",
+      "examples": ["moon", "food"]
+    },
+    {
+      "id": "oo-book",
+      "label": "oo",
+      "ipa": "ʊ",
+      "examples": ["book", "look"]
+    },
+    {
+      "id": "ai",
+      "label": "ai",
+      "ipa": "eɪ",
+      "examples": ["rain", "train"]
+    },
+    {
+      "id": "oa",
+      "label": "oa",
+      "ipa": "oʊ",
+      "examples": ["boat", "coat"]
+    },
+    {
+      "id": "tch",
+      "label": "tch",
+      "ipa": "tʃ",
+      "examples": ["catch", "switch"]
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+[hidden] {
+  display: none !important;
+}
+
+.activity-heading,
+.activity-actions,
+.dictation-progress {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.activity-heading,
+.dictation-progress {
+  justify-content: space-between;
+}
+
+.activity-heading h2 {
+  margin: 0;
+}
+
+.activity-status:empty {
+  display: none;
+}
+
+.activity-status {
+  margin: 0.75rem 0;
+  color: #544269;
+}
+
+.study-actions {
+  margin-top: 1rem;
+}
+
+.study-actions > button {
+  flex: 1 1 13rem;
+}
+
+.lab-grid,
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 0.85rem;
+  margin: 1rem 0;
+}
+
+.lab-card,
+.dictation-response {
+  min-width: 0;
+  padding: 0.9rem;
+  border: 1px solid #e8ddff;
+  border-radius: 1rem;
+  background: #fbf9ff;
+}
+
+.lab-card h3,
+.dictation-response h3 {
+  margin: 0;
+  color: #5131a1;
+  font-size: 1.4rem;
+}
+
+.lab-card .muted {
+  margin: 0.4rem 0 0.7rem;
+}
+
+.lab-ipa {
+  font-size: 1rem;
+}
+
+.lab-examples {
+  margin-top: 0.65rem;
+}
+
+.lab-speed {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  color: #544269;
+}
+
+.lab-speed input {
+  accent-color: #6d42c2;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+#soundLab [aria-pressed="true"] {
+  background: #5131a1;
+  color: white;
+}
+
+.lab-practice {
+  margin-top: 1rem;
+}
+
+.lab-practice .lab-options {
+  grid-template-columns: repeat(auto-fit, minmax(3rem, 1fr));
+  gap: 0.5rem;
+}
+
+.lab-options .choice {
+  min-height: 3rem;
+  padding: 0.35rem;
+  font-size: 1.3rem;
+}
+
+.lab-options .good,
+.lab-options .bad {
+  opacity: 1;
+}
+
+.dictation-progress {
+  margin-top: 1rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.75rem;
+  background: #f2ebff;
+}
+
+#dictationClock {
+  font-size: 1.35rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.writing-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.8rem;
+  outline: 1px solid #d8cbed;
+  background: linear-gradient(
+    to bottom,
+    #fff 31%,
+    #e7dcfb 31%,
+    #e7dcfb 32%,
+    #fff 32%,
+    #fff 68%,
+    #d6c7ef 68%,
+    #d6c7ef 69%,
+    #fff 69%
+  );
+}
+
+.writing-active {
+  touch-action: none;
+  cursor: crosshair;
+  outline: 2px solid #6d42c2;
+  user-select: none;
+}
+
+.dictation-controls {
+  margin-top: 1rem;
+}
+
+.grade-summary {
+  font-weight: 750;
+  color: #5131a1;
+}
+
+.activity-select {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 0.4rem;
+  padding: 0.5rem;
+  border: 1px solid #cbb8eb;
+  border-radius: 0.6rem;
+  background: white;
+  color: #32214d;
+  font: inherit;
+}
+
+@media (max-width: 480px) {
+  .activity-heading h2 {
+    font-size: 1.25rem;
+  }
+
+  .dictation-controls button {
+    flex: 1 1 auto;
+  }
+}
