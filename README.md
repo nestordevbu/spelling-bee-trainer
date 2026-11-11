@@ -37,7 +37,8 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
   [Referencia sobre correspondencias entre letras y sonidos](https://ufli.education.ufl.edu/resources/teaching-resources/instructional-activities/phoneme-grapheme-correspondences/)
 - **Práctica auditiva** en el laboratorio. Elige **Abecedario** o **Fonemas
   comunes** y pulsa **Practicar con 5 opciones**. En cada ronda escucha
-  el sonido, repítelo si lo necesitas y selecciona la letra o la combinación.
+  el nombre de la letra en Abecedario o el sonido en Fonemas comunes.
+  Repítelo si lo necesitas y selecciona la letra o la combinación.
   Verás la respuesta al elegir y tu puntuación al terminar las diez rondas.
 - **Dictado manuscrito** con diez palabras de la semana en orden aleatorio.
   Pulsa **Escuchar e iniciar**. Los 30 segundos empiezan al terminar el primer
@@ -76,7 +77,9 @@ HTML local y los de una URL publicada pertenecen a orígenes distintos.
 
 Para comprobar la interacción, selecciona cada semana y abre su lista.
 Prueba los botones de nombre, sonido y ejemplo del laboratorio. En la práctica
-auditiva, comprueba que se activen cinco opciones después de escuchar el sonido
+auditiva, comprueba que se activen cinco opciones después de escuchar el nombre
+de la letra (Abecedario) o el sonido (Fonemas comunes)
 y que aparezca el resultado tras diez rondas en cada categoría. En el dictado,
 usa las tres repeticiones, deja vencer una ronda, recarga la página y comprueba
 que el trazo se conserve al pasar a la revisión.
+

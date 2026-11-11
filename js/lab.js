@@ -74,7 +74,7 @@ async function playLabClip(clip) {
   if (request !== labPlayback) return false;
   if (!played && !document.hidden) {
     $("labStatus").textContent =
-      "No se pudo reproducir el sonido. Vuelve a intentarlo.";
+      "No se pudo reproducir el audio. Vuelve a intentarlo.";
   }
   return played;
 }
@@ -96,9 +96,12 @@ function renderLabRound() {
   const { deck, index } = labQuiz;
   const target = deck[index];
   const distractors = new Map();
-  // Some cards use the same spelling (th, oo) or sound (c/k, ch/tch).
+  // Letter names are distinct; phoneme choices must also have distinct sounds.
   for (const card of shuffle(labCatalog[labGroup])) {
-    if (card.label !== target.label && card.ipa !== target.ipa) {
+    if (
+      card.label !== target.label &&
+      (labGroup === "letters" || card.ipa !== target.ipa)
+    ) {
       distractors.set(card.label, card);
     }
   }
@@ -106,10 +109,14 @@ function renderLabRound() {
   labQuiz.round = { target, heard: false, answered: false };
 
   $("labRound").textContent = "Ronda " + (index + 1) + " de " + deck.length;
-  $("labFeedback").textContent = "Escucha el sonido para activar las opciones.";
+  $("labFeedback").textContent = labGroup === "letters"
+    ? "Escucha el nombre de la letra para activar las opciones."
+    : "Escucha el sonido para activar las opciones.";
   $("labListen").hidden = false;
   $("labListen").disabled = false;
-  $("labListen").textContent = "🔊 Escuchar sonido";
+  $("labListen").textContent = labGroup === "letters"
+    ? "🔊 Escuchar nombre"
+    : "🔊 Escuchar sonido";
   $("labNext").hidden = true;
   $("labOptions").replaceChildren(
     ...choices.map((card) => {
@@ -129,7 +136,8 @@ async function listenLabRound() {
   const round = labQuiz?.round;
   if (!round) return;
   $("labListen").disabled = true;
-  const played = await playLabClip("sound-" + round.target.id);
+  const prefix = labGroup === "letters" ? "name-" : "sound-";
+  const played = await playLabClip(prefix + round.target.id);
   if (round !== labQuiz?.round) return;
   $("labListen").disabled = false;
   if (!played || round.heard) return;
@@ -138,7 +146,7 @@ async function listenLabRound() {
   $("labListen").textContent = "🔊 Volver a escuchar";
   $("labFeedback").textContent =
     labGroup === "letters"
-      ? "Elige la letra que corresponde al sonido."
+      ? "Elige la letra cuyo nombre escuchaste."
       : "Elige la combinación que corresponde al sonido.";
   for (const button of $("labOptions").children) button.disabled = false;
 }
