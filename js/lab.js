@@ -93,6 +93,8 @@ function startLabQuiz() {
 }
 
 function renderLabRound() {
+  $("labMascot").hidden = true;
+  $("labMascot").alt = "";
   const { deck, index } = labQuiz;
   const target = deck[index];
   const distractors = new Map();
@@ -157,6 +159,11 @@ function answerLabRound(card) {
   round.answered = true;
   const correct = card === round.target;
   if (correct) labQuiz.score++;
+  $("labMascot").src = correct ? MASCOT_SUCCESS : MASCOT_TRY;
+  $("labMascot").alt = correct
+    ? "Mascota felicitando por la respuesta correcta"
+    : "Mascota animando a seguir intentando";
+  $("labMascot").hidden = false;
   const label = round.target.label;
   $("labFeedback").textContent = correct
     ? "¡Correcto! " + label + " · " + round.target.examples[0]
@@ -185,6 +192,8 @@ function advanceLabQuiz() {
     $("labListen").focus();
   } else {
     labQuiz.round = null;
+    $("labMascot").hidden = true;
+    $("labMascot").alt = "";
     $("labRound").textContent = "";
     $("labListen").hidden = true;
     $("labOptions").replaceChildren();
