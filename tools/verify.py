@@ -74,10 +74,11 @@ def check_audio(path):
 def check_weeks(manifest):
     check(manifest["schemaVersion"] == 1, "Versión de manifest inesperada")
     check(manifest["defaultWeek"] == "week-03", "La semana inicial debe ser la 3")
-    entries = manifest["weeks"]
-    check([entry["id"] for entry in entries] ==
-          ["week-01", "week-02", "week-03", "contest-2026"],
-          "El paquete requiere tres semanas y la lista del concurso")
+    check([entry["id"] for entry in manifest["weeks"]] ==
+          ["week-01", "week-02", "week-03"],
+          "El selector semanal solo debe incluir las tres semanas")
+    check(manifest["contest"]["id"] == "contest-2026", "Falta la lista especial del concurso")
+    entries = manifest["weeks"] + [manifest["contest"]]
     content = {}
     for entry in entries:
         path = entry["file"]
@@ -102,6 +103,7 @@ def check_weeks(manifest):
             check(image.read_bytes()[8:12] == b"WEBP", f"WebP no válido: {image}")
             check_audio(f"assets/audio/words/{word}.wav")
             check_audio(f"assets/audio/sentences/{word}.wav")
+            check_audio(f"assets/audio/spelling/{word}.wav")
         content[path] = week
     return content
 

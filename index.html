@@ -27,14 +27,23 @@
               <p class="contest-eyebrow">🐝 ¡Prepárate para el gran día!</p>
               <h2 id="contestTitle">Spelling Bee Contest</h2>
             </div>
-            <div id="contestCountdown" class="contest-countdown" role="status"></div>
+            <div class="contest-motivation">
+              <img class="contest-mascot" src="assets/ui/contest-bee-dragon.webp"
+                alt="Dragón del concurso vestido de abeja" width="96" height="160" />
+              <div id="contestCountdown" class="contest-countdown" role="status"></div>
+            </div>
           </div>
           <p id="contestSchedule" class="contest-schedule"></p>
           <p>30 palabras para practicar. ¡Un poco cada día te acerca a tu meta!</p>
-          <button id="openContest" class="primary wide" disabled>
-            🏆 Estudiar las 30 palabras
-          </button>
-          <p class="muted">Selecciona esta lista para usar los seis juegos y el dictado.</p>
+          <div class="activity-actions contest-actions">
+            <button id="openContest" class="primary" disabled>
+              📚 Estudiar las 30 palabras
+            </button>
+            <button id="openContestGames" class="secondary" disabled>
+              🏆 Juegos del concurso
+            </button>
+          </div>
+          <p class="muted">Los seis juegos y el dictado manuscrito con las 30 palabras.</p>
           <details class="contest-details">
             <summary>Información del concurso</summary>
             <p id="contestGrades"></p>
@@ -48,11 +57,11 @@
           </details>
           <p id="contestStatus" class="activity-status" role="status"></p>
         </section>
-        <section class="panel" style="padding: 12px 16px">
+        <section id="weeklyControls" class="panel" style="padding: 12px 16px">
           <label
             for="weekSelect"
             style="font-weight: 750; display: block; margin-bottom: 7px"
-            >📅 Semana o lista de estudio</label
+            >📅 Semana de práctica</label
           ><select
             id="weekSelect"
             disabled
@@ -74,7 +83,10 @@
             Cargando semanas publicadas...
           </p>
         </section>
-        <h2>🎮 Elige tu juego</h2>
+        <button id="backToWeeks" class="secondary wide" hidden>
+          ← Volver a la práctica semanal
+        </button>
+        <h2 id="activityTitle">🎮 Elige tu juego</h2>
         <p class="muted">
           Practica las palabras de tu escuela y gana premios por tus aciertos.
         </p>
@@ -115,7 +127,7 @@
       <section id="wordList" class="panel hide" aria-label="Lista de palabras">
         <h2 id="wordListTitle">📚 My Spelling Words</h2>
         <p class="muted">
-          Toca 🔊 para escuchar la palabra o la oración en inglés.
+          Escucha la palabra, su deletreo o la oración en inglés.
         </p>
         <div id="wordListItems"></div>
         <button

@@ -65,6 +65,24 @@
   font-weight: 700;
 }
 
+.contest-motivation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  max-width: 100%;
+}
+
+.contest-mascot {
+  width: 96px;
+  height: 160px;
+  object-fit: contain;
+}
+
+.contest-actions > button {
+  flex: 1 1 12rem;
+}
+
 .contest-countdown {
   flex: 0 1 9rem;
   padding: 0.6rem 0.8rem;

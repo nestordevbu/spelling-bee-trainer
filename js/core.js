@@ -2,7 +2,7 @@
 
 const $ = (id) => document.getElementById(id);
 const LAST_WEEK_KEY = "spelling_bee_last_selected_week_v4";
-const WEEK_ID = /^(week-\d+|contest-2026)$/;
+const WEEK_ID = /^week-\d+$/;
 const WORD_ASSET = /^assets\/words\/[a-z\d_-]+\.(webp|png|jpe?g)$/i;
 
 let WORDS = [];
@@ -13,6 +13,7 @@ let weekId = "";
 let weekLoading = true;
 let completed = {};
 let weekCatalog = [];
+let contestStudy;
 
 function readStorage(key, fallback) {
   try {
@@ -112,12 +113,15 @@ function setWeekLoading(loading) {
   $("openWordList").disabled = loading || !weekId;
   $("openDictation").disabled = loading || !weekId;
   $("openContest").disabled = loading;
+  $("openContestGames").disabled = loading;
+  $("backToWeeks").disabled = loading;
   $("modes").inert = loading;
   $("resetAll").disabled = loading || Object.keys(completed).length === 0;
 }
 
 async function chooseWeek(id) {
-  const item = weekCatalog.find((week) => week.id === id);
+  const item = weekCatalog.find((week) => week.id === id)
+    ?? (contestStudy?.id === id ? contestStudy : null);
   if (!item) return;
   setWeekLoading(true);
   stopAudio();
@@ -136,18 +140,26 @@ async function chooseWeek(id) {
       data.words.map((entry) => [entry.word, entry.display ?? entry.word]),
     );
     weekId = id;
-    $("weekSelect").value = id;
+    const isContest = id === "contest-2026";
+    if (!isContest) {
+      $("weekSelect").value = id;
+      rememberWeek(id);
+    }
+    $("weeklyControls").hidden = isContest;
+    $("backToWeeks").hidden = !isContest;
+    $("activityTitle").textContent = isContest
+      ? "🏆 Juegos del concurso · 30 palabras"
+      : "🎮 Elige tu juego";
     const savedProgress = readStorage(progressKey(), {});
     completed =
       savedProgress && typeof savedProgress === "object" ? savedProgress : {};
-    rememberWeek(id);
     $("weekStatus").textContent = WORDS.length + " palabras · " + item.title;
     updateHome();
     return true;
   } catch (error) {
     $("weekStatus").textContent =
       "No se pudo cargar esa semana. " + error.message;
-    if (weekId) $("weekSelect").value = weekId;
+    if (WEEK_ID.test(weekId)) $("weekSelect").value = weekId;
     return false;
   } finally {
     setWeekLoading(false);
@@ -167,6 +179,12 @@ async function initWeeks() {
         week.file === "data/" + week.id + ".json",
     );
     if (!weekCatalog.length) throw new Error("No hay semanas disponibles.");
+    const contest = manifest.contest;
+    if (
+      contest?.id === "contest-2026" &&
+      contest.file === "data/contest-2026.json" &&
+      typeof contest.title === "string"
+    ) contestStudy = contest;
     const select = $("weekSelect");
     select.replaceChildren(
       ...weekCatalog.map(({ id, title }) => new Option(title, id)),

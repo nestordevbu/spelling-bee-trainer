@@ -18,13 +18,13 @@ const LOCAL_CONTENT = {
         "id": "week-03",
         "title": "Semana 3 · Nov 9–13",
         "file": "data/week-03.json"
-      },
-      {
-        "id": "contest-2026",
-        "title": "Spelling Bee Contest · 30 palabras",
-        "file": "data/contest-2026.json"
       }
-    ]
+    ],
+    "contest": {
+      "id": "contest-2026",
+      "title": "Spelling Bee Contest · 30 palabras",
+      "file": "data/contest-2026.json"
+    }
   },
   "data/week-01.json": {
     "id": "week-01",

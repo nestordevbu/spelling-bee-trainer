@@ -151,5 +151,10 @@
       "file": "assets/words/contest-dress.webp",
       "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one child's cheerful pink dress on a simple hanger, no person. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
     }
-  ]
+  ],
+  "mascot": {
+    "file": "assets/ui/contest-bee-dragon.webp",
+    "source": "Cartel del concurso proporcionado por el usuario",
+    "prompt": "Extract only the green dragon dressed as a bee from the lower right of the supplied poster. Preserve the same character, full-body pose, expression, costume, wings, antennae, tail and shoes. Remove all background, grass, text and logos. Transparent background, no redesign."
+  }
 }

@@ -13,7 +13,7 @@ function environment(extra = {}) {
   const elements = new Map();
   const element = () => ({
     children: [], hidden: false, checked: false, disabled: false, textContent: "",
-    classList: { toggle() {} }, focus() {}, setAttribute() {},
+    classList: { toggle() {} }, focus() {}, setAttribute() {}, addEventListener() {},
     append(...children) { this.children.push(...children); },
     replaceChildren(...children) { this.children = children; },
   });
@@ -24,6 +24,7 @@ function environment(extra = {}) {
   const context = vm.createContext({
     $: get,
     document: { getElementById: get, createElement: element, addEventListener() {} },
+    window: { addEventListener() {} },
     setInterval() {}, Intl, Date, ...extra,
   });
   return { elements, context };
@@ -82,7 +83,7 @@ async function testStudyLists() {
   const storage = new Map();
   const manifest = json("data/manifest.json");
   const local = { "data/manifest.json": manifest };
-  for (const entry of manifest.weeks) local[entry.file] = json(entry.file);
+  for (const entry of [...manifest.weeks, manifest.contest]) local[entry.file] = json(entry.file);
   const { context, elements } = environment({
     LOCAL_CONTENT: local, location: { protocol: "file:" },
     localStorage: {
@@ -95,22 +96,64 @@ async function testStudyLists() {
   vm.runInContext(read("js/core.js"), context);
   await vm.runInContext("initWeeks()", context);
   assert.equal(vm.runInContext("weekId", context), "week-03");
+  assert.equal(elements.get("weekSelect").children.length, 3);
+  assert(!elements.get("weekSelect").children.some((item) => item.value === "contest-2026"));
   storage.set("spelling_bee_ceb_progress_v4_week-03", JSON.stringify({ 0: { score: 9 } }));
   assert.equal(await vm.runInContext("chooseWeek('contest-2026')", context), true);
-  assert.equal(elements.get("weekSelect").value, "contest-2026");
+  assert.equal(elements.get("weekSelect").value, "week-03");
+  assert.equal(storage.get("spelling_bee_last_selected_week_v4"), "week-03");
+  assert.equal(elements.get("weeklyControls").hidden, true);
+  assert.equal(elements.get("backToWeeks").hidden, false);
   assert.equal(vm.runInContext("WORDS.length", context), 30);
   assert.equal(vm.runInContext("progressKey()", context), "spelling_bee_ceb_progress_v4_contest-2026");
+  context.unlockAudio = () => {};
+  vm.runInContext(read("js/games.js"), context);
+  vm.runInContext("setScreen = () => {}; render = () => {};", context);
+  for (let mode = 0; mode < 6; mode++) {
+    vm.runInContext(`start(${mode})`, context);
+    assert.equal(vm.runInContext("deck.length", context), 30);
+  }
+  context.createWritingSurface = () => ({ stop() {}, redraw() {} });
+  vm.runInContext(read("js/dictation.js"), context);
+  assert.equal(vm.runInContext("newDictation().deck.length", context), 30);
   await vm.runInContext("chooseWeek('week-03')", context);
   assert.equal(vm.runInContext("WORDS.length", context), 10);
   assert.equal(vm.runInContext("completed[0].score", context), 9);
+  assert.equal(elements.get("weeklyControls").hidden, false);
   context.LOCAL_CONTENT["data/contest-2026.json"] = { id: "wrong", words: [] };
   assert.equal(await vm.runInContext("chooseWeek('contest-2026')", context), false);
   assert.equal(elements.get("weekSelect").value, "week-03");
+}
+
+async function testSpellingPlayback() {
+  const clips = [];
+  let timeout;
+  const { context } = environment({
+    Audio: function (path) {
+      this.path = path;
+      this.play = () => Promise.resolve();
+      this.pause = () => {};
+      clips.push(this);
+    },
+    setTimeout: (callback, duration) => { timeout = duration; return 1; },
+    clearTimeout() {},
+  });
+  vm.runInContext(read("js/audio.js"), context);
+  const played = vm.runInContext("playSpelling('apple')", context);
+  assert.equal(clips[0].path, "assets/audio/spelling/apple.wav");
+  assert.equal(clips[0].playbackRate, 0.9);
+  assert.equal(timeout, 45000);
+  clips[0].onended();
+  assert.equal(await played, true);
+  const interrupted = vm.runInContext("playSpelling('bedroom')", context);
+  vm.runInContext("stopAudio()", context);
+  assert.equal(await interrupted, false);
 }
 
 (async () => {
   await testAlphabet();
   testCountdown();
   await testStudyLists();
-  console.log("OK: 26 letras, fonemas, fechas de Hermosillo y progreso separado del concurso.");
+  await testSpellingPlayback();
+  console.log("OK: abecedario, fechas, selector semanal, 6 juegos y dictado de 30 palabras, deletreo.");
 })().catch((error) => { console.error(error); process.exitCode = 1; });

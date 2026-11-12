@@ -27,7 +27,7 @@ function stopAudio() {
 }
 
 // Resolve after playback so dictation can start timing when the word ends.
-function playClip(path, rate = 1) {
+function playClip(path, rate = 1, timeoutMs = 12000) {
   stopAudio();
   const audio = new Audio(path);
   audio.playbackRate = rate;
@@ -41,7 +41,7 @@ function playClip(path, rate = 1) {
       if (activeClip?.finish === finish) activeClip = null;
       resolve(played);
     }
-    const watchdog = setTimeout(() => finish(false), 12000);
+    const watchdog = setTimeout(() => finish(false), timeoutMs);
     activeClip = { finish };
     audio.onended = () => finish(true);
     audio.onerror = () => finish(false);
@@ -51,6 +51,10 @@ function playClip(path, rate = 1) {
 
 function playWord(word, rate = 1) {
   return playClip("assets/audio/words/" + word + ".wav", rate);
+}
+
+function playSpelling(word) {
+  return playClip("assets/audio/spelling/" + word + ".wav", 0.9, 45000);
 }
 
 function chime(ok, win = false) {

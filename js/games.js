@@ -84,7 +84,7 @@ function reportHtml() {
     <ul>${results}</ul>
     <h4>Palabras que necesitan práctica</h4>
     ${practice ? `<ul>${practice}</ul>` : "<p>🌟 ¡Sin errores en los juegos completados!</p>"}
-    <p class="muted">El reinicio borra los resultados de los juegos de esta semana.</p>`;
+    <p class="muted">El reinicio borra los resultados de los juegos de esta lista.</p>`;
 }
 function resetAll() {
   if (!Object.keys(completed).length) return;
@@ -135,6 +135,9 @@ function openWordList() {
             <button class="secondary" data-say-word="${w}" aria-label="Escuchar ${w}">
               🔊 Palabra
             </button>
+            <button class="secondary" data-spell-word="${w}" aria-label="Escuchar deletreo de ${w}">
+              🔤 Deletreo
+            </button>
             <button class="secondary" data-say-example="${w}" aria-label="Escuchar oración de ${w}">
               ▶ Oración
             </button>
@@ -157,6 +160,7 @@ $("wordListItems").onclick = (e) => {
   if (!b) return;
   unlockAudio();
   if (b.dataset.sayWord) playWord(b.dataset.sayWord, 0.9);
+  else if (b.dataset.spellWord) playSpelling(b.dataset.spellWord);
   else if (b.dataset.sayExample)
     playClip("assets/audio/sentences/" + b.dataset.sayExample + ".wav", 0.92);
 };

@@ -73,6 +73,18 @@ $("openContest").onclick = async () => {
   else $("contestStatus").textContent = "No se pudo abrir la lista del concurso.";
 };
 
+$("openContestGames").onclick = async () => {
+  $("contestStatus").textContent = "";
+  if (await chooseWeek("contest-2026")) {
+    setScreen("home");
+    $("activityTitle").scrollIntoView({ block: "start", behavior: "smooth" });
+  } else {
+    $("contestStatus").textContent = "No se pudieron abrir los juegos del concurso.";
+  }
+};
+
+$("backToWeeks").onclick = () => chooseWeek($("weekSelect").value);
+
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden) updateContestCountdown();
 });

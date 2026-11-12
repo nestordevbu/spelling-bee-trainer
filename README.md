@@ -27,8 +27,10 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
 
 - **Spelling Bee Contest**: lista especial con las 30 palabras del cartel,
   ilustraciones nuevas, traducciones, ejemplos y audios incluidos. Abre
-  **Estudiar las 30 palabras** para consultar la lista; al volver puedes
-  practicarla con los seis juegos o el dictado. Su progreso se guarda por
+  **Estudiar las 30 palabras** para consultar la lista y **Juegos del concurso**
+  para practicarla con los seis juegos o el dictado. El concurso tiene botones
+  propios y no aparece en el selector semanal. Usa **Volver a la práctica semanal**
+  para regresar a la última semana elegida. Su progreso se guarda por
   separado de las semanas. El evento es el 23 de noviembre de 2026, de
   8:00 a. m. a 12:00 p. m., en CEB Conference Hall. La cuenta regresiva usa
   la fecha de Hermosillo, muestra un mensaje especial el día del evento y
@@ -51,7 +53,11 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
   Verás la respuesta al elegir y tu puntuación al terminar: **26 rondas en
   Abecedario**, una por letra en orden aleatorio, y diez en Fonemas comunes.
   Ambas categorías incluyen los personajes de acierto y error.
-- **Dictado manuscrito** con diez palabras de la semana en orden aleatorio.
+- **Deletreo** en cada tarjeta de estudio de las semanas y el concurso:
+  escucha la palabra, los nombres de sus letras en inglés y la palabra otra vez.
+  Los 59 clips únicos se incluyen en `assets/audio/spelling/`.
+- **Dictado manuscrito** con diez palabras de la semana o las 30 del concurso,
+  en orden aleatorio.
   Pulsa **Escuchar e iniciar**. Los 30 segundos empiezan al terminar el primer
   audio. Puedes repetir la palabra hasta tres veces dentro del mismo plazo.
   Escribe con dedo, lápiz o ratón. Al agotarse el tiempo se guarda el trazo,
@@ -62,7 +68,7 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
 Tras guardar la última respuesta, abre **Revisión de un adulto**. Compara cada
 palabra dictada con el trazo y elige **Correcta** o **Incorrecta**. La vista
 muestra cuántas palabras se han calificado y calcula la nota final al completar
-las diez.
+todas las respuestas.
 
 El navegador guarda los trazos y las calificaciones del dictado de cada semana
 en almacenamiento local. Puedes volver desde **Dictado manuscrito** con el
@@ -75,6 +81,10 @@ HTML local y los de una URL publicada pertenecen a orígenes distintos.
 - `data/manifest.json` apunta a los JSON de cada semana. `data/phonics.json`
   contiene las tarjetas del laboratorio. `data/local-content.js` permite
   abrir el HTML de control directamente desde disco.
+- El campo `contest` del manifest mantiene la lista especial fuera de `weeks`.
+- `python tools/generate_spelling_audio.py` combina los clips de palabras y
+  nombres de letras para producir el deletreo. Con `--check` verifica la secuencia
+  exacta sin modificar los archivos.
 - `assets/words/` contiene las ilustraciones originales recortadas. La semana
   3 usa los recortes de la lámina del 9–13 de noviembre. Las palabras impresas
   de la lámina quedan fuera de los recortes.
