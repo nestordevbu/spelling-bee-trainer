@@ -82,7 +82,9 @@ async function playLabClip(clip) {
 function startLabQuiz() {
   const pool = labCatalog[labGroup];
   labQuiz = {
-    deck: shuffle(pool).slice(0, LAB_ROUNDS),
+    deck: labGroup === "letters"
+      ? shuffle(pool)
+      : shuffle(pool).slice(0, LAB_ROUNDS),
     index: 0,
     score: 0,
     round: null,

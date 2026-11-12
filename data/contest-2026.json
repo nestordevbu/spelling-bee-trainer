@@ -1,0 +1,204 @@
+{
+  "id": "contest-2026",
+  "title": "Spelling Bee Contest · 30 palabras",
+  "event": {
+    "name": "Spelling Bee Contest",
+    "date": "2026-11-23",
+    "timeZone": "America/Hermosillo",
+    "time": "8:00 a. m.–12:00 p. m.",
+    "venue": "CEB Conference Hall",
+    "grades": "1.º a 6.º de primaria",
+    "rules": [
+      "El concurso consta de 30 palabras y la dificultad aumenta en cada ronda.",
+      "Cada participante debe deletrear la palabra en voz alta y escribirla.",
+      "Un error de deletreo implica la eliminación en el concurso."
+    ],
+    "nextEvent": "Los ganadores representarán al colegio en el Interscholastic Spelling Bee, organizado por Colegio Americano del Pacífico (CAP), en Hermosillo, los días 5 y 6 de marzo de 2027.",
+    "registration": "Inscríbete con tu maestro o maestra. La Coordinación de Inglés entrega la lista de estudio después de la inscripción.",
+    "contact": "Miss Diana · diana.alvarez@cebhermosillo.edu.mx"
+  },
+  "words": [
+    {
+      "word": "apple",
+      "spanish": "manzana",
+      "sentence": "I eat an apple.",
+      "image": "assets/words/contest-apple.webp"
+    },
+    {
+      "word": "april",
+      "spanish": "abril",
+      "sentence": "April is the fourth month of the year.",
+      "image": "assets/words/contest-april.webp",
+      "display": "April"
+    },
+    {
+      "word": "arm",
+      "spanish": "brazo",
+      "sentence": "I raise my arm.",
+      "image": "assets/words/contest-arm.webp"
+    },
+    {
+      "word": "august",
+      "spanish": "agosto",
+      "sentence": "August is the eighth month of the year.",
+      "image": "assets/words/contest-august.webp",
+      "display": "August"
+    },
+    {
+      "word": "baby",
+      "spanish": "bebé",
+      "sentence": "The baby is happy.",
+      "image": "assets/words/contest-baby.webp"
+    },
+    {
+      "word": "ball",
+      "spanish": "pelota",
+      "sentence": "I play with a ball.",
+      "image": "assets/words/contest-ball.webp"
+    },
+    {
+      "word": "bedroom",
+      "spanish": "recámara",
+      "sentence": "My bedroom has a bed.",
+      "image": "assets/words/contest-bedroom.webp"
+    },
+    {
+      "word": "belt",
+      "spanish": "cinturón",
+      "sentence": "I wear a belt.",
+      "image": "assets/words/contest-belt.webp"
+    },
+    {
+      "word": "black",
+      "spanish": "negro",
+      "sentence": "My shoes are black.",
+      "image": "assets/words/contest-black.webp"
+    },
+    {
+      "word": "boat",
+      "spanish": "barco",
+      "sentence": "The boat is on the water.",
+      "image": "assets/words/contest-boat.webp"
+    },
+    {
+      "word": "book",
+      "spanish": "libro",
+      "sentence": "I read a book.",
+      "image": "assets/words/contest-book.webp"
+    },
+    {
+      "word": "box",
+      "spanish": "caja",
+      "sentence": "The toy is in the box.",
+      "image": "assets/words/contest-box.webp"
+    },
+    {
+      "word": "brown",
+      "spanish": "café",
+      "sentence": "The bear is brown.",
+      "image": "assets/words/contest-brown.webp"
+    },
+    {
+      "word": "butter",
+      "spanish": "mantequilla",
+      "sentence": "I put butter on my bread.",
+      "image": "assets/words/contest-butter.webp"
+    },
+    {
+      "word": "cake",
+      "spanish": "pastel",
+      "sentence": "We share a cake.",
+      "image": "assets/words/contest-cake.webp"
+    },
+    {
+      "word": "canyon",
+      "spanish": "cañón",
+      "sentence": "The river flows through the canyon.",
+      "image": "assets/words/contest-canyon.webp"
+    },
+    {
+      "word": "car",
+      "spanish": "automóvil",
+      "sentence": "The car is red.",
+      "image": "assets/words/contest-car.webp"
+    },
+    {
+      "word": "card",
+      "spanish": "tarjeta",
+      "sentence": "I make a card for my friend.",
+      "image": "assets/words/contest-card.webp"
+    },
+    {
+      "word": "chair",
+      "spanish": "silla",
+      "sentence": "I sit on a chair.",
+      "image": "assets/words/contest-chair.webp"
+    },
+    {
+      "word": "circle",
+      "spanish": "círculo",
+      "sentence": "I draw a circle.",
+      "image": "assets/words/contest-circle.webp"
+    },
+    {
+      "word": "clap",
+      "spanish": "aplaudir",
+      "sentence": "We clap our hands.",
+      "image": "assets/words/contest-clap.webp"
+    },
+    {
+      "word": "cloudy",
+      "spanish": "nublado",
+      "sentence": "The sky is cloudy today.",
+      "image": "assets/words/contest-cloudy.webp"
+    },
+    {
+      "word": "cold",
+      "spanish": "frío",
+      "sentence": "I wear a coat when it is cold.",
+      "image": "assets/words/contest-cold.webp"
+    },
+    {
+      "word": "corn",
+      "spanish": "maíz",
+      "sentence": "The corn is yellow.",
+      "image": "assets/words/contest-corn.webp"
+    },
+    {
+      "word": "crayon",
+      "spanish": "crayón",
+      "sentence": "I color with a crayon.",
+      "image": "assets/words/contest-crayon.webp"
+    },
+    {
+      "word": "cut",
+      "spanish": "cortar",
+      "sentence": "I cut the paper with scissors.",
+      "image": "assets/words/contest-cut.webp"
+    },
+    {
+      "word": "desk",
+      "spanish": "pupitre",
+      "sentence": "My book is on the desk.",
+      "image": "assets/words/contest-desk.webp"
+    },
+    {
+      "word": "dog",
+      "spanish": "perro",
+      "sentence": "The dog plays in the park.",
+      "image": "assets/words/contest-dog.webp"
+    },
+    {
+      "word": "down",
+      "spanish": "abajo",
+      "sentence": "The arrow points down.",
+      "image": "assets/words/contest-down.webp"
+    },
+    {
+      "word": "dress",
+      "spanish": "vestido",
+      "sentence": "She wears a pink dress.",
+      "image": "assets/words/contest-dress.webp"
+    }
+  ]
+}

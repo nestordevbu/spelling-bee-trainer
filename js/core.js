@@ -2,12 +2,13 @@
 
 const $ = (id) => document.getElementById(id);
 const LAST_WEEK_KEY = "spelling_bee_last_selected_week_v4";
-const WEEK_ID = /^week-\d+$/;
+const WEEK_ID = /^(week-\d+|contest-2026)$/;
 const WORD_ASSET = /^assets\/words\/[a-z\d_-]+\.(webp|png|jpe?g)$/i;
 
 let WORDS = [];
 let WORD_IMAGES = {};
 let WORD_EXAMPLES = {};
+let WORD_LABELS = {};
 let weekId = "";
 let weekLoading = true;
 let completed = {};
@@ -110,6 +111,7 @@ function setWeekLoading(loading) {
   $("weekSelect").disabled = loading;
   $("openWordList").disabled = loading || !weekId;
   $("openDictation").disabled = loading || !weekId;
+  $("openContest").disabled = loading;
   $("modes").inert = loading;
   $("resetAll").disabled = loading || Object.keys(completed).length === 0;
 }
@@ -130,17 +132,23 @@ async function chooseWeek(id) {
     WORD_EXAMPLES = Object.fromEntries(
       data.words.map((entry) => [entry.word, entry.sentence]),
     );
+    WORD_LABELS = Object.fromEntries(
+      data.words.map((entry) => [entry.word, entry.display ?? entry.word]),
+    );
     weekId = id;
+    $("weekSelect").value = id;
     const savedProgress = readStorage(progressKey(), {});
     completed =
       savedProgress && typeof savedProgress === "object" ? savedProgress : {};
     rememberWeek(id);
     $("weekStatus").textContent = WORDS.length + " palabras · " + item.title;
     updateHome();
+    return true;
   } catch (error) {
     $("weekStatus").textContent =
       "No se pudo cargar esa semana. " + error.message;
     if (weekId) $("weekSelect").value = weekId;
+    return false;
   } finally {
     setWeekLoading(false);
   }

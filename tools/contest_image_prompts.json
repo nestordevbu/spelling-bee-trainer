@@ -1,0 +1,155 @@
+{
+  "tool": "Built-in image_gen",
+  "images": [
+    {
+      "word": "apple",
+      "file": "assets/words/contest-apple.webp",
+      "prompt": "One centered red apple with a green leaf; cheerful children's book illustration; plain white background; no text."
+    },
+    {
+      "word": "april",
+      "file": "assets/words/contest-april.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: a clean desk calendar representing the FOURTH month: a big numeral 4 above a simple calendar grid, a small spring flower beside it. The only text allowed is the numeral 4; no month name or alphabet letters. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "arm",
+      "file": "assets/words/contest-arm.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one child's bare arm bent slightly, from upper arm to hand with five fingers, a short blue sleeve at the shoulder; focus clearly on the arm, friendly anatomical proportions. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "august",
+      "file": "assets/words/contest-august.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: a clean desk calendar representing the EIGHTH month: a big numeral 8 above a simple calendar grid with a small sun beside it. The only text allowed is numeral 8; no month name or alphabet letters. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "baby",
+      "file": "assets/words/contest-baby.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one happy baby sitting in a pale yellow onesie. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "ball",
+      "file": "assets/words/contest-ball.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one colorful round toy ball. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "bedroom",
+      "file": "assets/words/contest-bedroom.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: a cozy child's bedroom with a bed, bedside table and window, no people. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "belt",
+      "file": "assets/words/contest-belt.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one brown leather belt with a silver buckle, arranged in a loose oval. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "black",
+      "file": "assets/words/contest-black.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one large pure black paint swatch with a black crayon beside it; black is the unmistakable central color. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "boat",
+      "file": "assets/words/contest-boat.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one small wooden sailboat with a white sail floating on a small patch of blue water. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "book",
+      "file": "assets/words/contest-book.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one open hardcover storybook, pages blank without writing. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "box",
+      "file": "assets/words/contest-box.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one plain cardboard box with open flaps. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "brown",
+      "file": "assets/words/contest-brown.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one large warm brown paint swatch with a brown crayon beside it; brown is the unmistakable central color. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "butter",
+      "file": "assets/words/contest-butter.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one pale yellow stick of butter on a small white butter dish, one small pat sliced off. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "cake",
+      "file": "assets/words/contest-cake.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one small birthday cake with frosting and three unlit candles, no numbers. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "canyon",
+      "file": "assets/words/contest-canyon.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: a deep scenic canyon with towering red rock walls and a small river winding far below, landscape view that clearly shows the chasm. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "car",
+      "file": "assets/words/contest-car.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one friendly small red car, three-quarter view. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "card",
+      "file": "assets/words/contest-card.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one folded greeting card standing slightly open, blank front decorated with a simple heart, no words. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "chair",
+      "file": "assets/words/contest-chair.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one simple wooden chair with a blue seat. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "circle",
+      "file": "assets/words/contest-circle.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one thick blue circular ring on white, exactly round; simple clean educational illustration, no other shapes. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "clap",
+      "file": "assets/words/contest-clap.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: two children's hands clapping together with small motion marks to show the action, five fingers on each hand. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "cloudy",
+      "file": "assets/words/contest-cloudy.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: a sky filled with several soft gray clouds, no sun, no rain, unmistakably overcast weather. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "cold",
+      "file": "assets/words/contest-cold.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: a child wearing a warm hat and scarf shivering with folded arms and a small snowflake nearby. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "corn",
+      "file": "assets/words/contest-corn.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one fresh yellow ear of corn with green husks peeled back. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "crayon",
+      "file": "assets/words/contest-crayon.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one chunky purple wax crayon with a plain paper wrapper, no brand or lettering. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "cut",
+      "file": "assets/words/contest-cut.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: a pair of child-safe round-tip scissors cutting a sheet of blank paper, motion evident, safe nonviolent scene. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "desk",
+      "file": "assets/words/contest-desk.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one simple school desk with a pencil and closed notebook, focus on the desk, no chair. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "dog",
+      "file": "assets/words/contest-dog.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one friendly golden puppy sitting, full body. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "down",
+      "file": "assets/words/contest-down.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one big clear blue arrow pointing straight downward toward a simple horizontal ground line; arrow is the central subject, educational directional illustration. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    },
+    {
+      "word": "dress",
+      "file": "assets/words/contest-dress.webp",
+      "prompt": "Use case: scientific-educational. Create ONE square vocabulary illustration for a primary-school English spelling game. Subject: one child's cheerful pink dress on a simple hanger, no person. Style: cheerful polished children's book cartoon with soft dimensional shading, clean clear silhouette, centered fully visible subject, plain warm white background and generous empty margins. Recognizable at thumbnail size. No labels, alphabet letters, target word, watermark, logo, border, or decorative text. Only use numerals when specifically required by the subject description."
+    }
+  ]
+}

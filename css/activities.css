@@ -37,6 +37,88 @@
   flex: 1 1 13rem;
 }
 
+.contest-card {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 2px solid #f2ce63;
+  border-radius: 1.1rem;
+  background: linear-gradient(135deg, #fff9df, #fffdf6);
+  color: #214f4b;
+}
+
+.contest-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.contest-heading h2 {
+  margin: 0;
+  color: #16534d;
+}
+
+.contest-eyebrow {
+  margin: 0 0 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.contest-countdown {
+  flex: 0 1 9rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.85rem;
+  background: #15534d;
+  color: #fff;
+  text-align: center;
+}
+
+.contest-countdown:empty {
+  display: none;
+}
+
+.contest-countdown strong,
+.contest-countdown span {
+  display: block;
+}
+
+.contest-countdown strong {
+  font-size: 2rem;
+  line-height: 1.2;
+  color: #ffe279;
+  font-variant-numeric: tabular-nums;
+}
+
+.contest-countdown span {
+  font-size: 0.8rem;
+}
+
+.contest-schedule {
+  font-weight: 700;
+}
+
+.contest-details summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.contest-details summary::before {
+  content: "▸";
+  margin-right: 0.5rem;
+}
+
+.contest-details[open] summary::before {
+  content: "▾";
+}
+
+.contest-details {
+  overflow-wrap: anywhere;
+}
+
 .lab-grid,
 .review-grid {
   display: grid;

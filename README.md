@@ -25,6 +25,15 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
 
 ## Qué incluye
 
+- **Spelling Bee Contest**: lista especial con las 30 palabras del cartel,
+  ilustraciones nuevas, traducciones, ejemplos y audios incluidos. Abre
+  **Estudiar las 30 palabras** para consultar la lista; al volver puedes
+  practicarla con los seis juegos o el dictado. Su progreso se guarda por
+  separado de las semanas. El evento es el 23 de noviembre de 2026, de
+  8:00 a. m. a 12:00 p. m., en CEB Conference Hall. La cuenta regresiva usa
+  la fecha de Hermosillo, muestra un mensaje especial el día del evento y
+  evita números negativos después. Las ilustraciones de April y August
+  muestran el número del mes (4 y 8); sus nombres llevan mayúscula inicial.
 - **Semana 1** (26–30 de octubre), **semana 2** (2–6 de noviembre) y
   **semana 3** (9–13 de noviembre). La semana 3 se abre por defecto en la
   primera visita. El sitio recuerda la selección cuando hay almacenamiento local.
@@ -39,7 +48,9 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
   comunes** y pulsa **Practicar con 5 opciones**. En cada ronda escucha
   el nombre de la letra en Abecedario o el sonido en Fonemas comunes.
   Repítelo si lo necesitas y selecciona la letra o la combinación.
-  Verás la respuesta al elegir y tu puntuación al terminar las diez rondas.
+  Verás la respuesta al elegir y tu puntuación al terminar: **26 rondas en
+  Abecedario**, una por letra en orden aleatorio, y diez en Fonemas comunes.
+  Ambas categorías incluyen los personajes de acierto y error.
 - **Dictado manuscrito** con diez palabras de la semana en orden aleatorio.
   Pulsa **Escuchar e iniciar**. Los 30 segundos empiezan al terminar el primer
   audio. Puedes repetir la palabra hasta tres veces dentro del mismo plazo.
@@ -71,15 +82,21 @@ HTML local y los de una URL publicada pertenecen a orígenes distintos.
   contienen el código de las actividades. `js/core.js` carga el contenido
   y conserva el progreso. `js/audio.js` reproduce los clips.
 - Ejecuta `python tools/verify.py` con Python 3.10+ y Node.js en el PATH.
-  Verifica sintaxis JavaScript, rutas, semanas, audio y los dos HTML.
+  Verifica sintaxis JavaScript, rutas, semanas, concurso, audio y los dos HTML.
   Si editas el contenido o `index.html`, usa `python tools/verify.py --sync-local`
   para actualizar los archivos de la prueba local.
+- Ejecuta `node tools/test_practice.js` para comprobar la sesión completa de
+  26 letras, la cuenta regresiva y el progreso independiente del concurso.
+- `tools/contest_image_prompts.json` documenta los prompts de las 30
+  ilustraciones creadas con la herramienta integrada de generación de imágenes.
+  `tools/generate_contest_audio.ps1` permite generar los WAV del concurso
+  en Windows con una voz estadounidense instalada; conserva los clips existentes.
 
 Para comprobar la interacción, selecciona cada semana y abre su lista.
 Prueba los botones de nombre, sonido y ejemplo del laboratorio. En la práctica
 auditiva, comprueba que se activen cinco opciones después de escuchar el nombre
 de la letra (Abecedario) o el sonido (Fonemas comunes)
-y que aparezca el resultado tras diez rondas en cada categoría. En el dictado,
+y que aparezca el resultado tras 26 rondas en Abecedario y diez en Fonemas comunes. En el dictado,
 usa las tres repeticiones, deja vencer una ronda, recarga la página y comprueba
 que el trazo se conserve al pasar a la revisión.
 

@@ -19,6 +19,10 @@ LOCAL_PREFIX = (
     "const LOCAL_CONTENT = "
 )
 WEEK_3 = "bench catch chat graph kitchen phonics photo switch when whiskers".split()
+CONTEST_WORDS = (
+    "apple april arm august baby ball bedroom belt black boat book box brown butter cake "
+    "canyon car card chair circle clap cloudy cold corn crayon cut desk dog down dress"
+).split()
 
 
 def check(condition, message):
@@ -71,17 +75,25 @@ def check_weeks(manifest):
     check(manifest["schemaVersion"] == 1, "Versión de manifest inesperada")
     check(manifest["defaultWeek"] == "week-03", "La semana inicial debe ser la 3")
     entries = manifest["weeks"]
-    check([entry["id"] for entry in entries] == ["week-01", "week-02", "week-03"],
-          "El paquete requiere las tres semanas en orden")
+    check([entry["id"] for entry in entries] ==
+          ["week-01", "week-02", "week-03", "contest-2026"],
+          "El paquete requiere tres semanas y la lista del concurso")
     content = {}
     for entry in entries:
         path = entry["file"]
         week = read_json(relative_file(path))
         check(week["id"] == entry["id"] and week["title"] == entry["title"], path)
         words = [item["word"] for item in week["words"]]
-        check(len(set(words)) == len(words) == 10, f"Vocabulario repetido o incompleto: {path}")
+        expected_count = 30 if week["id"] == "contest-2026" else 10
+        check(len(set(words)) == len(words) == expected_count,
+              f"Vocabulario repetido o incompleto: {path}")
         if week["id"] == "week-03":
             check(words == WEEK_3, "Vocabulario de semana 3 inesperado")
+        if week["id"] == "contest-2026":
+            check(words == CONTEST_WORDS, "La lista debe coincidir con las 30 palabras del cartel")
+            event = week["event"]
+            check(event["date"] == "2026-11-23" and event["timeZone"] == "America/Hermosillo",
+                  "Fecha o zona horaria del concurso inesperada")
         for item in week["words"]:
             word = item["word"]
             check(re.fullmatch(r"[a-z]{2,20}", word), f"Palabra no válida: {word}")
@@ -133,7 +145,7 @@ def main():
         relative_file(path)
     for path in page.scripts:
         subprocess.run(["node", "--check", str(relative_file(path))], check=True)
-    print(f"OK: {len(page.scripts)} scripts, 3 semanas, 30 WebP, 26 letras y 14 combinaciones.")
+    print(f"OK: {len(page.scripts)} scripts, 3 semanas y concurso de 30 palabras, 26 letras y 14 combinaciones.")
     print("OK: rutas relativas, audio WAV y HTML de control sincronizado.")
 
 

@@ -21,11 +21,38 @@
         <p>Listen · Look · Learn · Play</p>
       </header>
       <section id="home" class="panel">
+        <section class="contest-card" aria-labelledby="contestTitle">
+          <div class="contest-heading">
+            <div>
+              <p class="contest-eyebrow">🐝 ¡Prepárate para el gran día!</p>
+              <h2 id="contestTitle">Spelling Bee Contest</h2>
+            </div>
+            <div id="contestCountdown" class="contest-countdown" role="status"></div>
+          </div>
+          <p id="contestSchedule" class="contest-schedule"></p>
+          <p>30 palabras para practicar. ¡Un poco cada día te acerca a tu meta!</p>
+          <button id="openContest" class="primary wide" disabled>
+            🏆 Estudiar las 30 palabras
+          </button>
+          <p class="muted">Selecciona esta lista para usar los seis juegos y el dictado.</p>
+          <details class="contest-details">
+            <summary>Información del concurso</summary>
+            <p id="contestGrades"></p>
+            <ul id="contestRules"></ul>
+            <p>En esta aplicación puedes equivocarte y seguir practicando.</p>
+            <p><strong>Recuerda:</strong> April y August llevan mayúscula inicial en inglés.
+              Sus ilustraciones muestran el número del mes: 4 y 8.</p>
+            <p id="contestNextEvent"></p>
+            <p id="contestRegistration"></p>
+            <p id="contestContact"></p>
+          </details>
+          <p id="contestStatus" class="activity-status" role="status"></p>
+        </section>
         <section class="panel" style="padding: 12px 16px">
           <label
             for="weekSelect"
             style="font-weight: 750; display: block; margin-bottom: 7px"
-            >📅 Semana de práctica</label
+            >📅 Semana o lista de estudio</label
           ><select
             id="weekSelect"
             disabled
@@ -86,7 +113,7 @@
         </p>
       </section>
       <section id="wordList" class="panel hide" aria-label="Lista de palabras">
-        <h2>📚 My Spelling Words</h2>
+        <h2 id="wordListTitle">📚 My Spelling Words</h2>
         <p class="muted">
           Toca 🔊 para escuchar la palabra o la oración en inglés.
         </p>
@@ -250,6 +277,7 @@
     <script src="js/lab.js" defer></script>
     <script src="js/handwriting.js" defer></script>
     <script src="js/dictation.js" defer></script>
+    <script src="js/contest.js" defer></script>
     <script src="js/main.js" defer></script>
   </body>
 </html>

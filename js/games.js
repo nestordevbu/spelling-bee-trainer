@@ -120,12 +120,15 @@ const img = (w, small = false) =>
   </div>`;
 function openWordList() {
   stopAudio();
+  $("wordListTitle").textContent = weekId === "contest-2026"
+    ? "🏆 Spelling Bee Contest · 30 palabras"
+    : "📚 My Spelling Words";
   $("wordListItems").innerHTML = WORDS.map(
     ({ w, es }) =>
       `<article class="word-entry">
         <img src="${WORD_IMAGES[w]}" alt="Imagen de ${w}" loading="lazy">
         <div>
-          <strong lang="en-US">${w.toUpperCase()}</strong>
+          <strong lang="en-US">${escapeHtml(WORD_LABELS[w] === w ? w.toUpperCase() : WORD_LABELS[w])}</strong>
           <span class="muted">(${escapeHtml(es)})</span>
           <p lang="en-US">${escapeHtml(WORD_EXAMPLES[w])}</p>
           <div class="word-audio-row">

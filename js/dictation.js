@@ -205,7 +205,7 @@ function dictationReviewCard(response, index) {
   const title = document.createElement("h3");
   const word = document.createElement("span");
   word.lang = "en-US";
-  word.textContent = response.word;
+  word.textContent = WORD_LABELS[response.word] ?? response.word;
   title.append(index + 1 + ". ", word);
   const drawing = document.createElement("canvas");
   drawing.className = "writing-canvas";
