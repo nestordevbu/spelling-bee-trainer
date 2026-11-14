@@ -1,5 +1,19 @@
 # Historial de versiones
 
+## 5.1 · 14 de noviembre de 2026
+
+- Conserva al pulsar **Terminé** la última transcripción visible del deletreo,
+  incluso cuando el navegador no devuelve un resultado final o retira los
+  resultados provisionales al cerrar.
+- Muestra la lectura provisional y la transcripción original para revisión;
+  no califica automáticamente una lectura dudosa.
+- Conserva las letras repetidas y los fragmentos unidos (por ejemplo, C H AT)
+  sin completar ni corregir la respuesta usando la palabra esperada.
+- Recupera la lectura si el servicio falla después de reconocer voz y espera
+  la última respuesta al detener el micrófono.
+- Se mantienen los 60 videos de estudio, las voces naturales, los seis juegos,
+  los módulos de 10 palabras, el laboratorio, el dictado y las velocidades de audio.
+
 ## 5.0 · 14 de noviembre de 2026
 
 - 60 videos de estudio con ilustraciones, palabra, traducción y deletreo en inglés,

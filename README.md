@@ -1,8 +1,8 @@
-# Spelling Bee Trainer v5.0
+# Spelling Bee Trainer v5.1
 
 ## Abrir el entrenador
 
-Extrae el ZIP en una carpeta. Abre `Spelling_Bee_Trainer_v5_0.html` con Chrome,
+Extrae el ZIP en una carpeta. Abre `Spelling_Bee_Trainer_v5_1.html` con Chrome,
 Edge, Firefox o Safari. El HTML de control y `index.html` usan los recursos de
 la misma carpeta, así que conserva `css/`, `js/`, `data/` y `assets/` junto
 a ambos. Si tu dispositivo abre el HTML en una vista previa de archivos,

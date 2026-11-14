@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#6d42c2" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Spelling Bee" />
+    <title>Spelling Bee Trainer v5.1</title>
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/activities.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <h1>🐝 Spelling Bee Trainer</h1>
+        <p>v5.1 · Listen · Look · Learn · Play</p>
+      </header>
+      <section id="home" class="panel">
+        <section class="contest-card" aria-labelledby="contestTitle">
+          <div class="contest-heading">
+            <div>
+              <p class="contest-eyebrow">🐝 ¡Prepárate para el gran día!</p>
+              <h2 id="contestTitle">Spelling Bee Contest</h2>
+            </div>
+            <div class="contest-motivation">
+              <img class="contest-mascot" src="assets/ui/contest-bee-dragon.webp"
+                alt="Dragón del concurso vestido de abeja" width="96" height="160" />
+              <div id="contestCountdown" class="contest-countdown" role="status"></div>
+            </div>
+          </div>
+          <p id="contestSchedule" class="contest-schedule"></p>
+          <p>30 palabras para practicar. ¡Un poco cada día te acerca a tu meta!</p>
+          <div class="activity-actions contest-actions">
+            <button id="openContest" class="primary" disabled>
+              📚 Estudiar las 30 palabras
+            </button>
+            <div class="contest-module-controls">
+              <label for="contestModule">Módulo de ejercicios</label>
+              <select id="contestModule" class="activity-select" disabled>
+                <option value="0">Módulo 1 · Palabras 1–10 (apple–boat)</option>
+                <option value="1">Módulo 2 · Palabras 11–20 (book–circle)</option>
+                <option value="2">Módulo 3 · Palabras 21–30 (clap–dress)</option>
+              </select>
+              <button id="openContestGames" class="secondary" disabled>
+                🏆 Juegos del concurso
+              </button>
+            </div>
+          </div>
+          <p class="muted">Elige un módulo: los seis juegos y el dictado tendrán solo sus 10 palabras.</p>
+          <details class="contest-details">
+            <summary>Información del concurso</summary>
+            <p id="contestGrades"></p>
+            <ul id="contestRules"></ul>
+            <p>En esta aplicación puedes equivocarte y seguir practicando.</p>
+            <p><strong>Recuerda:</strong> April y August llevan mayúscula inicial en inglés.
+              Sus ilustraciones muestran el número del mes: 4 y 8.</p>
+            <p id="contestNextEvent"></p>
+            <p id="contestRegistration"></p>
+            <p id="contestContact"></p>
+          </details>
+          <p id="contestStatus" class="activity-status" role="status"></p>
+        </section>
+        <section id="weeklyControls" class="panel" style="padding: 12px 16px">
+          <label
+            for="weekSelect"
+            style="font-weight: 750; display: block; margin-bottom: 7px"
+            >📅 Semana de práctica</label
+          ><select
+            id="weekSelect"
+            disabled
+            style="
+              width: 100%;
+              padding: 12px;
+              border: 2px solid #ded2f8;
+              border-radius: 12px;
+              background: #fff;
+              color: #32214d;
+              font: inherit;
+            "
+          ></select>
+          <p
+            id="weekStatus"
+            class="muted"
+            style="margin: 7px 0 0; font-size: 12px"
+          >
+            Cargando semanas publicadas...
+          </p>
+        </section>
+        <button id="backToWeeks" class="secondary wide" hidden>
+          ← Volver a la práctica semanal
+        </button>
+        <h2 id="activityTitle">🎮 Elige tu juego</h2>
+        <p class="muted">
+          Practica las palabras de tu escuela y gana premios por tus aciertos.
+        </p>
+        <div id="modes" class="modegrid"></div>
+        <div class="rewardbar">
+          <span>🥇 5 aciertos</span><span>🏆 10 aciertos</span>
+        </div>
+        <div id="overview" class="muted" style="margin-top: 16px"></div>
+        <button
+          id="openWordList"
+          disabled
+          class="primary wide"
+          style="margin-top: 16px"
+        >
+          📚 Ver lista de palabras y ejemplos
+        </button>
+        <div class="activity-actions study-actions">
+          <button id="openLab" class="secondary">
+            🎧 Laboratorio de sonidos
+          </button>
+          <button id="openDictation" class="secondary" disabled>
+            ✍️ Dictado manuscrito
+          </button>
+          <button id="openVoice" class="secondary" disabled>
+            🎤 Deletreo con voz
+          </button>
+        </div>
+        <button
+          id="resetAll"
+          disabled
+          class="secondary wide"
+          style="margin-top: 12px"
+        >
+          🔄 Reiniciar todas las actividades
+        </button>
+        <p class="muted">
+          🔊 Activa el volumen. Sube el volumen para escuchar la pronunciación
+          en inglés.
+        </p>
+      </section>
+      <section id="wordList" class="panel hide" aria-label="Lista de palabras">
+        <h2 id="wordListTitle">📚 My Spelling Words</h2>
+        <p class="muted">
+          Escucha la palabra, su deletreo o la oración en inglés a velocidad normal o lenta.
+        </p>
+        <section id="studyVideos" class="study-videos" aria-labelledby="studyVideoTitle">
+          <h3 id="studyVideoTitle" tabindex="-1">🎬 Mira, escucha y deletrea</h3>
+          <p class="muted">Pulsa «Ver video» en cualquier palabra de la lista. Al terminar, volverás a esa palabra.</p>
+          <p>Video: <strong id="studyVideoWord" lang="en-US"></strong></p>
+          <video id="studyVideo" controls playsinline preload="metadata">
+            Tu navegador no puede reproducir este video. Usa el enlace para descargarlo.
+          </video>
+          <div class="activity-actions">
+            <button id="studyVideoPrevious" class="secondary">← Anterior</button>
+            <span id="studyVideoCount" class="muted"></span>
+            <button id="studyVideoNext" class="secondary">Siguiente →</button>
+            <label for="studyVideoSpeed">Velocidad
+              <select id="studyVideoSpeed" class="activity-select">
+                <option value="1">Normal (1×)</option>
+                <option value="0.72">Lenta (0.72×)</option>
+              </select>
+            </label>
+          </div>
+          <p id="studyVideoStatus" class="activity-status" role="status"></p>
+          <p class="muted"><a id="studyVideoDownload">Descargar video MP4</a> ·
+            <a href="credits-audio.html">Créditos de voz · Uso no comercial</a></p>
+        </section>
+        <div id="wordListItems"></div>
+        <button
+          id="closeWordList"
+          class="secondary wide"
+          style="margin-top: 16px"
+        >
+          ← Volver a los juegos
+        </button>
+      </section>
+      <section id="game" class="panel hide">
+        <div class="row">
+          <span id="modeLabel" class="tag"></span
+          ><span id="count" class="muted"></span>
+        </div>
+        <div class="progress"><div id="bar" class="bar"></div></div>
+        <h2 id="prompt" style="text-align: center; margin-bottom: 6px"></h2>
+        <div id="question"></div>
+        <div class="bottom">
+          <button id="back" class="secondary">⌂ Inicio</button
+          ><button id="action" class="primary" disabled>Comprobar ✓</button>
+        </div>
+      </section>
+      <section id="voicePractice" class="panel hide" aria-labelledby="voiceTitle">
+        <div class="activity-heading">
+          <h2 id="voiceTitle">🎤 Deletreo con voz</h2>
+          <button id="voiceBack" class="secondary">← Inicio</button>
+        </div>
+        <p class="muted">Escucha la palabra y pulsa «Deletrear palabra». Di todas las letras en inglés
+          en una sola toma, con una pausa breve entre ellas. Pulsa «Terminé» y revisa el deletreo completo.</p>
+        <p class="muted">Al activar el micrófono, el navegador puede enviar tu voz
+          a su servicio de reconocimiento y necesitar Internet. Esta aplicación no
+          guarda grabaciones. La práctica evalúa las letras confirmadas; no califica tu acento.</p>
+        <p id="voiceSupport" class="activity-status" role="status"></p>
+        <p class="muted">Para la primera prueba, abre este sitio directamente en
+          Google Chrome. Si estás usando el navegador dentro de una aplicación y
+          falla el servicio de voz, copia la dirección y ábrela en Chrome por separado.</p>
+        <div id="voiceRound">
+          <p id="voiceProgress" class="tag"></p>
+          <div class="activity-actions">
+            <button id="voicePlay" class="secondary">🔊 Palabra · Normal</button>
+            <button id="voicePlaySlow" class="secondary">🐢 Palabra · Lenta</button>
+          </div>
+          <p id="voiceLetters" class="voice-letters" aria-label="Letras confirmadas" lang="en-US"></p>
+          <p id="voiceTranscript" class="muted" lang="en-US"></p>
+          <p id="voiceStatus" class="activity-status" role="status" aria-live="polite"></p>
+          <div class="activity-actions">
+            <button id="voiceRecord" class="primary">🎤 Deletrear palabra</button>
+            <button id="voiceStop" class="secondary" hidden>Terminé</button>
+          </div>
+          <div id="voiceCandidate" class="voice-candidate" hidden>
+            <p id="voiceHeard"></p>
+            <div class="activity-actions">
+              <button id="voiceRetry" class="secondary">🎤 Repetir deletreo completo</button>
+            </div>
+          </div>
+          <div class="activity-actions voice-edit-controls">
+            <button id="voiceUndo" class="secondary">Quitar última letra</button>
+            <button id="voiceClear" class="secondary">Empezar esta palabra otra vez</button>
+            <button id="voiceCheck" class="primary">Comprobar deletreo</button>
+          </div>
+          <p id="voiceFeedback" class="activity-status" role="status" aria-live="polite"></p>
+          <button id="voiceNext" class="primary" hidden>Siguiente palabra →</button>
+        </div>
+        <div id="voiceSummary" hidden>
+          <p id="voiceScore" class="grade-summary" role="status" tabindex="-1"></p>
+          <button id="voiceRestart" class="primary">Practicar otra vez</button>
+        </div>
+      </section>
+      <section id="soundLab" class="panel hide" aria-labelledby="labTitle">
+        <div class="activity-heading">
+          <h2 id="labTitle">Laboratorio de sonidos</h2>
+          <button id="labBack" class="secondary">← Inicio</button>
+        </div>
+        <p class="muted">
+          Escucha el nombre de la letra y cómo suena en inglés estadounidense.
+        </p>
+        <div class="activity-actions">
+          <button id="labLetters" class="secondary" aria-pressed="true">
+            Abecedario
+          </button>
+          <button id="labPatterns" class="secondary" aria-pressed="false">
+            Fonemas comunes
+          </button>
+          <button id="labPracticeToggle" class="primary" disabled>
+            Practicar con 5 opciones
+          </button>
+          <label class="playback-speed" for="labSpeed">Velocidad de reproducción
+            <select id="labSpeed" class="activity-select">
+              <option value="1">Normal (1×)</option>
+              <option value="0.72">Lenta (0.72×)</option>
+            </select>
+          </label>
+        </div>
+        <p id="labStatus" class="muted activity-status" role="status"></p>
+        <div id="labCards" class="lab-grid"></div>
+        <section
+          id="labPractice"
+          class="lab-card lab-practice"
+          aria-labelledby="labPracticeTitle"
+          hidden
+        >
+          <div class="lab-practice-heading">
+            <div class="lab-practice-controls">
+              <h3 id="labPracticeTitle" tabindex="-1">Escucha y elige</h3>
+              <p id="labRound" class="muted"></p>
+              <button id="labListen" class="primary">🔊 Escuchar nombre</button>
+            </div>
+            <div class="lab-mascot-slot">
+              <img id="labMascot" class="lab-mascot" alt="" hidden />
+            </div>
+          </div>
+          <div
+            id="labOptions"
+            class="choices lab-options"
+            role="group"
+            aria-label="Opciones de respuesta"
+          ></div>
+          <p id="labFeedback" class="activity-status" role="status"></p>
+          <button id="labNext" class="secondary" hidden>Siguiente →</button>
+        </section>
+      </section>
+
+      <section
+        id="dictation"
+        class="panel hide"
+        aria-labelledby="dictationTitle"
+      >
+        <div class="activity-heading">
+          <h2 id="dictationTitle">Dictado manuscrito</h2>
+          <button id="dictationBack" class="secondary">← Inicio</button>
+        </div>
+        <div id="dictationPractice">
+          <div class="dictation-progress">
+            <strong id="dictationCount"></strong>
+            <span id="dictationClock" role="timer" aria-label="Tiempo restante"
+              >00:30</span
+            >
+          </div>
+          <p id="dictationStatus" class="activity-status" role="status">
+            Escucha la palabra para iniciar el tiempo.
+          </p>
+          <canvas
+            id="writingCanvas"
+            class="writing-canvas"
+            width="1000"
+            height="300"
+            role="img"
+            aria-label="Área de escritura con dedo, lápiz o ratón"
+          >
+            Tu navegador necesita compatibilidad con canvas para capturar
+            escritura.
+          </canvas>
+          <label class="playback-speed" for="dictationSpeed">Velocidad de reproducción
+            <select id="dictationSpeed" class="activity-select">
+              <option value="1">Normal (1×)</option>
+              <option value="0.72">Lenta (0.72×)</option>
+            </select>
+          </label>
+          <div class="activity-actions dictation-controls">
+            <button id="dictationListen" class="primary">
+              🔊 Escuchar e iniciar
+            </button>
+            <button id="dictationRepeat" class="secondary" hidden>
+              🔊 Repetir
+            </button>
+            <button id="dictationClear" class="secondary" disabled>
+              Borrar trazos
+            </button>
+            <button id="dictationSubmit" class="primary" hidden>
+              Guardar respuesta
+            </button>
+            <button id="dictationNext" class="primary" hidden>
+              Siguiente palabra →
+            </button>
+          </div>
+        </div>
+        <div id="dictationReview" hidden>
+          <h3>Revisión de un adulto</h3>
+          <p class="muted">
+            Compara cada palabra dictada con el trazo y elige una calificación.
+          </p>
+          <p
+            id="dictationGrade"
+            class="grade-summary"
+            role="status"
+            tabindex="-1"
+          ></p>
+          <div id="dictationResponses" class="review-grid"></div>
+          <button id="dictationRestart" class="secondary">
+            Empezar otro dictado
+          </button>
+        </div>
+        <p id="dictationStorage" class="activity-status" role="status"></p>
+      </section>
+      <div class="footer">Hecho para practicar con alegría 💜.</div>
+    </main>
+    <footer class="creator-footer" aria-label="Créditos de creación">
+      <picture
+        ><source
+          media="(max-width: 600px)"
+          srcset="assets/ui/credits-mobile.webp" />
+        <img
+          alt="NestorDevBU: Cybersecurity, Forensic, eFI, Developing, IA. Logotipo con código Matrix y elementos forenses"
+          src="assets/ui/credits-desktop.webp"
+          loading="lazy"
+      /></picture>
+      <p>Developed by <strong>NestorDevBU (Nxt)</strong></p>
+      <p><a href="credits-audio.html">Créditos de las voces del abecedario</a></p>
+    </footer>
+    <script src="data/local-content.js" defer></script>
+    <script src="js/core.js" defer></script>
+    <script src="js/audio.js" defer></script>
+    <script src="js/study-videos.js" defer></script>
+    <script src="js/games.js" defer></script>
+    <script src="js/lab.js" defer></script>
+    <script src="js/handwriting.js" defer></script>
+    <script src="js/dictation.js" defer></script>
+    <script src="js/contest.js" defer></script>
+    <script src="js/voice.js" defer></script>
+    <script src="js/main.js" defer></script>
+  </body>
+</html>

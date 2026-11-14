@@ -10,7 +10,8 @@ from urllib.parse import urlsplit
 import wave
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTROL = ROOT / "Spelling_Bee_Trainer_v5_0.html"
+CONTROL = ROOT / "Spelling_Bee_Trainer_v5_1.html"
+PREVIOUS_CONTROL = ROOT / "Spelling_Bee_Trainer_v5_0.html"
 LEGACY_CONTROL = ROOT / "Spelling_Bee_Trainer_v4_5.html"
 INDEX = ROOT / "index.html"
 DATA = ROOT / "data"
@@ -145,11 +146,15 @@ def main():
         LOCAL.write_text(offline, encoding="utf-8")
         CONTROL.write_bytes(INDEX.read_bytes())
         LEGACY_CONTROL.write_bytes(INDEX.read_bytes())
+        PREVIOUS_CONTROL.write_bytes(INDEX.read_bytes())
     local = LOCAL.read_text(encoding="utf-8").strip()
     # Remove the declaration and parse its JSON payload without running JavaScript.
     payload = local.split("const LOCAL_CONTENT = ", 1)[1].removesuffix(";")
     check(json.loads(payload) == content, "Ejecuta verify.py --sync-local para copiar los JSON")
     check(CONTROL.read_bytes() == INDEX.read_bytes(), "El HTML de control difiere de index.html")
+    check(PREVIOUS_CONTROL.read_bytes() == INDEX.read_bytes(), "El acceso v5.0 difiere de index.html")
+    check(LEGACY_CONTROL.read_bytes() == INDEX.read_bytes(), "El acceso v4.5 difiere de index.html")
+    check("Spelling Bee Trainer v5.1" in INDEX.read_text(encoding="utf-8"), "Falta la versión 5.1 en el título")
     page = Page()
     page.feed(INDEX.read_text(encoding="utf-8"))
     for path in sorted(page.paths):
