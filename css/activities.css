@@ -353,3 +353,28 @@
     flex: 1 1 auto;
   }
 }
+
+.voice-letters {
+  min-height: 3.5rem;
+  padding: 0.8rem;
+  border: 2px dashed #d8cbed;
+  border-radius: 0.8rem;
+  font-size: 1.6rem;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.voice-candidate {
+  margin: 1rem 0;
+  padding: 0.8rem;
+  background: #f2ebff;
+  border-radius: 0.8rem;
+}
+
+.voice-edit-controls {
+  margin-top: 1rem;
+}
+
+#voiceRecord[aria-pressed="true"] {
+  background: #a32151;
+}

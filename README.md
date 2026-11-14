@@ -25,6 +25,21 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
 
 ## Qué incluye
 
+- **Deletreo con voz (piloto guiado)**: abre el botón junto al dictado, escucha
+  la palabra y pulsa **Decir una letra**. Di el nombre de una letra en inglés,
+  confirma lo que entendió el navegador y repite para cada letra, también las
+  repetidas. **Comprobar deletreo** compara exactamente las letras confirmadas.
+  Puedes rechazar una lectura o quitar la última letra antes de comprobar.
+  Lecturas ambiguas, silencios y errores del servicio no puntúan. La práctica
+  utiliza las diez palabras de la semana o del módulo del concurso, y muestra
+  un resumen al terminar. La sesión no se guarda al salir y volver a abrirla.
+  No evalúa acento ni calidad de pronunciación.
+- La voz requiere HTTPS (o localhost para desarrollo), permiso de micrófono
+  y un navegador con `SpeechRecognition` o `webkitSpeechRecognition`.
+  La aplicación no guarda audio ni necesita claves de servicios. El navegador
+  puede procesar la voz en un servicio remoto y necesitar Internet; la
+  disponibilidad depende del navegador y del dispositivo.
+  [Compatibilidad y procesamiento de voz](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition).
 - **Velocidad normal y lenta en todos los audios**: las listas de estudio
   ofrecen ambas opciones para palabras, deletreos y oraciones. Los seis juegos
   y sus respuestas también permiten escuchar a velocidad normal (1×) o lenta
@@ -122,3 +137,7 @@ y que aparezca el resultado tras 26 rondas en Abecedario y diez en Fonemas comun
 usa las tres repeticiones, deja vencer una ronda, recarga la página y comprueba
 que el trazo se conserve al pasar a la revisión.
 
+
+Pruebas de voz: `node tools/test_voice.js` simula reconocimiento, confirmación,
+letras repetidas, errores y cancelación. La precisión acústica debe validarse
+con el alumno y su dispositivo; el piloto no guarda audio ni califica acento.

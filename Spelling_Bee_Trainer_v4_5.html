@@ -118,6 +118,9 @@
           <button id="openDictation" class="secondary" disabled>
             ✍️ Dictado manuscrito
           </button>
+          <button id="openVoice" class="secondary" disabled>
+            🎤 Deletreo con voz
+          </button>
         </div>
         <button
           id="resetAll"
@@ -157,6 +160,49 @@
         <div class="bottom">
           <button id="back" class="secondary">⌂ Inicio</button
           ><button id="action" class="primary" disabled>Comprobar ✓</button>
+        </div>
+      </section>
+      <section id="voicePractice" class="panel hide" aria-labelledby="voiceTitle">
+        <div class="activity-heading">
+          <h2 id="voiceTitle">🎤 Deletreo con voz</h2>
+          <button id="voiceBack" class="secondary">← Inicio</button>
+        </div>
+        <p class="muted">Práctica guiada: escucha la palabra, di una letra en inglés
+          y confirma si se entendió bien. Repite para cada letra, incluso las repetidas.</p>
+        <p class="muted">Al activar el micrófono, el navegador puede enviar tu voz
+          a su servicio de reconocimiento y necesitar Internet. Esta aplicación no
+          guarda grabaciones. La práctica evalúa las letras confirmadas; no califica tu acento.</p>
+        <p id="voiceSupport" class="activity-status" role="status"></p>
+        <div id="voiceRound">
+          <p id="voiceProgress" class="tag"></p>
+          <div class="activity-actions">
+            <button id="voicePlay" class="secondary">🔊 Palabra · Normal</button>
+            <button id="voicePlaySlow" class="secondary">🐢 Palabra · Lenta</button>
+          </div>
+          <p id="voiceLetters" class="voice-letters" aria-label="Letras confirmadas" lang="en-US"></p>
+          <p id="voiceStatus" class="activity-status" role="status" aria-live="polite"></p>
+          <div class="activity-actions">
+            <button id="voiceRecord" class="primary">🎤 Decir una letra</button>
+            <button id="voiceStop" class="secondary" hidden>Terminé de decir la letra</button>
+          </div>
+          <div id="voiceCandidate" class="voice-candidate" hidden>
+            <p id="voiceHeard"></p>
+            <div class="activity-actions">
+              <button id="voiceAccept" class="primary">Sí, usar esta letra</button>
+              <button id="voiceRetry" class="secondary">No, repetir</button>
+            </div>
+          </div>
+          <div class="activity-actions voice-edit-controls">
+            <button id="voiceUndo" class="secondary">Quitar última letra</button>
+            <button id="voiceClear" class="secondary">Empezar esta palabra otra vez</button>
+            <button id="voiceCheck" class="primary">Comprobar deletreo</button>
+          </div>
+          <p id="voiceFeedback" class="activity-status" role="status" aria-live="polite"></p>
+          <button id="voiceNext" class="primary" hidden>Siguiente palabra →</button>
+        </div>
+        <div id="voiceSummary" hidden>
+          <p id="voiceScore" class="grade-summary" role="status" tabindex="-1"></p>
+          <button id="voiceRestart" class="primary">Practicar otra vez</button>
         </div>
       </section>
       <section id="soundLab" class="panel hide" aria-labelledby="labTitle">
@@ -307,6 +353,7 @@
     <script src="js/handwriting.js" defer></script>
     <script src="js/dictation.js" defer></script>
     <script src="js/contest.js" defer></script>
+    <script src="js/voice.js" defer></script>
     <script src="js/main.js" defer></script>
   </body>
 </html>

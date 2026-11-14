@@ -101,7 +101,8 @@ async function readContent(path) {
 }
 
 function setScreen(id) {
-  const screens = ["home", "game", "wordList", "soundLab", "dictation"];
+  if (id !== "voicePractice" && typeof stopVoicePractice === "function") stopVoicePractice();
+  const screens = ["home", "game", "wordList", "soundLab", "dictation", "voicePractice"];
   for (const screen of screens) {
     $(screen).classList.toggle("hide", screen !== id);
   }
@@ -144,6 +145,7 @@ function setWeekLoading(loading) {
   $("weekSelect").disabled = loading;
   $("openWordList").disabled = loading || !weekId;
   $("openDictation").disabled = loading || !weekId;
+  $("openVoice").disabled = loading || !weekId;
   $("openContest").disabled = loading;
   $("openContestGames").disabled = loading;
   $("contestModule").disabled = loading;
