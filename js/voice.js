@@ -49,7 +49,7 @@ const VOICE_ERRORS = {
   "not-allowed": "No se permitió el micrófono. Revisa el permiso del sitio y vuelve a intentarlo.",
   "service-not-allowed": "El navegador no permite su servicio de voz. Prueba otro navegador compatible.",
   "audio-capture": "No se encontró un micrófono disponible. Revisa la conexión y vuelve a intentarlo.",
-  network: "No se pudo conectar con el servicio de voz. Revisa Internet y vuelve a intentarlo.",
+  network: "El navegador no pudo conectar con su servicio de voz. Esto también puede ocurrir dentro de una aplicación aunque tengas Internet. Copia la dirección del sitio y ábrela en Google Chrome, fuera de la aplicación. Si allí persiste, revisa la conexión y vuelve a intentarlo.",
   "language-not-supported": "El servicio de este navegador no admite reconocimiento en inglés estadounidense.",
   "no-speech": "No escuché una letra. Acércate al micrófono y repite, sin penalización.",
   aborted: "Escucha cancelada. Puedes volver a intentarlo.",

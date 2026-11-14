@@ -143,6 +143,10 @@ async function testUncertainAndErrors() {
     const lateEnd = capture.onend;
     capture.onerror({error});
     lateEnd();
+    if (error === "network") {
+      assert.match(get("voiceStatus").textContent, /aunque tengas Internet/);
+      assert.match(get("voiceStatus").textContent, /Google Chrome, fuera de la aplicación/);
+    }
     assert.equal(run("voiceCapture"), null);
     assert.equal(run("voicePending"), null);
     assert.equal(run("voiceSession.results.length"), 0);
