@@ -14,6 +14,38 @@ let weekLoading = true;
 let completed = {};
 let weekCatalog = [];
 let contestStudy;
+let contestModule = 0;
+const CONTEST_MODULE_SIZE = 10;
+const CONTEST_MODULE_KEY = "spelling_bee_contest_module_v1";
+
+function practiceWords() {
+  return weekId === "contest-2026"
+    ? WORDS.slice(contestModule * CONTEST_MODULE_SIZE, (contestModule + 1) * CONTEST_MODULE_SIZE)
+    : WORDS;
+}
+
+function practiceId() {
+  return weekId === "contest-2026" ? weekId + "-module-" + (contestModule + 1) : weekId;
+}
+
+function loadPracticeProgress() {
+  const saved = readStorage(progressKey(), {});
+  completed = saved && typeof saved === "object" ? saved : {};
+  $("activityTitle").textContent = weekId === "contest-2026"
+    ? "🏆 Juegos del concurso · Módulo " + (contestModule + 1) + " · 10 palabras"
+    : "🎮 Elige tu juego";
+  updateHome();
+}
+
+function chooseContestModule(value) {
+  const index = Number(value);
+  if (!Number.isInteger(index) || index < 0 || index > 2) return;
+  stopAudio();
+  contestModule = index;
+  $("contestModule").value = String(index);
+  writeStorage(CONTEST_MODULE_KEY, index);
+  if (weekId === "contest-2026") loadPracticeProgress();
+}
 
 function readStorage(key, fallback) {
   try {
@@ -34,7 +66,7 @@ function writeStorage(key, value) {
 
 // Keep the v4 keys so previous game results remain available on the same origin.
 function progressKey() {
-  return "spelling_bee_ceb_progress_v4_" + weekId;
+  return "spelling_bee_ceb_progress_v4_" + practiceId();
 }
 
 function saveProgress() {
@@ -114,6 +146,7 @@ function setWeekLoading(loading) {
   $("openDictation").disabled = loading || !weekId;
   $("openContest").disabled = loading;
   $("openContestGames").disabled = loading;
+  $("contestModule").disabled = loading;
   $("backToWeeks").disabled = loading;
   $("modes").inert = loading;
   $("resetAll").disabled = loading || Object.keys(completed).length === 0;
@@ -147,14 +180,8 @@ async function chooseWeek(id) {
     }
     $("weeklyControls").hidden = isContest;
     $("backToWeeks").hidden = !isContest;
-    $("activityTitle").textContent = isContest
-      ? "🏆 Juegos del concurso · 30 palabras"
-      : "🎮 Elige tu juego";
-    const savedProgress = readStorage(progressKey(), {});
-    completed =
-      savedProgress && typeof savedProgress === "object" ? savedProgress : {};
+    loadPracticeProgress();
     $("weekStatus").textContent = WORDS.length + " palabras · " + item.title;
-    updateHome();
     return true;
   } catch (error) {
     $("weekStatus").textContent =
@@ -167,6 +194,11 @@ async function chooseWeek(id) {
 }
 
 async function initWeeks() {
+  const savedModule = readStorage(CONTEST_MODULE_KEY, 0);
+  contestModule = Number.isInteger(savedModule) && savedModule >= 0 && savedModule < 3
+    ? savedModule : 0;
+  $("contestModule").value = String(contestModule);
+  $("contestModule").onchange = () => chooseContestModule($("contestModule").value);
   try {
     const manifest = await readContent("data/manifest.json");
     if (manifest.schemaVersion !== 1 || !Array.isArray(manifest.weeks)) {

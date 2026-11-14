@@ -69,7 +69,7 @@ function stopLabAudio() {
 async function playLabClip(clip) {
   const request = ++labPlayback;
   $("labStatus").textContent = "";
-  const rate = $("labSlow").checked ? 0.75 : 1;
+  const rate = Number($("labSpeed").value) || 1;
   const played = await playClip("assets/audio/lab/" + clip + ".wav", rate);
   if (request !== labPlayback) return false;
   if (!played && !document.hidden) {

@@ -25,17 +25,17 @@ function environment(extra = {}) {
     $: get,
     document: { getElementById: get, createElement: element, addEventListener() {} },
     window: { addEventListener() {} },
-    setInterval() {}, Intl, Date, ...extra,
+    setInterval() {}, clearInterval() {}, Intl, Date, ...extra,
   });
   return { elements, context };
 }
 
 async function testAlphabet() {
-  let clip;
+  let clip, rate;
   const { context, elements } = environment({
     catalog: json("data/phonics.json"),
     shuffle: (items) => [...items].reverse(), stopAudio() {},
-    playClip: async (file) => { clip = file; return true; },
+    playClip: async (file, speed) => { clip = file; rate = speed; return true; },
     MASCOT_SUCCESS: "success.webp", MASCOT_TRY: "try.webp",
   });
   vm.runInContext(read("js/lab.js"), context);
@@ -51,6 +51,11 @@ async function testAlphabet() {
     assert(buttons.every((button) => button.disabled));
     await vm.runInContext("listenLabRound()", context);
     assert.equal(clip, `assets/audio/lab/name-${id}.wav`);
+    assert.equal(rate, 1);
+    elements.get("labSpeed").value = "0.72";
+    await vm.runInContext("listenLabRound()", context);
+    assert.equal(rate, 0.72);
+    elements.get("labSpeed").value = "1";
     assert(buttons.every((button) => !button.disabled));
     vm.runInContext("answerLabRound(labQuiz.round.target); advanceLabQuiz();", context);
   }
@@ -105,17 +110,97 @@ async function testStudyLists() {
   assert.equal(elements.get("weeklyControls").hidden, true);
   assert.equal(elements.get("backToWeeks").hidden, false);
   assert.equal(vm.runInContext("WORDS.length", context), 30);
-  assert.equal(vm.runInContext("progressKey()", context), "spelling_bee_ceb_progress_v4_contest-2026");
+  assert.equal(vm.runInContext("progressKey()", context), "spelling_bee_ceb_progress_v4_contest-2026-module-1");
   context.unlockAudio = () => {};
   vm.runInContext(read("js/games.js"), context);
   vm.runInContext("setScreen = () => {}; render = () => {};", context);
   for (let mode = 0; mode < 6; mode++) {
     vm.runInContext(`start(${mode})`, context);
-    assert.equal(vm.runInContext("deck.length", context), 30);
+    assert.equal(vm.runInContext("deck.length", context), 10);
   }
   context.createWritingSurface = () => ({ stop() {}, redraw() {} });
   vm.runInContext(read("js/dictation.js"), context);
-  assert.equal(vm.runInContext("newDictation().deck.length", context), 30);
+  assert.equal(vm.runInContext("newDictation().deck.length", context), 10);
+  const allModuleWords = new Set();
+  for (let module = 0; module < 3; module++) {
+    vm.runInContext(`chooseContestModule(${module})`, context);
+    assert.equal(vm.runInContext("Object.keys(completed).length", context), 0);
+    const words = Array.from(vm.runInContext("practiceWords().map(({w}) => w)", context));
+    const expected = local["data/contest-2026.json"].words.slice(module * 10, (module + 1) * 10)
+      .map(({word}) => word);
+    assert.deepEqual(words, expected);
+    for (const word of words) {
+      assert(!allModuleWords.has(word));
+      allModuleWords.add(word);
+      context.targetWord = word;
+      assert(Array.from(vm.runInContext("otherWords(targetWord, 3)", context))
+        .every((candidate) => words.includes(candidate) && candidate !== word));
+    }
+    for (let mode = 0; mode < 6; mode++) {
+      vm.runInContext(`start(${mode})`, context);
+      const deck = Array.from(vm.runInContext("deck", context));
+      assert.equal(deck.length, 10);
+      assert.equal(new Set(deck).size, 10);
+      assert(deck.every((word) => words.includes(word)));
+    }
+    const dictationWords = Array.from(vm.runInContext("newDictation().deck", context));
+    assert.equal(dictationWords.length, 10);
+    assert(dictationWords.every((word) => words.includes(word)));
+    vm.runInContext("completed = {0: {score: 10, total: 10}}; saveProgress();", context);
+    vm.runInContext("dictation = newDictation(); saveDictation();", context);
+    assert(storage.has(`spelling_bee_dictation_v45_contest-2026-module-${module + 1}`));
+  }
+  assert.equal(allModuleWords.size, 30);
+  vm.runInContext("chooseContestModule(0)", context);
+  assert.equal(vm.runInContext("completed[0].score", context), 10);
+  const originalWeek = vm.runInContext("newDictation().week", context);
+  vm.runInContext("dictation = newDictation(); dictation.strokes = [[{x: 0.3, y: 0.4}]]; saveDictation();", context);
+  vm.runInContext("chooseContestModule(1); showDictation();", context);
+  assert.notEqual(vm.runInContext("dictation.week", context), originalWeek);
+  assert.equal(vm.runInContext("dictation.strokes.length", context), 0);
+  vm.runInContext("chooseContestModule(0); showDictation();", context);
+  assert.equal(vm.runInContext("dictation.week", context), originalWeek);
+  assert.equal(vm.runInContext("dictation.strokes[0][0].x", context), 0.3);
+  vm.runInContext("chooseContestModule(7)", context);
+  assert.equal(vm.runInContext("contestModule", context), 0);
+  vm.runInContext("chooseContestModule(2)", context);
+  await vm.runInContext("initWeeks()", context);
+  assert.equal(vm.runInContext("contestModule", context), 2);
+  assert.equal(elements.get("contestModule").value, "2");
+  await vm.runInContext("chooseWeek('contest-2026')", context);
+  assert.equal(vm.runInContext("completed[0].score", context), 10);
+  vm.runInContext("chooseContestModule(0)", context);
+  const calls = [];
+  context.playWord = async (word, rate) => { calls.push([word, rate]); return true; };
+  context.playSpelling = context.playWord;
+  context.playClip = context.playWord;
+  vm.runInContext("openWordList()", context);
+  const markup = elements.get("wordListItems").innerHTML;
+  assert.equal((markup.match(/data-rate="1"/g) || []).length, 90);
+  assert.equal((markup.match(/data-rate="0.72"/g) || []).length, 90);
+  for (const action of ["sayWord", "spellWord", "sayExample"]) {
+    for (const rate of [1, 0.72]) {
+      elements.get("wordListItems").onclick({ target: { closest: () => ({
+        dataset: { [action]: "apple", rate: String(rate) },
+      }) } });
+      assert.equal(calls.at(-1)[1], rate);
+    }
+  }
+  vm.runInContext("dictation = newDictation()", context);
+  context.$("dictationSpeed").value = "0.72";
+  await vm.runInContext("playDictationWord(false)", context);
+  assert.equal(calls.at(-1)[1], 0.72);
+  const deadline = vm.runInContext("dictation.deadline", context);
+  for (const rate of [1, 0.72, 1]) {
+    context.$("dictationSpeed").value = String(rate);
+    await vm.runInContext("playDictationWord(true)", context);
+    assert.equal(calls.at(-1)[1], rate);
+    assert.equal(vm.runInContext("dictation.deadline", context), deadline);
+  }
+  const count = calls.length;
+  await vm.runInContext("playDictationWord(true)", context);
+  assert.equal(calls.length, count);
+  assert.equal(vm.runInContext("dictation.repeats", context), 3);
   await vm.runInContext("chooseWeek('week-03')", context);
   assert.equal(vm.runInContext("WORDS.length", context), 10);
   assert.equal(vm.runInContext("completed[0].score", context), 9);
@@ -141,10 +226,16 @@ async function testSpellingPlayback() {
   vm.runInContext(read("js/audio.js"), context);
   const played = vm.runInContext("playSpelling('apple')", context);
   assert.equal(clips[0].path, "assets/audio/spelling/apple.wav");
-  assert.equal(clips[0].playbackRate, 0.9);
+  assert.equal(clips[0].playbackRate, 1);
+  assert.equal(clips[0].preservesPitch, true);
   assert.equal(timeout, 45000);
   clips[0].onended();
   assert.equal(await played, true);
+  const slow = vm.runInContext("playSpelling('apple', 0.72)", context);
+  assert.equal(clips[1].playbackRate, 0.72);
+  assert.equal(timeout, 45000 / 0.72);
+  clips[1].onended();
+  assert.equal(await slow, true);
   const interrupted = vm.runInContext("playSpelling('bedroom')", context);
   vm.runInContext("stopAudio()", context);
   assert.equal(await interrupted, false);
@@ -155,5 +246,5 @@ async function testSpellingPlayback() {
   testCountdown();
   await testStudyLists();
   await testSpellingPlayback();
-  console.log("OK: abecedario, fechas, selector semanal, 6 juegos y dictado de 30 palabras, deletreo.");
+  console.log("OK: abecedario, fechas, selector semanal, 3 módulos de 10 palabras, progreso y dictado independientes, 6 juegos y velocidades de audio.");
 })().catch((error) => { console.error(error); process.exitCode = 1; });

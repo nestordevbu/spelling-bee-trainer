@@ -51,7 +51,7 @@ function updateHome() {
 function reportHtml() {
   const entries = Object.entries(completed),
     stats = {};
-  WORDS.forEach((x) => (stats[x.w] = { tries: 0, errors: 0 }));
+  practiceWords().forEach((x) => (stats[x.w] = { tries: 0, errors: 0 }));
   entries.forEach(([k, r]) =>
     (r.answers || []).forEach((a) => {
       if (stats[a.word]) {
@@ -131,17 +131,18 @@ function openWordList() {
           <strong lang="en-US">${escapeHtml(WORD_LABELS[w] === w ? w.toUpperCase() : WORD_LABELS[w])}</strong>
           <span class="muted">(${escapeHtml(es)})</span>
           <p lang="en-US">${escapeHtml(WORD_EXAMPLES[w])}</p>
-          <div class="word-audio-row">
-            <button class="secondary" data-say-word="${w}" aria-label="Escuchar ${w}">
-              🔊 Palabra
-            </button>
-            <button class="secondary" data-spell-word="${w}" aria-label="Escuchar deletreo de ${w}">
-              🔤 Deletreo
-            </button>
-            <button class="secondary" data-say-example="${w}" aria-label="Escuchar oración de ${w}">
-              ▶ Oración
-            </button>
-          </div>
+          ${[
+            ["say-word", "🔊 Palabra"],
+            ["spell-word", "🔤 Deletreo"],
+            ["say-example", "▶ Oración"],
+          ].map(([action, label]) => `
+            <div class="word-audio-row" role="group" aria-label="${label} de ${w}">
+              <span>${label}</span>
+              <button class="secondary" data-${action}="${w}" data-rate="1"
+                aria-label="${label} de ${w}, velocidad normal">Normal</button>
+              <button class="secondary" data-${action}="${w}" data-rate="0.72"
+                aria-label="${label} de ${w}, velocidad lenta">🐢 Lenta</button>
+            </div>`).join("")}
         </div>
       </article>`,
   ).join("");
@@ -159,10 +160,11 @@ $("wordListItems").onclick = (e) => {
   const b = e.target.closest("button");
   if (!b) return;
   unlockAudio();
-  if (b.dataset.sayWord) playWord(b.dataset.sayWord, 0.9);
-  else if (b.dataset.spellWord) playSpelling(b.dataset.spellWord);
+  const rate = Number(b.dataset.rate) || 1;
+  if (b.dataset.sayWord) playWord(b.dataset.sayWord, rate);
+  else if (b.dataset.spellWord) playSpelling(b.dataset.spellWord, rate);
   else if (b.dataset.sayExample)
-    playClip("assets/audio/sentences/" + b.dataset.sayExample + ".wav", 0.92);
+    playClip("assets/audio/sentences/" + b.dataset.sayExample + ".wav", rate);
 };
 
 $("modes").onclick = (e) => {
@@ -179,7 +181,7 @@ function start(m, only = null) {
   epoch++;
   stopAudio();
   mode = m;
-  deck = shuffle(only || WORDS.map((x) => x.w));
+  deck = shuffle(only || practiceWords().map((x) => x.w));
   pos = 0;
   correctCount = 0;
   misses = [];
@@ -201,11 +203,11 @@ function makeLetters(w, n) {
   return shuffle(arr.map((ch, i) => ({ id: i, ch })));
 }
 function otherWords(w, n) {
-  return shuffle(WORDS.filter((x) => x.w !== w).map((x) => x.w)).slice(0, n);
+  return shuffle(practiceWords().filter((x) => x.w !== w).map((x) => x.w)).slice(0, n);
 }
 
 const playButton = (word) => `
-  <button class="primary wide sound play-word" data-play="${word}">🔊 Play word</button>
+  <button class="primary wide sound play-word" data-play="${word}">🔊 Escuchar normal</button>
   ${slowButton(word)}`;
 
 const letterBoard = (hint) => `
@@ -235,7 +237,7 @@ function render() {
           `<button class="choice" data-word="${word}">${word.toUpperCase()}</button>`,
       )
       .join("");
-    html = img(w) + slowButton(w) + `<div class="choices">${choices}</div>`;
+    html = img(w) + playButton(w) + `<div class="choices">${choices}</div>`;
   }
   if (mode === 1 || mode === 2) {
     $("prompt").textContent =
@@ -243,7 +245,7 @@ function render() {
     letters = makeLetters(w, mode === 1 ? 6 : w.length);
     html =
       img(w) +
-      slowButton(w) +
+      playButton(w) +
       letterBoard(
         "Toca las letras para formar la palabra. Toca una letra colocada para quitarla.",
       );
@@ -254,7 +256,8 @@ function render() {
       .map(
         (word, i) => `
         <div class="audiochoice" data-choice="${word}">
-          <button class="secondary sound" data-play="${word}">🔊 Escuchar ${i + 1}</button>
+          <button class="secondary sound" data-play="${word}">🔊 Opción ${i + 1} · Normal</button>
+          <button class="secondary sound slow-repeat" data-play="${word}">🐢 Opción ${i + 1} · Lenta</button>
           <button class="secondary pick" data-select="${word}">Elegir</button>
         </div>`,
       )
@@ -296,7 +299,7 @@ function render() {
         current() === w &&
         !$("game").classList.contains("hide")
       ) {
-        playWord(w, 0.8);
+        playWord(w);
       }
     }, 1000);
   }
@@ -328,7 +331,7 @@ $("question").addEventListener("click", (e) => {
   if (b.dataset.play) {
     epoch++;
     unlockAudio();
-    playWord(b.dataset.play, b.classList.contains("slow-repeat") ? 0.72 : 0.9);
+    playWord(b.dataset.play, b.classList.contains("slow-repeat") ? 0.72 : 1);
     return;
   }
   if (answered) return;
@@ -438,13 +441,9 @@ function check() {
         alt="${mascotAlt}" src="${ok ? MASCOT_SUCCESS : MASCOT_TRY}">
       <strong>${ok ? phrase : "Nice try! Keep learning!"}</strong>
       ${comparison}
-      <button class="secondary sound" id="repeat">🐢 🔊 Escuchar despacio</button>
+      ${playButton(w)}
       ${reward}
     </div>`;
-  $("repeat").onclick = () => {
-    unlockAudio();
-    playWord(w, 0.72);
-  };
   chime(ok, !!badge);
   $("bar").style.width = `${((pos + 1) / deck.length) * 100}%`;
 }

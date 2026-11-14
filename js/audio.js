@@ -32,6 +32,7 @@ function playClip(path, rate = 1, timeoutMs = 12000) {
   const audio = new Audio(path);
   audio.playbackRate = rate;
   audio.defaultPlaybackRate = rate;
+  audio.preservesPitch = true;
   return new Promise((resolve) => {
     function finish(played) {
       clearTimeout(watchdog);
@@ -53,8 +54,8 @@ function playWord(word, rate = 1) {
   return playClip("assets/audio/words/" + word + ".wav", rate);
 }
 
-function playSpelling(word) {
-  return playClip("assets/audio/spelling/" + word + ".wav", 0.9, 45000);
+function playSpelling(word, rate = 1) {
+  return playClip("assets/audio/spelling/" + word + ".wav", rate, 45000 / rate);
 }
 
 function chime(ok, win = false) {

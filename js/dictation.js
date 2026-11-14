@@ -21,8 +21,8 @@ function saveDictation() {
 
 function newDictation() {
   return {
-    week: weekId,
-    deck: shuffle(WORDS.map(({ w }) => w)),
+    week: practiceId(),
+    deck: shuffle(practiceWords().map(({ w }) => w)),
     responses: [],
     phase: "listen",
     strokes: [],
@@ -34,8 +34,8 @@ function newDictation() {
 function showDictation() {
   if (weekLoading || !weekId) return;
   stopAudio();
-  if (dictation?.week !== weekId) {
-    dictation = readStorage("spelling_bee_dictation_v45_" + weekId, null);
+  if (dictation?.week !== practiceId()) {
+    dictation = readStorage("spelling_bee_dictation_v45_" + practiceId(), null);
   }
   dictation ??= newDictation();
   const status = {
@@ -133,7 +133,7 @@ async function playDictationWord(repeat) {
   }
   const played = await playWord(
     dictation.deck[dictation.responses.length],
-    0.92,
+    Number($("dictationSpeed").value) || 1,
   );
   if (token !== playbackToken) return;
   dictationPlaying = false;

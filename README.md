@@ -25,10 +25,21 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
 
 ## Qué incluye
 
+- **Velocidad normal y lenta en todos los audios**: las listas de estudio
+  ofrecen ambas opciones para palabras, deletreos y oraciones. Los seis juegos
+  y sus respuestas también permiten escuchar a velocidad normal (1×) o lenta
+  (0.72×). En el laboratorio y el dictado, el selector de velocidad se aplica
+  a sus botones de reproducción. El dictado conserva las tres repeticiones
+  y el plazo de 30 segundos, que empieza al terminar el primer audio.
 - **Spelling Bee Contest**: lista especial con las 30 palabras del cartel,
   ilustraciones nuevas, traducciones, ejemplos y audios incluidos. Abre
   **Estudiar las 30 palabras** para consultar la lista y **Juegos del concurso**
-  para practicarla con los seis juegos o el dictado. El concurso tiene botones
+  para practicar con los seis juegos o el dictado. Encima de ese botón, elige
+  **Módulo 1** (apple–boat), **Módulo 2** (book–circle) o **Módulo 3**
+  (clap–dress). Cada módulo contiene 10 palabras y limita tanto las rondas
+  como las opciones de respuesta a ese grupo. La selección se recuerda y
+  cada módulo guarda sus resultados y dictados por separado. La lista de
+  estudio sigue mostrando las 30 palabras. El concurso tiene botones
   propios y no aparece en el selector semanal. Usa **Volver a la práctica semanal**
   para regresar a la última semana elegida. Su progreso se guarda por
   separado de las semanas. El evento es el 23 de noviembre de 2026, de
@@ -56,7 +67,7 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
 - **Deletreo** en cada tarjeta de estudio de las semanas y el concurso:
   escucha la palabra, los nombres de sus letras en inglés y la palabra otra vez.
   Los 59 clips únicos se incluyen en `assets/audio/spelling/`.
-- **Dictado manuscrito** con diez palabras de la semana o las 30 del concurso,
+- **Dictado manuscrito** con diez palabras de la semana o del módulo del concurso,
   en orden aleatorio.
   Pulsa **Escuchar e iniciar**. Los 30 segundos empiezan al terminar el primer
   audio. Puedes repetir la palabra hasta tres veces dentro del mismo plazo.
@@ -96,7 +107,8 @@ HTML local y los de una URL publicada pertenecen a orígenes distintos.
   Si editas el contenido o `index.html`, usa `python tools/verify.py --sync-local`
   para actualizar los archivos de la prueba local.
 - Ejecuta `node tools/test_practice.js` para comprobar la sesión completa de
-  26 letras, la cuenta regresiva y el progreso independiente del concurso.
+  26 letras, la cuenta regresiva, los tres módulos de 10 palabras, su progreso
+  y dictados independientes, las opciones de respuesta y ambas velocidades.
 - `tools/contest_image_prompts.json` documenta los prompts de las 30
   ilustraciones creadas con la herramienta integrada de generación de imágenes.
   `tools/generate_contest_audio.ps1` permite generar los WAV del concurso

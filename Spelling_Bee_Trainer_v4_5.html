@@ -39,11 +39,19 @@
             <button id="openContest" class="primary" disabled>
               📚 Estudiar las 30 palabras
             </button>
-            <button id="openContestGames" class="secondary" disabled>
-              🏆 Juegos del concurso
-            </button>
+            <div class="contest-module-controls">
+              <label for="contestModule">Módulo de ejercicios</label>
+              <select id="contestModule" class="activity-select" disabled>
+                <option value="0">Módulo 1 · Palabras 1–10 (apple–boat)</option>
+                <option value="1">Módulo 2 · Palabras 11–20 (book–circle)</option>
+                <option value="2">Módulo 3 · Palabras 21–30 (clap–dress)</option>
+              </select>
+              <button id="openContestGames" class="secondary" disabled>
+                🏆 Juegos del concurso
+              </button>
+            </div>
           </div>
-          <p class="muted">Los seis juegos y el dictado manuscrito con las 30 palabras.</p>
+          <p class="muted">Elige un módulo: los seis juegos y el dictado tendrán solo sus 10 palabras.</p>
           <details class="contest-details">
             <summary>Información del concurso</summary>
             <p id="contestGrades"></p>
@@ -127,7 +135,7 @@
       <section id="wordList" class="panel hide" aria-label="Lista de palabras">
         <h2 id="wordListTitle">📚 My Spelling Words</h2>
         <p class="muted">
-          Escucha la palabra, su deletreo o la oración en inglés.
+          Escucha la palabra, su deletreo o la oración en inglés a velocidad normal o lenta.
         </p>
         <div id="wordListItems"></div>
         <button
@@ -169,9 +177,12 @@
           <button id="labPracticeToggle" class="primary" disabled>
             Practicar con 5 opciones
           </button>
-          <label class="lab-speed"
-            ><input type="checkbox" id="labSlow" /> Escuchar lento</label
-          >
+          <label class="playback-speed" for="labSpeed">Velocidad de reproducción
+            <select id="labSpeed" class="activity-select">
+              <option value="1">Normal (1×)</option>
+              <option value="0.72">Lenta (0.72×)</option>
+            </select>
+          </label>
         </div>
         <p id="labStatus" class="muted activity-status" role="status"></p>
         <div id="labCards" class="lab-grid"></div>
@@ -232,6 +243,12 @@
             Tu navegador necesita compatibilidad con canvas para capturar
             escritura.
           </canvas>
+          <label class="playback-speed" for="dictationSpeed">Velocidad de reproducción
+            <select id="dictationSpeed" class="activity-select">
+              <option value="1">Normal (1×)</option>
+              <option value="0.72">Lenta (0.72×)</option>
+            </select>
+          </label>
           <div class="activity-actions dictation-controls">
             <button id="dictationListen" class="primary">
               🔊 Escuchar e iniciar

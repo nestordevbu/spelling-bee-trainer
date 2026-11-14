@@ -83,6 +83,24 @@
   flex: 1 1 12rem;
 }
 
+.contest-actions {
+  align-items: flex-end;
+}
+
+.contest-module-controls {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+.contest-module-controls label {
+  font-weight: 700;
+}
+
+.contest-module-controls button {
+  width: 100%;
+  margin-top: 0.65rem;
+}
+
 .contest-countdown {
   flex: 0 1 9rem;
   padding: 0.6rem 0.8rem;
@@ -185,6 +203,31 @@
   accent-color: #6d42c2;
   width: 1.1rem;
   height: 1.1rem;
+}
+
+.playback-speed {
+  display: block;
+  margin-top: 0.75rem;
+  color: #544269;
+  font-weight: 700;
+}
+
+.word-audio-row > span {
+  flex: 0 0 6.5rem;
+  font-weight: 700;
+}
+
+.word-audio-row {
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.audiochoice {
+  flex-wrap: wrap;
+}
+
+.audiochoice .sound {
+  flex: 1 1 8rem;
 }
 
 #soundLab [aria-pressed="true"] {
