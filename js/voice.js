@@ -22,19 +22,39 @@ function spokenLetter(text) {
   return null;
 }
 
-function recognizedLetter(results) {
+function spokenLetters(text) {
+  const tokens = String(text).toLowerCase().trim().replace(/[.,!?;:\-]+/g, " ")
+    .split(/\s+/).filter(Boolean);
+  const letters = [];
+  for (let index = 0; index < tokens.length; index++) {
+    const pair = tokens.slice(index, index + 2).join(" ");
+    if (pair === "double you" || pair === "double u") {
+      letters.push("W");
+      index++;
+      continue;
+    }
+    const letter = spokenLetter(tokens[index]);
+    if (!letter) return null;
+    letters.push(letter);
+  }
+  return letters.length && letters.length <= 30 ? letters.join("") : null;
+}
+
+function recognizedLetters(results) {
+  if (Array.from(results).some((result) => !result.isFinal)) return null;
   const finals = Array.from(results).filter((result) => result.isFinal);
-  if (finals.length !== 1 || !finals[0].length) return null;
-  const alternatives = Array.from(finals[0]);
-  const best = alternatives[0];
-  const letter = spokenLetter(best.transcript);
-  // Confidence is an engine estimate, not a calibrated grade. 0 can mean unavailable.
-  if (!letter || (best.confidence > 0 && best.confidence < 0.65)) return null;
-  const conflicts = alternatives.slice(1).some((alternative) => {
-    const other = spokenLetter(alternative.transcript);
-    return other && other !== letter;
-  });
-  return conflicts ? null : letter;
+  if (!finals.length || finals.some((result) => !result.length)) return null;
+  for (const result of finals) {
+    const best = result[0];
+    if (best.confidence > 0 && best.confidence < 0.65) return null;
+    const bestLetters = spokenLetters(best.transcript);
+    if (Array.from(result).slice(1).some((alternative) => {
+      const other = spokenLetters(alternative.transcript);
+      return other && bestLetters && other !== bestLetters;
+    })) return null;
+  }
+  // The browser's list is cumulative; parse its latest snapshot, never append it.
+  return spokenLetters(finals.map((result) => result[0].transcript).join(" "));
 }
 
 function voiceAvailability() {
@@ -51,45 +71,56 @@ const VOICE_ERRORS = {
   "audio-capture": "No se encontró un micrófono disponible. Revisa la conexión y vuelve a intentarlo.",
   network: "El navegador no pudo conectar con su servicio de voz. Esto también puede ocurrir dentro de una aplicación aunque tengas Internet. Copia la dirección del sitio y ábrela en Google Chrome, fuera de la aplicación. Si allí persiste, revisa la conexión y vuelve a intentarlo.",
   "language-not-supported": "El servicio de este navegador no admite reconocimiento en inglés estadounidense.",
-  "no-speech": "No escuché una letra. Acércate al micrófono y repite, sin penalización.",
+  "no-speech": "No escuché el deletreo. Acércate al micrófono y repite, sin penalización.",
   aborted: "Escucha cancelada. Puedes volver a intentarlo.",
 };
 
-class BrowserLetterCapture {
-  constructor(onReady, onFinish) {
+class BrowserSpellingCapture {
+  constructor(onReady, onFinish, onPartial = () => {}) {
     this.onReady = onReady;
     this.onFinish = onFinish;
+    this.onPartial = onPartial;
     this.done = false;
     this.results = [];
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     this.recognition = new Recognition();
     this.recognition.lang = "en-US";
-    this.recognition.continuous = false;
-    this.recognition.interimResults = false;
+    this.recognition.continuous = true;
+    this.recognition.interimResults = true;
     this.recognition.maxAlternatives = 5;
     this.recognition.onstart = () => { if (!this.done) this.onReady(); };
     this.recognition.onresult = (event) => {
-      if (!this.done) this.results = event.results;
+      if (this.done) return;
+      this.results = Array.from(event.results, (result) => {
+        const copy = Array.from(result, ({transcript, confidence}) => ({transcript, confidence}));
+        copy.isFinal = result.isFinal;
+        return copy;
+      });
+      this.onPartial(this.results.map((result) => result[0]?.transcript || "").join(" ").slice(0, 300));
     };
-    this.recognition.onnomatch = () => this.finish(null, "No entendí una sola letra. Vuelve a intentarlo, sin penalización.");
+    this.recognition.onnomatch = () => this.finish(null, "No entendí el deletreo. Vuelve a intentarlo, sin penalización.");
     this.recognition.onerror = (event) => this.finish(null,
-      VOICE_ERRORS[event.error] || "No se pudo reconocer la letra. Puedes volver a intentarlo.");
+      VOICE_ERRORS[event.error] || "No se pudo reconocer el deletreo. Puedes volver a intentarlo.");
     this.recognition.onend = () => {
-      const letter = recognizedLetter(this.results);
-      this.finish(letter, letter ? "Confirma si esa fue la letra que dijiste."
-        : "No se entendió una sola letra con claridad. Repítela, sin penalización.");
+      const letter = recognizedLetters(this.results);
+      this.finish(letter, letter ? "Revisa todas las letras y pulsa «Comprobar deletreo»."
+        : "No se entendió el deletreo con claridad. Repite los nombres de las letras en inglés, con una pausa breve entre ellas, sin decir la palabra completa.");
     };
   }
 
   start() {
-    this.timer = setTimeout(() => this.finish(null,
-      "La escucha terminó. Puedes volver a decir la letra, sin penalización."), 15000);
+    this.timer = setTimeout(() => this.stop(), 45000);
     try { this.recognition.start(); }
     catch { this.finish(null, "No se pudo iniciar el micrófono. Vuelve a intentarlo."); }
   }
 
   stop() {
-    if (this.done) return;
+    if (this.done || this.stopping) return;
+    this.stopping = true;
+    clearTimeout(this.timer);
+    // Give stop() time to deliver the last final result before recovering.
+    this.timer = setTimeout(() => this.finish(null,
+      "El servicio no terminó de procesar el deletreo. Puedes repetir, sin penalización."), 5000);
     try { this.recognition.stop(); }
     catch { this.finish(null, "No se pudo terminar la escucha. Vuelve a intentarlo."); }
   }
@@ -124,7 +155,7 @@ function stopVoicePractice() {
   voicePlayback++;
   voicePlaying = false;
   stopAudio();
-  $("voiceStatus").textContent = "La escucha está detenida. Pulsa «Decir una letra» para continuar.";
+  $("voiceStatus").textContent = "La escucha está detenida. Pulsa «Deletrear palabra» para continuar.";
   if (voiceSession) renderVoice();
 }
 
@@ -151,19 +182,19 @@ function renderVoice() {
   $("voiceRound").hidden = finished;
   $("voiceSummary").hidden = !finished;
   $("voiceProgress").textContent = "Palabra " + (index + 1) + " de " + deck.length;
-  $("voiceLetters").textContent = letters.length ? letters.join(" – ") : "Todavía no hay letras confirmadas.";
+  $("voiceLetters").textContent = voicePending ? voicePending.split("").join(" – ")
+    : letters.length ? letters.join(" – ") : "Aquí aparecerá el deletreo completo.";
   $("voiceRecord").disabled = Boolean(unavailable) || busy || answered || Boolean(voicePending) || !heard || letters.length >= 30;
   $("voiceRecord").setAttribute("aria-pressed", Boolean(voiceCapture));
   $("voiceStop").hidden = !voiceCapture;
   $("voicePlay").disabled = busy || finished;
   $("voicePlaySlow").disabled = busy || finished;
   $("voiceCandidate").hidden = !voicePending;
-  $("voiceAccept").disabled = !voicePending || busy || answered;
   $("voiceRetry").disabled = !voicePending || busy || answered;
-  if (voicePending) $("voiceHeard").textContent = "El navegador entendió: " + voicePending + ". ¿Dijiste esa letra?";
-  $("voiceUndo").disabled = busy || answered || !letters.length;
+  if (voicePending) $("voiceHeard").textContent = "Revisa el deletreo reconocido. Si corresponde a lo que dijiste, pulsa «Comprobar deletreo».";
+  $("voiceUndo").disabled = busy || answered || (!letters.length && !voicePending);
   $("voiceClear").disabled = busy || answered || (!letters.length && !voicePending);
-  $("voiceCheck").disabled = busy || answered || Boolean(voicePending) || !letters.length;
+  $("voiceCheck").disabled = busy || answered || (!letters.length && !voicePending);
   $("voiceNext").hidden = !answered;
   $("voiceNext").textContent = index + 1 === deck.length ? "Ver resultado →" : "Siguiente palabra →";
   if (finished) {
@@ -185,12 +216,12 @@ async function playVoiceWord(rate = 1) {
   voicePlaying = false;
   if (played) session.heard = true;
   $("voiceStatus").textContent = played
-    ? "Pulsa «Decir una letra», di su nombre en inglés y espera la confirmación."
+    ? "Pulsa «Deletrear palabra», di todas las letras en inglés y después pulsa «Terminé»."
     : "No se pudo reproducir la palabra. Vuelve a intentarlo.";
   renderVoice();
 }
 
-function recordVoiceLetter() {
+function recordVoiceSpelling() {
   if (!voiceSession || voiceSession.answered || !voiceSession.heard || voicePending
     || voiceCapture || voicePlaying || document.hidden
     || voiceSession.letters.length >= 30 || voiceAvailability()) return;
@@ -198,15 +229,19 @@ function recordVoiceLetter() {
   const session = voiceSession;
   $("voiceStatus").textContent = "Preparando micrófono… Si el navegador lo pide, permite el acceso para esta práctica.";
   try {
-    const capture = new BrowserLetterCapture(() => {
-      $("voiceStatus").textContent = "🎤 Escuchando. Di una sola letra en inglés.";
+    const capture = new BrowserSpellingCapture(() => {
+      $("voiceStatus").textContent = "🎤 Escuchando. Di todas las letras en inglés y pulsa «Terminé».";
     }, (letter, message) => {
       if (voiceCapture !== capture || voiceSession !== session) return;
       voiceCapture = null;
       voicePending = letter;
       $("voiceStatus").textContent = message;
       renderVoice();
-      if (letter) $("voiceAccept").focus();
+      if (letter) $("voiceCheck").focus();
+    }, (transcript) => {
+      if (voiceCapture === capture && voiceSession === session) {
+        $("voiceStatus").textContent = "🎤 Escuché: " + transcript + ". Continúa o pulsa «Terminé».";
+      }
     });
     voiceCapture = capture;
     renderVoice();
@@ -218,17 +253,13 @@ function recordVoiceLetter() {
   }
 }
 
-function acceptVoiceLetter() {
-  if (!voiceSession || voiceSession.answered || !voicePending || voiceCapture || voicePlaying) return;
-  voiceSession.letters.push(voicePending);
-  voicePending = null;
-  $("voiceStatus").textContent = "Letra añadida. Di la siguiente o comprueba el deletreo si terminaste.";
-  renderVoice();
-  $("voiceRecord").focus();
-}
-
 function checkVoiceWord() {
-  if (!voiceSession || voiceSession.answered || voiceCapture || voicePlaying || voicePending || !voiceSession.letters.length) return;
+  if (!voiceSession || voiceSession.answered || voiceCapture || voicePlaying) return;
+  if (voicePending) {
+    voiceSession.letters = voicePending.split("");
+    voicePending = null;
+  }
+  if (!voiceSession.letters.length) return;
   const word = voiceSession.deck[voiceSession.index];
   const response = voiceSession.letters.join("");
   const correct = response === word.toUpperCase();
@@ -260,24 +291,23 @@ $("openVoice").onclick = openVoicePractice;
 $("voiceBack").onclick = () => setScreen("home");
 $("voicePlay").onclick = () => playVoiceWord();
 $("voicePlaySlow").onclick = () => playVoiceWord(0.72);
-$("voiceRecord").onclick = recordVoiceLetter;
+$("voiceRecord").onclick = recordVoiceSpelling;
 $("voiceStop").onclick = () => voiceCapture?.stop();
-$("voiceAccept").onclick = acceptVoiceLetter;
 $("voiceRetry").onclick = () => {
   voicePending = null;
-  recordVoiceLetter();
+  recordVoiceSpelling();
 };
 $("voiceUndo").onclick = () => {
   if (!voiceSession || voiceSession.answered || voiceCapture || voicePlaying) return;
-  voicePending = null;
-  voiceSession.letters.pop();
+  if (voicePending) voicePending = voicePending.slice(0, -1) || null;
+  else voiceSession.letters.pop();
   renderVoice();
 };
 $("voiceClear").onclick = () => {
   if (!voiceSession || voiceSession.answered || voiceCapture || voicePlaying) return;
   voicePending = null;
   voiceSession.letters = [];
-  $("voiceStatus").textContent = "Di la primera letra cuando estés listo.";
+  $("voiceStatus").textContent = "Deletrea la palabra completa cuando estés listo.";
   renderVoice();
 };
 $("voiceCheck").onclick = checkVoiceWord;

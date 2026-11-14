@@ -25,15 +25,16 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
 
 ## Qué incluye
 
-- **Deletreo con voz (piloto guiado)**: abre el botón junto al dictado, escucha
-  la palabra y pulsa **Decir una letra**. Di el nombre de una letra en inglés,
-  confirma lo que entendió el navegador y repite para cada letra, también las
-  repetidas. **Comprobar deletreo** compara exactamente las letras confirmadas.
-  Puedes rechazar una lectura o quitar la última letra antes de comprobar.
-  Lecturas ambiguas, silencios y errores del servicio no puntúan. La práctica
-  utiliza las diez palabras de la semana o del módulo del concurso, y muestra
-  un resumen al terminar. La sesión no se guarda al salir y volver a abrirla.
-  No evalúa acento ni calidad de pronunciación.
+- **Deletreo con voz continuo**: escucha la palabra, pulsa **Deletrear palabra**
+  y di todas sus letras en inglés en una sola toma, con pausas breves entre ellas.
+  Pulsa **Terminé**, revisa la secuencia y elige **Comprobar deletreo**.
+  No necesitas confirmar cada letra. Puedes repetir el intento completo o
+  quitar la última letra antes de comprobar. Se conservan las letras repetidas.
+  Los resultados parciales se muestran mientras hablas, pero solo los finales
+  se usan para comprobar. Las palabras completas no se convierten en un
+  deletreo supuesto. Lecturas ambiguas y errores del servicio no puntúan.
+  La práctica utiliza las diez palabras de la semana o del módulo del concurso.
+  La sesión no se guarda al salir y volver a abrirla; no se califica el acento.
 - La voz requiere HTTPS (o localhost para desarrollo), permiso de micrófono
   y un navegador con `SpeechRecognition` o `webkitSpeechRecognition`.
   La aplicación no guarda audio ni necesita claves de servicios. El navegador

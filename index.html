@@ -167,8 +167,8 @@
           <h2 id="voiceTitle">🎤 Deletreo con voz</h2>
           <button id="voiceBack" class="secondary">← Inicio</button>
         </div>
-        <p class="muted">Práctica guiada: escucha la palabra, di una letra en inglés
-          y confirma si se entendió bien. Repite para cada letra, incluso las repetidas.</p>
+        <p class="muted">Escucha la palabra y pulsa «Deletrear palabra». Di todas las letras en inglés
+          en una sola toma, con una pausa breve entre ellas. Pulsa «Terminé» y revisa el deletreo completo.</p>
         <p class="muted">Al activar el micrófono, el navegador puede enviar tu voz
           a su servicio de reconocimiento y necesitar Internet. Esta aplicación no
           guarda grabaciones. La práctica evalúa las letras confirmadas; no califica tu acento.</p>
@@ -185,14 +185,13 @@
           <p id="voiceLetters" class="voice-letters" aria-label="Letras confirmadas" lang="en-US"></p>
           <p id="voiceStatus" class="activity-status" role="status" aria-live="polite"></p>
           <div class="activity-actions">
-            <button id="voiceRecord" class="primary">🎤 Decir una letra</button>
-            <button id="voiceStop" class="secondary" hidden>Terminé de decir la letra</button>
+            <button id="voiceRecord" class="primary">🎤 Deletrear palabra</button>
+            <button id="voiceStop" class="secondary" hidden>Terminé</button>
           </div>
           <div id="voiceCandidate" class="voice-candidate" hidden>
             <p id="voiceHeard"></p>
             <div class="activity-actions">
-              <button id="voiceAccept" class="primary">Sí, usar esta letra</button>
-              <button id="voiceRetry" class="secondary">No, repetir</button>
+              <button id="voiceRetry" class="secondary">🎤 Repetir deletreo completo</button>
             </div>
           </div>
           <div class="activity-actions voice-edit-controls">

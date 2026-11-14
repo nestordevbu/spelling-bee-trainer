@@ -66,49 +66,50 @@ function deliver(capture, ...alternatives) {
 
 async function testLettersAndGrading() {
   const {run, context, get, captures, played} = environment();
-  for (const [name, letter] of [
-    ["A.", "A"], ["bee", "B"], ["sea", "C"], ["eye", "I"],
-    ["queue", "Q"], ["double you", "W"], ["zed", "Z"],
-    ["apple", null], ["P P", null], ["B or D", null], ["", null],
+  for (const [text, expected] of [
+    ["A P P L E", "APPLE"], ["a pee pee el ee", "APPLE"],
+    ["B.O.O.K.", "BOOK"], ["double you eye en gee", "WING"],
+    ["P P", "PP"], ["apple", null], ["B unknown K", null], ["", null],
   ]) {
-    context.text = name;
-    assert.equal(run("spokenLetter(text)"), letter);
+    context.text = text;
+    assert.equal(run("spokenLetters(text)"), expected);
   }
-  run("openVoicePractice(); recordVoiceLetter()");
-  assert.equal(captures.length, 0, "Must hear the word before recording");
+  run("openVoicePractice(); recordVoiceSpelling()");
+  assert.equal(captures.length, 0);
   await run("playVoiceWord(0.72)");
   assert.deepEqual(played[0], ["apple", 0.72]);
-  for (const [index, letter] of ["A", "P", "P", "L", "E"].entries()) {
-    run("recordVoiceLetter()");
-    const capture = captures.at(-1);
-    assert.equal(capture.lang, "en-US");
-    assert.equal(capture.continuous, false);
-    assert.equal(capture.interimResults, false);
-    assert.equal(capture.phrases, undefined, "No answer hint is supplied");
-    assert.equal(capture.grammars, undefined);
-    assert.equal(get("voicePlay").disabled, true);
-    deliver(capture, letter);
-    assert.equal(run("voiceSession.letters.length"), index, "Recognition alone must not append letters");
-    assert.equal(get("voiceCheck").disabled, true);
-    run("acceptVoiceLetter()");
-    assert.equal(run("voiceSession.letters.length"), index + 1);
-    run("acceptVoiceLetter()");
-    assert.equal(run("voiceSession.letters.length"), index + 1, "Double clicks must not duplicate letters");
-  }
+  run("recordVoiceSpelling()");
+  const capture = captures.at(-1);
+  assert.equal(capture.lang, "en-US");
+  assert.equal(capture.continuous, true);
+  assert.equal(capture.interimResults, true);
+  assert.equal(capture.phrases, undefined);
+  assert.equal(capture.grammars, undefined);
+  assert.equal(get("voicePlay").disabled, true);
+  const partial = result("A P");
+  partial.isFinal = false;
+  capture.onresult({results: [partial]});
+  assert.match(get("voiceStatus").textContent, /A P/);
+  assert.equal(run("voicePending"), null);
+  capture.onresult({results: [result("A P")]});
+  capture.onresult({results: [result("A P"), result("P L E")]});
+  // Repeated cumulative packets must not duplicate the first A and P.
+  capture.onresult({results: [result("A P"), result("P L E")]});
+  get("voiceStop").onclick();
+  assert.equal(run("voicePending"), "APPLE");
+  assert.equal(run("voiceSession.results.length"), 0);
+  assert.equal(get("voiceCheck").disabled, false);
   run("checkVoiceWord(); checkVoiceWord()");
   assert.equal(run("voiceSession.results.length"), 1);
   assert.equal(run("voiceSession.results[0].correct"), true);
   assert.equal(run("voiceSession.results[0].response"), "APPLE");
   run("nextVoiceWord()");
   await run("playVoiceWord()");
-  // A real substitution must survive recognition and be graded as a difference.
-  for (const letter of ["B", "O", "X"]) {
-    run("recordVoiceLetter()");
-    deliver(captures.at(-1), letter);
-    run("acceptVoiceLetter()");
-  }
+  run("recordVoiceSpelling()");
+  deliver(captures.at(-1), "B O K");
   run("checkVoiceWord(); nextVoiceWord()");
   assert.equal(run("voiceSession.results[1].correct"), false);
+  assert.equal(run("voiceSession.results[1].response"), "BOK");
   assert.match(get("voiceScore").textContent, /1 de 2/);
   assert.equal(get("voiceSummary").hidden, false);
 }
@@ -118,27 +119,26 @@ async function testUncertainAndErrors() {
   run("openVoicePractice()");
   await run("playVoiceWord()");
   for (const alternatives of [
-    ["apple"], ["P P"], ["B", "D"], [{transcript: "A", confidence: 0.4}],
+    ["apple"], ["B something"], ["B", "D"], [{transcript: "A", confidence: 0.4}],
   ]) {
-    run("recordVoiceLetter()");
+    run("recordVoiceSpelling()");
     deliver(captures.at(-1), ...alternatives);
     assert.equal(run("voicePending"), null);
     assert.equal(run("voiceSession.letters.length"), 0);
     assert.equal(run("voiceSession.results.length"), 0);
     assert.equal(get("voiceRecord").disabled, false);
   }
-  run("recordVoiceLetter()");
+  run("recordVoiceSpelling()");
   deliver(captures.at(-1), {transcript: "A", confidence: 0});
   assert.equal(run("voicePending"), "A", "Missing confidence still requires explicit confirmation");
   get("voiceRetry").onclick();
   assert.equal(run("voicePending"), null);
   deliver(captures.at(-1), "E");
-  run("acceptVoiceLetter()");
-  assert.equal(run("voiceSession.letters.join('')"), "E");
+  assert.equal(run("voicePending"), "E");
   get("voiceUndo").onclick();
-  assert.equal(run("voiceSession.letters.length"), 0);
+  assert.equal(run("voicePending"), null);
   for (const error of ["not-allowed", "network", "no-speech", "audio-capture", "service-not-allowed"]) {
-    run("recordVoiceLetter()");
+    run("recordVoiceSpelling()");
     const capture = captures.at(-1);
     const lateEnd = capture.onend;
     capture.onerror({error});
@@ -152,23 +152,36 @@ async function testUncertainAndErrors() {
     assert.equal(run("voiceSession.results.length"), 0);
     assert.equal(get("voiceRecord").disabled, false);
   }
-  run("recordVoiceLetter()");
+  run("recordVoiceSpelling()");
   for (const callback of [...timers.values()]) callback();
   assert.equal(run("voiceCapture"), null);
   assert.equal(timers.size, 0);
-  run("recordVoiceLetter()");
+  run("recordVoiceSpelling()");
   get("voiceStop").onclick();
   assert.equal(run("voiceCapture"), null);
   // Only final results count.
-  run("recordVoiceLetter()");
+  run("recordVoiceSpelling()");
   const interim = result("A");
   interim.isFinal = false;
   captures.at(-1).onresult({results: [interim]});
   captures.at(-1).onend();
   assert.equal(run("voicePending"), null);
-  // Multiple final segments cannot be treated as a single letter.
+  // Multiple final segments form one complete spelling.
   context.packets = [result("A"), result("P")];
-  assert.equal(run("recognizedLetter(packets)"), null);
+  assert.equal(run("recognizedLetters(packets)"), "AP");
+  const unfinished = result("P L E");
+  unfinished.isFinal = false;
+  context.packets = [result("A P"), unfinished];
+  assert.equal(run("recognizedLetters(packets)"), null, "An unfinished tail must not be silently dropped");
+  // stop() is asynchronous in real browsers: the final packet can arrive later.
+  run("recordVoiceSpelling()");
+  const draining = captures.at(-1);
+  draining.stop = () => {};
+  get("voiceStop").onclick();
+  assert.notEqual(run("voiceCapture"), null);
+  deliver(draining, "A P P L E");
+  assert.equal(run("voicePending"), "APPLE");
+  assert.equal(timers.size, 0);
 }
 
 async function testLifecycleAndSupport() {
@@ -177,7 +190,7 @@ async function testLifecycleAndSupport() {
     if (!options.unsupported) env.context.window.isSecureContext = false;
     env.run("openVoicePractice()");
     await env.run("playVoiceWord()");
-    env.run("recordVoiceLetter()");
+    env.run("recordVoiceSpelling()");
     assert(env.get("voiceSupport").textContent);
     assert.equal(env.captures.length, 0);
     assert.equal(env.get("voiceRecord").disabled, true);
@@ -185,7 +198,7 @@ async function testLifecycleAndSupport() {
   const {run, context, captures, events, get} = environment();
   run("openVoicePractice()");
   await run("playVoiceWord()");
-  run("recordVoiceLetter()");
+  run("recordVoiceSpelling()");
   const capture = captures.at(-1);
   const lateResult = capture.onresult;
   const lateEnd = capture.onend;
@@ -195,7 +208,7 @@ async function testLifecycleAndSupport() {
   lateEnd();
   assert.equal(run("voicePending"), null);
   assert.equal(run("voiceSession.letters.length"), 0);
-  run("recordVoiceLetter()");
+  run("recordVoiceSpelling()");
   context.document.hidden = true;
   events.visibilitychange();
   assert.equal(captures.at(-1).aborted, true);
@@ -206,7 +219,7 @@ async function testLifecycleAndSupport() {
   context.playWord = () => new Promise((resolve) => { endPlayback = resolve; });
   const playback = run("playVoiceWord()");
   const count = captures.length;
-  run("recordVoiceLetter()");
+  run("recordVoiceSpelling()");
   assert.equal(captures.length, count);
   run("stopVoicePractice(); openVoicePractice()");
   endPlayback(true);
@@ -227,7 +240,7 @@ function testRealModules() {
     assert.deepEqual(words, expected);
     assert.equal(run("voiceSession.context"), `contest-2026-module-${module + 1}`);
   }
-  run("voiceSession.heard = true; recordVoiceLetter()");
+  run("voiceSession.heard = true; recordVoiceSpelling()");
   get("voiceBack").onclick();
   assert.equal(captures.at(-1).aborted, true, "Real screen navigation must stop capture");
 }
@@ -237,5 +250,5 @@ function testRealModules() {
   await testUncertainAndErrors();
   await testLifecycleAndSupport();
   testRealModules();
-  console.log("OK: voz guiada, letras repetidas, confirmación, ambigüedad, errores, cancelación y compatibilidad.");
+  console.log("OK: deletreo continuo, resultados acumulativos, letras repetidas, ambigüedad, errores, cancelación y compatibilidad.");
 })().catch((error) => { console.error(error); process.exitCode = 1; });
