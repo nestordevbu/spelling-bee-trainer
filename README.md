@@ -184,4 +184,3 @@ de la letra (Abecedario) o el sonido (Fonemas comunes)
 y que aparezca el resultado tras 26 rondas en Abecedario y diez en Fonemas comunes. En el dictado,
 usa las tres repeticiones, deja vencer una ronda, recarga la página y comprueba
 que el trazo se conserve al pasar a la revisión.
-
