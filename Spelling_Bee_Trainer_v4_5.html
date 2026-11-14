@@ -200,9 +200,18 @@
           falla el servicio de voz, copia la dirección y ábrela en Chrome por separado.</p>
         <div id="voiceRound">
           <p id="voiceProgress" class="tag"></p>
-          <div class="activity-actions">
-            <button id="voicePlay" class="secondary">🔊 Palabra · Normal</button>
-            <button id="voicePlaySlow" class="secondary">🐢 Palabra · Lenta</button>
+          <div class="voice-playback">
+            <div class="activity-actions voice-playback-controls">
+              <button id="voicePlay" class="secondary">🔊 Palabra · Normal</button>
+              <button id="voicePlaySlow" class="secondary">🐢 Palabra · Lenta</button>
+            </div>
+            <img
+              class="voice-bee-mascot"
+              src="assets/ui/contest-bee-dragon.webp"
+              alt="Dragón vestido de abeja acompañando la práctica"
+              width="88"
+              height="144"
+            />
           </div>
           <p id="voiceLetters" class="voice-letters" aria-label="Letras confirmadas" lang="en-US"></p>
           <p id="voiceTranscript" class="muted" lang="en-US"></p>
@@ -222,7 +231,17 @@
             <button id="voiceClear" class="secondary">Empezar esta palabra otra vez</button>
             <button id="voiceCheck" class="primary">Comprobar deletreo</button>
           </div>
-          <p id="voiceFeedback" class="activity-status" role="status" aria-live="polite"></p>
+          <div id="voiceFeedbackPanel" class="voice-feedback" hidden>
+            <img
+              id="voiceFeedbackMascot"
+              class="voice-feedback-mascot"
+              alt=""
+              width="128"
+              height="128"
+              hidden
+            />
+            <p id="voiceFeedback" class="activity-status" role="status" aria-live="polite"></p>
+          </div>
           <button id="voiceNext" class="primary" hidden>Siguiente palabra →</button>
         </div>
         <div id="voiceSummary" hidden>

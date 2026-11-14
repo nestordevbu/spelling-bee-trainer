@@ -37,6 +37,54 @@
   flex: 1 1 13rem;
 }
 
+.voice-playback {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(64px, 20vw, 88px);
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.voice-playback-controls {
+  min-width: 0;
+}
+
+.voice-playback-controls button {
+  max-width: 100%;
+  white-space: normal;
+}
+
+.voice-bee-mascot {
+  display: block;
+  width: 100%;
+  height: clamp(104px, 32vw, 144px);
+  object-fit: contain;
+}
+
+.voice-feedback {
+  display: grid;
+  grid-template-columns: clamp(80px, 22vw, 128px) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border: 1px solid #e8ddff;
+  border-radius: 1rem;
+  background: #fbf9ff;
+}
+
+.voice-feedback-mascot {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 128px;
+  object-fit: contain;
+}
+
+.voice-feedback .activity-status {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
 .voice-letters {
   min-height: 3.5rem;
   padding: 0.8rem;

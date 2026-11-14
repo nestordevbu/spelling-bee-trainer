@@ -38,6 +38,8 @@ function environment(options = {}) {
     practiceWords: () => [{w: "apple"}, {w: "book"}], shuffle: (items) => [...items],
     setScreen: (screen) => { if (screen !== "voicePractice") vm.runInContext("stopVoicePractice()", context); },
     stopAudio() {}, unlockAudio() {},
+    MASCOT_SUCCESS: "assets/ui/mascot-success.webp",
+    MASCOT_TRY: "assets/ui/mascot-try.webp",
     playWord: async (word, rate) => { played.push([word, rate]); return true; },
     setTimeout: (callback) => { timers.set(++timerId, callback); return timerId; },
     clearTimeout: (id) => timers.delete(id),
@@ -75,6 +77,8 @@ async function testLettersAndGrading() {
     assert.equal(run("spokenLetters(text)"), expected);
   }
   run("openVoicePractice(); recordVoiceSpelling()");
+  assert.equal(get("voiceFeedbackPanel").hidden, true);
+  assert.equal(get("voiceFeedbackMascot").hidden, true);
   assert.equal(captures.length, 0);
   await run("playVoiceWord(0.72)");
   assert.deepEqual(played[0], ["apple", 0.72]);
@@ -103,11 +107,18 @@ async function testLettersAndGrading() {
   assert.equal(run("voiceSession.results.length"), 1);
   assert.equal(run("voiceSession.results[0].correct"), true);
   assert.equal(run("voiceSession.results[0].response"), "APPLE");
+  assert.equal(get("voiceFeedbackPanel").hidden, false);
+  assert.equal(get("voiceFeedbackMascot").src, "assets/ui/mascot-success.webp");
   run("nextVoiceWord()");
+  assert.equal(get("voiceFeedbackPanel").hidden, true);
+  assert.equal(get("voiceFeedbackMascot").hidden, true);
   await run("playVoiceWord()");
   run("recordVoiceSpelling()");
   deliver(captures.at(-1), "B O K");
-  run("checkVoiceWord(); nextVoiceWord()");
+  run("checkVoiceWord()");
+  assert.equal(get("voiceFeedbackPanel").hidden, false);
+  assert.equal(get("voiceFeedbackMascot").src, "assets/ui/mascot-try.webp");
+  run("nextVoiceWord()");
   assert.equal(run("voiceSession.results[1].correct"), false);
   assert.equal(run("voiceSession.results[1].response"), "BOK");
   assert.match(get("voiceScore").textContent, /1 de 2/);

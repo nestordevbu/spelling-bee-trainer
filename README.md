@@ -58,6 +58,9 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
   Los fallos del servicio no puntúan.
   La práctica utiliza las diez palabras de la semana o del módulo del concurso.
   La sesión no se guarda al salir y volver a abrirla; no se califica el acento.
+  Al comprobar aparece la mascota de acierto o de ánimo según el resultado.
+  El personaje vestido de abeja acompaña siempre los botones de audio, con
+  una columna propia para no cubrir los controles.
 - La voz requiere HTTPS (o localhost para desarrollo), permiso de micrófono
   y un navegador con `SpeechRecognition` o `webkitSpeechRecognition`.
   La aplicación no guarda audio ni necesita claves de servicios. El navegador

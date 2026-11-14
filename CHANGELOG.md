@@ -2,6 +2,9 @@
 
 ## 5.1 · 14 de noviembre de 2026
 
+- Mascotas de acierto y de ánimo al comprobar el deletreo por voz; se ocultan
+  al pasar a otra palabra. El personaje vestido de abeja permanece junto a
+  los botones de audio, con espacio propio adaptable a pantallas pequeñas.
 - Conserva al pulsar **Terminé** la última transcripción visible del deletreo,
   incluso cuando el navegador no devuelve un resultado final o retira los
   resultados provisionales al cerrar.

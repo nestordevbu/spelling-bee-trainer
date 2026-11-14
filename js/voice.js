@@ -264,11 +264,32 @@ function renderVoice() {
   $("voiceCheck").disabled = busy || answered || (!letters.length && !voicePending);
   $("voiceNext").hidden = !answered;
   $("voiceNext").textContent = index + 1 === deck.length ? "Ver resultado →" : "Siguiente palabra →";
+
+  renderVoiceFeedback();
+
   if (finished) {
     const correct = voiceSession.results.filter((result) => result.correct).length;
     $("voiceScore").textContent = "Práctica terminada: " + correct + " de " + deck.length
       + " deletreos correctos con las letras que confirmaste. La pronunciación no se califica.";
   }
+}
+
+function renderVoiceFeedback() {
+  const result = voiceSession.answered ? voiceSession.results.at(-1) : null;
+  const mascot = $("voiceFeedbackMascot");
+
+  $("voiceFeedbackPanel").hidden = !result;
+  mascot.hidden = !result;
+
+  if (!result) {
+    mascot.alt = "";
+    return;
+  }
+
+  mascot.src = result.correct ? MASCOT_SUCCESS : MASCOT_TRY;
+  mascot.alt = result.correct
+    ? "Mascota felicitando por el deletreo correcto"
+    : "Mascota animando a seguir practicando el deletreo";
 }
 
 async function playVoiceWord(rate = 1) {
