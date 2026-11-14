@@ -120,6 +120,7 @@ const img = (w, small = false) =>
   </div>`;
 function openWordList() {
   stopAudio();
+  if (typeof openStudyVideos === "function") openStudyVideos();
   $("wordListTitle").textContent = weekId === "contest-2026"
     ? "🏆 Spelling Bee Contest · 30 palabras"
     : "📚 My Spelling Words";
@@ -131,6 +132,8 @@ function openWordList() {
           <strong lang="en-US">${escapeHtml(WORD_LABELS[w] === w ? w.toUpperCase() : WORD_LABELS[w])}</strong>
           <span class="muted">(${escapeHtml(es)})</span>
           <p lang="en-US">${escapeHtml(WORD_EXAMPLES[w])}</p>
+          <button class="primary" data-watch-video="${w}"
+            aria-label="Ver video de ${escapeHtml(WORD_LABELS[w])}">🎬 Ver video</button>
           ${[
             ["say-word", "🔊 Palabra"],
             ["spell-word", "🔤 Deletreo"],
@@ -160,6 +163,10 @@ $("wordListItems").onclick = (e) => {
   const b = e.target.closest("button");
   if (!b) return;
   unlockAudio();
+  if (b.dataset.watchVideo) {
+    watchStudyVideo(b.dataset.watchVideo, b);
+    return;
+  }
   const rate = Number(b.dataset.rate) || 1;
   if (b.dataset.sayWord) playWord(b.dataset.sayWord, rate);
   else if (b.dataset.spellWord) playSpelling(b.dataset.spellWord, rate);

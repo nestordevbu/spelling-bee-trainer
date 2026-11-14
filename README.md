@@ -1,8 +1,8 @@
-# Spelling Bee Trainer v4.5
+# Spelling Bee Trainer v5.0
 
 ## Abrir el entrenador
 
-Extrae el ZIP en una carpeta. Abre `Spelling_Bee_Trainer_v4_5.html` con Chrome,
+Extrae el ZIP en una carpeta. Abre `Spelling_Bee_Trainer_v5_0.html` con Chrome,
 Edge, Firefox o Safari. El HTML de control y `index.html` usan los recursos de
 la misma carpeta, así que conserva `css/`, `js/`, `data/` y `assets/` junto
 a ambos. Si tu dispositivo abre el HTML en una vista previa de archivos,
@@ -25,13 +25,32 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
 
 ## Qué incluye
 
+- **Videos de estudio**: abre la lista de cualquier semana o las 30 palabras del
+  concurso para encontrar **Mira, escucha y deletrea**. Hay 60 clips MP4 (uno por
+  entrada), con ilustración, palabra, traducción y letras resaltadas en sincronía
+  con el audio en inglés. Se carga la primera palabra por defecto. Pulsa **Ver video**
+  en una tarjeta para subir al reproductor e iniciar su video al cargar; al terminar,
+  la página regresa a esa tarjeta. Si el navegador bloquea el inicio automático,
+  pulsa reproducir. El reproductor permite avanzar, volver,
+  escuchar a velocidad normal o lenta y descargar el clip. Los videos no avanzan
+  automáticamente. Se pausan al salir, ocultar la página o reproducir otro audio.
+  Funcionan con los archivos locales, sin servicios externos. Los subtítulos VTT
+  requieren servir el sitio por HTTP/HTTPS en algunos navegadores; las letras
+  también están incluidas en la imagen del video.
+  Conserva `assets/videos/` al copiar o publicar el sitio. Los clips incorporan
+  las letras de acclivity y se distribuyen bajo CC BY-NC 4.0; consulta los créditos.
+
 - **Deletreo con voz continuo**: escucha la palabra, pulsa **Deletrear palabra**
   y di todas sus letras en inglés en una sola toma, con pausas breves entre ellas.
   Pulsa **Terminé**, revisa la secuencia y elige **Comprobar deletreo**.
   No necesitas confirmar cada letra. Puedes repetir el intento completo o
   quitar la última letra antes de comprobar. Se conservan las letras repetidas.
-  Los resultados parciales se muestran mientras hablas, pero solo los finales
-  se usan para comprobar. Si el navegador agrupa las letras como una palabra
+  Los resultados parciales se muestran mientras hablas. Al terminar se conserva
+  la última lectura visible aunque el navegador no entregue un resultado final,
+  retire la lectura al cerrar o interrumpa el servicio. Se identifica como
+  **provisional** y debes revisarla antes de comprobar; no se califica sola.
+  La transcripción original queda visible, incluso si no puede convertirse en letras.
+  Si el navegador agrupa las letras como una palabra
   (por ejemplo, CHAT), se muestra C–H–A–T para revisión, con un aviso de que
   no permite verificar cómo se pronunciaron las letras. Las lecturas dudosas
   también se muestran para revisar o repetir; no se califican sin pulsar
@@ -75,7 +94,12 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
   resumen de progreso por semana.
 - **Laboratorio de sonidos** con las 26 letras, 14 combinaciones de uso
   frecuente, el alfabeto fonético, ejemplos y reproducción normal o lenta.
-  Los clips de audio se sintetizaron con Microsoft Zira en inglés estadounidense.
+  Los nombres de las 26 letras usan la misma voz humana de acclivity
+  (opción 4). La Z dice únicamente **zee**, sin incluir **zed**.
+  Los fonemas y ejemplos conservan la voz Microsoft Zira.
+  Consulta `credits-audio.html` para la fuente, los cambios realizados y la
+  licencia CC BY-NC 4.0 (atribución y uso no comercial) de las letras
+  y de los deletreos que las incorporan.
   [Referencia sobre correspondencias entre letras y sonidos](https://ufli.education.ufl.edu/resources/teaching-resources/instructional-activities/phoneme-grapheme-correspondences/)
 - **Práctica auditiva** en el laboratorio. Elige **Abecedario** o **Fonemas
   comunes** y pulsa **Practicar con 5 opciones**. En cada ronda escucha
@@ -109,6 +133,14 @@ HTML local y los de una URL publicada pertenecen a orígenes distintos.
 
 ## Código y verificación
 
+- `python tools/generate_study_videos.py` reconstruye los videos desde las listas,
+  ilustraciones y audios existentes. Requiere Pillow y FFmpeg en el PATH (o
+  `--ffmpeg RUTA`); también reconoce `imageio-ffmpeg` en `output/video-tools`.
+  `--list week-03` permite reconstruir solo una lista. Estos programas se usan
+  únicamente para generar archivos; el sitio publicado no necesita instalarlos.
+- `node tools/test_study_videos.js` verifica las listas de los 60 clips, archivos,
+  navegación, subtítulos, descarga, velocidades y pausa al ocultar la página.
+
 - `data/manifest.json` apunta a los JSON de cada semana. `data/phonics.json`
   contiene las tarjetas del laboratorio. `data/local-content.js` permite
   abrir el HTML de control directamente desde disco.
@@ -116,6 +148,13 @@ HTML local y los de una URL publicada pertenecen a orígenes distintos.
 - `python tools/generate_spelling_audio.py` combina los clips de palabras y
   nombres de letras para producir el deletreo. Con `--check` verifica la secuencia
   exacta sin modificar los archivos.
+- `tools/import_natural_letters.py` permite reconstruir las 26 letras desde
+  `assets/audio/sources/english-alphabet-acclivity.mp3`. Los recortes están
+  definidos en segundos; la Z usa 40.03–40.89, correspondiente solo a “zee”.
+  Requiere `numpy` y
+  `soundfile` únicamente para esta reconstrucción. Después ejecuta
+  `python tools/generate_spelling_audio.py` para actualizar los 59 deletreos.
+  La aplicación funciona sin instalar paquetes y sin conexión a internet.
 - `assets/words/` contiene las ilustraciones originales recortadas. La semana
   3 usa los recortes de la lámina del 9–13 de noviembre. Las palabras impresas
   de la lámina quedan fuera de los recortes.
@@ -129,6 +168,10 @@ HTML local y los de una URL publicada pertenecen a orígenes distintos.
 - Ejecuta `node tools/test_practice.js` para comprobar la sesión completa de
   26 letras, la cuenta regresiva, los tres módulos de 10 palabras, su progreso
   y dictados independientes, las opciones de respuesta y ambas velocidades.
+- Ejecuta `node tools/test_voice.js` para comprobar la confirmación de letras,
+  repeticiones, ambigüedad, permisos denegados, fallos de red y cancelación
+  al salir u ocultar la página. Simula eventos del navegador: la precisión
+  acústica requiere pruebas reales con la voz del alumno en su dispositivo.
 - `tools/contest_image_prompts.json` documenta los prompts de las 30
   ilustraciones creadas con la herramienta integrada de generación de imágenes.
   `tools/generate_contest_audio.ps1` permite generar los WAV del concurso
@@ -142,7 +185,3 @@ y que aparezca el resultado tras 26 rondas en Abecedario y diez en Fonemas comun
 usa las tres repeticiones, deja vencer una ronda, recarga la página y comprueba
 que el trazo se conserve al pasar a la revisión.
 
-
-Pruebas de voz: `node tools/test_voice.js` simula reconocimiento, confirmación,
-letras repetidas, errores y cancelación. La precisión acústica debe validarse
-con el alumno y su dispositivo; el piloto no guarda audio ni califica acento.

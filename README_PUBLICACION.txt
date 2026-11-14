@@ -1,4 +1,4 @@
-SPELLING BEE TRAINER v4.5 - PUBLICACION
+SPELLING BEE TRAINER v5.0 - PUBLICACION
 
 1. Conserva la rama main y la carpeta raiz como origen de GitHub Pages.
 2. Publica index.html junto a css/, js/, data/, assets/ y .nojekyll.

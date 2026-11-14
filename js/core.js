@@ -101,6 +101,7 @@ async function readContent(path) {
 }
 
 function setScreen(id) {
+  if (id !== "wordList" && typeof pauseStudyVideo === "function") pauseStudyVideo();
   if (id !== "voicePractice" && typeof stopVoicePractice === "function") stopVoicePractice();
   const screens = ["home", "game", "wordList", "soundLab", "dictation", "voicePractice"];
   for (const screen of screens) {

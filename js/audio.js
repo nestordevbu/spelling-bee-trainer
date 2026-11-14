@@ -28,6 +28,7 @@ function stopAudio() {
 
 // Resolve after playback so dictation can start timing when the word ends.
 function playClip(path, rate = 1, timeoutMs = 12000) {
+  if (typeof pauseStudyVideo === "function") pauseStudyVideo();
   stopAudio();
   const audio = new Audio(path);
   audio.playbackRate = rate;

@@ -40,18 +40,33 @@ function spokenLetters(text) {
   return letters.length && letters.length <= 30 ? letters.join("") : null;
 }
 
-function recognizedLetters(results) {
-  if (Array.from(results).some((result) => !result.isFinal)) return null;
-  const finals = Array.from(results).filter((result) => result.isFinal);
-  if (!finals.length || finals.some((result) => !result.length)) return null;
-  // The browser's list is cumulative; parse its latest snapshot, never append it.
-  const text = finals.map((result) => result[0].transcript).join(" ");
+function transcribedLetters(text) {
   const explicit = spokenLetters(text);
   if (explicit) return explicit;
-  // Some engines collapse spoken letter names into a word (C H A T -> CHAT).
-  // Keep exactly that transcript for review; never use the expected answer.
-  const joined = text.trim().replace(/[.!?,;:]+$/g, "").trim();
-  return /^[a-z]{2,30}$/i.test(joined) ? joined.toUpperCase() : null;
+  const tokens = String(text).toLowerCase().trim().replace(/[.,!?;:\-]+/g, " ")
+    .split(/\s+/).filter(Boolean);
+  const letters = [];
+  for (let index = 0; index < tokens.length; index++) {
+    const token = tokens[index];
+    if (!/^[a-z]+$/.test(token)) return null;
+    const pair = tokens.slice(index, index + 2).join(" ");
+    if (pair === "double you" || pair === "double u") {
+      letters.push("W");
+      index++;
+    } else {
+      letters.push(spokenLetter(token) || token.toUpperCase());
+    }
+  }
+  const sequence = letters.join("");
+  return sequence.length && sequence.length <= 30 ? sequence : null;
+}
+
+function recognizedLetters(results, allowInterim = false) {
+  if (!allowInterim && Array.from(results).some((result) => !result.isFinal)) return null;
+  const readable = Array.from(results).filter((result) => allowInterim || result.isFinal);
+  if (!readable.length || readable.some((result) => !result.length)) return null;
+  // The browser's list is cumulative; parse its latest snapshot, never append it.
+  return transcribedLetters(readable.map((result) => result[0].transcript).join(" "));
 }
 
 function spellingReviewMessage(results) {
@@ -98,6 +113,7 @@ class BrowserSpellingCapture {
     this.onPartial = onPartial;
     this.done = false;
     this.results = [];
+    this.lastVisibleResults = [];
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     this.recognition = new Recognition();
     this.recognition.lang = "en-US";
@@ -112,16 +128,48 @@ class BrowserSpellingCapture {
         copy.isFinal = result.isFinal;
         return copy;
       });
-      this.onPartial(this.results.map((result) => result[0]?.transcript || "").join(" ").slice(0, 300));
+      const transcript = this.transcript(this.results);
+      // Some engines remove their interim hypothesis when stop() is called.
+      // Keep the latest visible snapshot, including its provisional suffix.
+      if (transcript.trim()) {
+        if (this.results.length < this.lastVisibleResults.length
+          && this.lastVisibleResults.some((result) => !result.isFinal)
+          && this.results.every((result, index) => result.isFinal
+            && result[0]?.transcript === this.lastVisibleResults[index]?.[0]?.transcript)) {
+          return;
+        }
+        this.lastVisibleResults = this.results;
+        this.onPartial(transcript.slice(0, 300));
+      }
     };
-    this.recognition.onnomatch = () => this.finish(null, "No entendí el deletreo. Vuelve a intentarlo, sin penalización.");
-    this.recognition.onerror = (event) => this.finish(null,
+    this.recognition.onnomatch = () => this.finalize("El servicio no confirmó el deletreo.");
+    this.recognition.onerror = (event) => this.finalize(
       VOICE_ERRORS[event.error] || "No se pudo reconocer el deletreo. Puedes volver a intentarlo.");
-    this.recognition.onend = () => {
-      const letter = recognizedLetters(this.results);
-      this.finish(letter, letter ? spellingReviewMessage(this.results)
-        : "No se entendió el deletreo con claridad. Repite los nombres de las letras en inglés, con una pausa breve entre ellas, sin decir la palabra completa.");
-    };
+    this.recognition.onend = () => this.finalize();
+  }
+
+  transcript(results) {
+    return results.map((result) => result[0]?.transcript || "").join(" ").trim();
+  }
+
+  finalize(problem = "") {
+    if (this.done) return;
+    const results = this.lastVisibleResults;
+    const transcript = this.transcript(results);
+    const provisional = Boolean(problem) || results.some((result) => !result.isFinal);
+    const letters = recognizedLetters(results, true);
+    let message;
+    if (letters && provisional) {
+      message = (problem ? problem + " " : "")
+        + "Conservé la lectura provisional que viste mientras hablabas. Revisa TODAS las letras antes de comprobar o repite sin penalización.";
+    } else if (letters) {
+      message = spellingReviewMessage(results);
+    } else {
+      message = problem || (transcript
+        ? "Conservé la transcripción abajo, pero no pude convertirla completa en letras. Revisa lo que escuchó el navegador y repite."
+        : "No recibí una transcripción. Vuelve a deletrear la palabra, sin penalización.");
+    }
+    this.finish(letters, message, { transcript, provisional });
   }
 
   start() {
@@ -135,10 +183,10 @@ class BrowserSpellingCapture {
     this.stopping = true;
     clearTimeout(this.timer);
     // Give stop() time to deliver the last final result before recovering.
-    this.timer = setTimeout(() => this.finish(null,
+    this.timer = setTimeout(() => this.finalize(
       "El servicio no terminó de procesar el deletreo. Puedes repetir, sin penalización."), 5000);
     try { this.recognition.stop(); }
-    catch { this.finish(null, "No se pudo terminar la escucha. Vuelve a intentarlo."); }
+    catch { this.finalize("El navegador no pudo terminar la escucha normalmente."); }
   }
 
   cancel() {
@@ -151,10 +199,10 @@ class BrowserSpellingCapture {
     try { this.recognition.abort(); } catch { /* Already stopped by the browser. */ }
   }
 
-  finish(letter, message) {
+  finish(letter, message, reading = {}) {
     if (this.done) return;
     this.cancel();
-    this.onFinish(letter, message);
+    this.onFinish(letter, message, reading);
   }
 }
 
@@ -200,9 +248,12 @@ function renderVoice() {
   $("voiceProgress").textContent = "Palabra " + (index + 1) + " de " + deck.length;
   $("voiceLetters").textContent = voicePending ? voicePending.split("").join(" – ")
     : letters.length ? letters.join(" – ") : "Aquí aparecerá el deletreo completo.";
+  $("voiceTranscript").textContent = voiceSession.transcript
+    ? "Transcripción del navegador: «" + voiceSession.transcript + "»" : "";
   $("voiceRecord").disabled = Boolean(unavailable) || busy || answered || Boolean(voicePending) || !heard || letters.length >= 30;
   $("voiceRecord").setAttribute("aria-pressed", Boolean(voiceCapture));
   $("voiceStop").hidden = !voiceCapture;
+  $("voiceStop").disabled = Boolean(voiceCapture?.stopping);
   $("voicePlay").disabled = busy || finished;
   $("voicePlaySlow").disabled = busy || finished;
   $("voiceCandidate").hidden = !voicePending;
@@ -243,20 +294,25 @@ function recordVoiceSpelling() {
     || voiceSession.letters.length >= 30 || voiceAvailability()) return;
   stopAudio();
   const session = voiceSession;
+  session.transcript = "";
   $("voiceStatus").textContent = "Preparando micrófono… Si el navegador lo pide, permite el acceso para esta práctica.";
   try {
     const capture = new BrowserSpellingCapture(() => {
       $("voiceStatus").textContent = "🎤 Escuchando. Di todas las letras en inglés y pulsa «Terminé».";
-    }, (letter, message) => {
+    }, (letter, message, reading) => {
       if (voiceCapture !== capture || voiceSession !== session) return;
       voiceCapture = null;
       voicePending = letter;
+      session.transcript = reading.transcript || session.transcript;
       $("voiceStatus").textContent = message;
       renderVoice();
       if (letter) $("voiceCheck").focus();
     }, (transcript) => {
       if (voiceCapture === capture && voiceSession === session) {
-        $("voiceStatus").textContent = "🎤 Escuché: " + transcript + ". Continúa o pulsa «Terminé».";
+        session.transcript = transcript;
+        $("voiceStatus").textContent = capture.stopping
+          ? "Procesando el deletreo: " + transcript
+          : "🎤 Escuché: " + transcript + " · Continúa o pulsa «Terminé».";
       }
     });
     voiceCapture = capture;
@@ -296,6 +352,7 @@ function nextVoiceWord() {
   voiceSession.letters = [];
   voiceSession.answered = false;
   voiceSession.heard = false;
+  voiceSession.transcript = "";
   $("voiceFeedback").textContent = "";
   $("voiceStatus").textContent = "Escucha la siguiente palabra para comenzar.";
   renderVoice();
@@ -308,7 +365,12 @@ $("voiceBack").onclick = () => setScreen("home");
 $("voicePlay").onclick = () => playVoiceWord();
 $("voicePlaySlow").onclick = () => playVoiceWord(0.72);
 $("voiceRecord").onclick = recordVoiceSpelling;
-$("voiceStop").onclick = () => voiceCapture?.stop();
+$("voiceStop").onclick = () => {
+  if (!voiceCapture) return;
+  $("voiceStatus").textContent = "Procesando el deletreo… Conservaré la última lectura para que puedas revisarla.";
+  voiceCapture.stop();
+  renderVoice();
+};
 $("voiceRetry").onclick = () => {
   voicePending = null;
   recordVoiceSpelling();

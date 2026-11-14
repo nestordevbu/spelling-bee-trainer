@@ -10,7 +10,8 @@ from urllib.parse import urlsplit
 import wave
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTROL = ROOT / "Spelling_Bee_Trainer_v4_5.html"
+CONTROL = ROOT / "Spelling_Bee_Trainer_v5_0.html"
+LEGACY_CONTROL = ROOT / "Spelling_Bee_Trainer_v4_5.html"
 INDEX = ROOT / "index.html"
 DATA = ROOT / "data"
 LOCAL = DATA / "local-content.js"
@@ -104,6 +105,13 @@ def check_weeks(manifest):
             check_audio(f"assets/audio/words/{word}.wav")
             check_audio(f"assets/audio/sentences/{word}.wav")
             check_audio(f"assets/audio/spelling/{word}.wav")
+            video_base = f"assets/videos/{week['id']}/{word}"
+            video = relative_file(video_base + ".mp4")
+            check(video.read_bytes()[4:8] == b"ftyp", f"MP4 no válido: {video}")
+            check(relative_file(video_base + ".jpg").read_bytes()[:2] == b"\xff\xd8",
+                  f"Poster no válido: {video_base}")
+            check(relative_file(video_base + ".vtt").read_text(encoding="utf-8").startswith("WEBVTT"),
+                  f"Subtítulos no válidos: {video_base}")
         content[path] = week
     return content
 
@@ -136,6 +144,7 @@ def main():
         offline = LOCAL_PREFIX + json.dumps(content, ensure_ascii=False, indent=2) + ";\n"
         LOCAL.write_text(offline, encoding="utf-8")
         CONTROL.write_bytes(INDEX.read_bytes())
+        LEGACY_CONTROL.write_bytes(INDEX.read_bytes())
     local = LOCAL.read_text(encoding="utf-8").strip()
     # Remove the declaration and parse its JSON payload without running JavaScript.
     payload = local.split("const LOCAL_CONTENT = ", 1)[1].removesuffix(";")
@@ -148,7 +157,7 @@ def main():
     for path in page.scripts:
         subprocess.run(["node", "--check", str(relative_file(path))], check=True)
     print(f"OK: {len(page.scripts)} scripts, 3 semanas y concurso de 30 palabras, 26 letras y 14 combinaciones.")
-    print("OK: rutas relativas, audio WAV y HTML de control sincronizado.")
+    print("OK: rutas relativas, audio WAV, 60 videos MP4 con posters y subtítulos, y HTML de control sincronizado.")
 
 
 if __name__ == "__main__":

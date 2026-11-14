@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Spelling Bee" />
-    <title>Spelling Bee Trainer v4.5</title>
+    <title>Spelling Bee Trainer v5.0</title>
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/activities.css" />
   </head>
@@ -18,7 +18,7 @@
     <main class="app">
       <header class="hero">
         <h1>🐝 Spelling Bee Trainer</h1>
-        <p>Listen · Look · Learn · Play</p>
+        <p>v5.0 · Listen · Look · Learn · Play</p>
       </header>
       <section id="home" class="panel">
         <section class="contest-card" aria-labelledby="contestTitle">
@@ -140,6 +140,28 @@
         <p class="muted">
           Escucha la palabra, su deletreo o la oración en inglés a velocidad normal o lenta.
         </p>
+        <section id="studyVideos" class="study-videos" aria-labelledby="studyVideoTitle">
+          <h3 id="studyVideoTitle" tabindex="-1">🎬 Mira, escucha y deletrea</h3>
+          <p class="muted">Pulsa «Ver video» en cualquier palabra de la lista. Al terminar, volverás a esa palabra.</p>
+          <p>Video: <strong id="studyVideoWord" lang="en-US"></strong></p>
+          <video id="studyVideo" controls playsinline preload="metadata">
+            Tu navegador no puede reproducir este video. Usa el enlace para descargarlo.
+          </video>
+          <div class="activity-actions">
+            <button id="studyVideoPrevious" class="secondary">← Anterior</button>
+            <span id="studyVideoCount" class="muted"></span>
+            <button id="studyVideoNext" class="secondary">Siguiente →</button>
+            <label for="studyVideoSpeed">Velocidad
+              <select id="studyVideoSpeed" class="activity-select">
+                <option value="1">Normal (1×)</option>
+                <option value="0.72">Lenta (0.72×)</option>
+              </select>
+            </label>
+          </div>
+          <p id="studyVideoStatus" class="activity-status" role="status"></p>
+          <p class="muted"><a id="studyVideoDownload">Descargar video MP4</a> ·
+            <a href="credits-audio.html">Créditos de voz · Uso no comercial</a></p>
+        </section>
         <div id="wordListItems"></div>
         <button
           id="closeWordList"
@@ -183,6 +205,7 @@
             <button id="voicePlaySlow" class="secondary">🐢 Palabra · Lenta</button>
           </div>
           <p id="voiceLetters" class="voice-letters" aria-label="Letras confirmadas" lang="en-US"></p>
+          <p id="voiceTranscript" class="muted" lang="en-US"></p>
           <p id="voiceStatus" class="activity-status" role="status" aria-live="polite"></p>
           <div class="activity-actions">
             <button id="voiceRecord" class="primary">🎤 Deletrear palabra</button>
@@ -346,10 +369,12 @@
           loading="lazy"
       /></picture>
       <p>Developed by <strong>NestorDevBU (Nxt)</strong></p>
+      <p><a href="credits-audio.html">Créditos de las voces del abecedario</a></p>
     </footer>
     <script src="data/local-content.js" defer></script>
     <script src="js/core.js" defer></script>
     <script src="js/audio.js" defer></script>
+    <script src="js/study-videos.js" defer></script>
     <script src="js/games.js" defer></script>
     <script src="js/lab.js" defer></script>
     <script src="js/handwriting.js" defer></script>

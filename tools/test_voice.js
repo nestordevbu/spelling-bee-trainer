@@ -119,7 +119,7 @@ async function testUncertainAndErrors() {
   run("openVoicePractice()");
   await run("playVoiceWord()");
   for (const alternatives of [
-    ["B something"], ["123"],
+    ["B 123"], ["123"],
   ]) {
     run("recordVoiceSpelling()");
     deliver(captures.at(-1), ...alternatives);
@@ -167,13 +167,15 @@ async function testUncertainAndErrors() {
   run("recordVoiceSpelling()");
   get("voiceStop").onclick();
   assert.equal(run("voiceCapture"), null);
-  // Only final results count.
+  // An interim-only reading is retained for explicit review when capture ends.
   run("recordVoiceSpelling()");
   const interim = result("A");
   interim.isFinal = false;
   captures.at(-1).onresult({results: [interim]});
   captures.at(-1).onend();
-  assert.equal(run("voicePending"), null);
+  assert.equal(run("voicePending"), "A");
+  assert.match(get("voiceStatus").textContent, /provisional/);
+  get("voiceClear").onclick();
   // Multiple final segments form one complete spelling.
   context.packets = [result("A"), result("P")];
   assert.equal(run("recognizedLetters(packets)"), "AP");
@@ -213,6 +215,65 @@ async function testJoinedSpelling() {
   assert.equal(run("voiceSession.results[0].correct"), false);
   context.packets = [result("CHAT")];
   assert.equal(run("recognizedLetters(packets)"), "CHAT");
+}
+
+async function testProvisionalEndings() {
+  const {run, captures, get, timers} = environment();
+  run("openVoicePractice()");
+  await run("playVoiceWord()");
+  const partial = (text) => {
+    const packet = result(text);
+    packet.isFinal = false;
+    return packet;
+  };
+  for (const ending of ["normal", "empty", "network", "timeout"]) {
+    run("recordVoiceSpelling()");
+    const capture = captures.at(-1);
+    capture.stop = () => {};
+    capture.onresult({results: [partial("CHAT.")]});
+    assert.match(get("voiceStatus").textContent, /CHAT/);
+    get("voiceStop").onclick();
+    if (ending === "empty") capture.onresult({results: []});
+    if (ending === "network") capture.onerror({error: "network"});
+    else if (ending === "timeout") {
+      for (const callback of [...timers.values()]) callback();
+    } else capture.onend();
+    assert.equal(run("voicePending"), "CHAT", ending);
+    assert.match(get("voiceTranscript").textContent, /CHAT/);
+    assert.match(get("voiceStatus").textContent, /provisional/);
+    assert.equal(get("voiceCheck").disabled, false);
+    assert.equal(run("voiceSession.results.length"), 0);
+    assert.equal(timers.size, 0);
+    get("voiceClear").onclick();
+  }
+  // Do not lose the provisional tail if the engine drops it at shutdown.
+  run("recordVoiceSpelling()");
+  let capture = captures.at(-1);
+  capture.onresult({results: [result("A P"), partial("P L E")]});
+  capture.onresult({results: [result("A P")]});
+  capture.onend();
+  assert.equal(run("voicePending"), "APPLE");
+  assert.match(get("voiceStatus").textContent, /provisional/);
+  get("voiceClear").onclick();
+  // A genuine final correction supersedes a provisional word.
+  run("recordVoiceSpelling()");
+  capture = captures.at(-1);
+  capture.onresult({results: [partial("CHAT")]});
+  capture.onresult({results: [result("CHET")]});
+  capture.onend();
+  assert.equal(run("voicePending"), "CHET");
+  assert.doesNotMatch(get("voiceStatus").textContent, /provisional/);
+  get("voiceClear").onclick();
+  // Mixed joined and separated chunks are parsed without using the answer.
+  run("recordVoiceSpelling()");
+  deliver(captures.at(-1), "C H AT");
+  assert.equal(run("voicePending"), "CHAT");
+  get("voiceClear").onclick();
+  // Even unconvertible input remains visible for diagnosis instead of vanishing.
+  run("recordVoiceSpelling()");
+  deliver(captures.at(-1), "C 123 T");
+  assert.equal(run("voicePending"), null);
+  assert.match(get("voiceTranscript").textContent, /C 123 T/);
 }
 
 async function testLifecycleAndSupport() {
@@ -281,6 +342,7 @@ function testRealModules() {
   await testUncertainAndErrors();
   await testLifecycleAndSupport();
   await testJoinedSpelling();
+  await testProvisionalEndings();
   testRealModules();
-  console.log("OK: deletreo continuo, resultados acumulativos, letras repetidas, ambigüedad, errores, cancelación y compatibilidad.");
+  console.log("OK: deletreo continuo, recuperación provisional al terminar, resultados acumulativos, letras repetidas, ambigüedad, errores, cancelación y compatibilidad.");
 })().catch((error) => { console.error(error); process.exitCode = 1; });
