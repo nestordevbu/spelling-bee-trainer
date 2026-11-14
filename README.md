@@ -31,8 +31,12 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
   No necesitas confirmar cada letra. Puedes repetir el intento completo o
   quitar la última letra antes de comprobar. Se conservan las letras repetidas.
   Los resultados parciales se muestran mientras hablas, pero solo los finales
-  se usan para comprobar. Las palabras completas no se convierten en un
-  deletreo supuesto. Lecturas ambiguas y errores del servicio no puntúan.
+  se usan para comprobar. Si el navegador agrupa las letras como una palabra
+  (por ejemplo, CHAT), se muestra C–H–A–T para revisión, con un aviso de que
+  no permite verificar cómo se pronunciaron las letras. Las lecturas dudosas
+  también se muestran para revisar o repetir; no se califican sin pulsar
+  Comprobar. No se corrige la transcripción usando la palabra esperada.
+  Los fallos del servicio no puntúan.
   La práctica utiliza las diez palabras de la semana o del módulo del concurso.
   La sesión no se guarda al salir y volver a abrirla; no se califica el acento.
 - La voz requiere HTTPS (o localhost para desarrollo), permiso de micrófono

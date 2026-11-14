@@ -44,17 +44,33 @@ function recognizedLetters(results) {
   if (Array.from(results).some((result) => !result.isFinal)) return null;
   const finals = Array.from(results).filter((result) => result.isFinal);
   if (!finals.length || finals.some((result) => !result.length)) return null;
-  for (const result of finals) {
-    const best = result[0];
-    if (best.confidence > 0 && best.confidence < 0.65) return null;
-    const bestLetters = spokenLetters(best.transcript);
-    if (Array.from(result).slice(1).some((alternative) => {
-      const other = spokenLetters(alternative.transcript);
-      return other && bestLetters && other !== bestLetters;
-    })) return null;
-  }
   // The browser's list is cumulative; parse its latest snapshot, never append it.
-  return spokenLetters(finals.map((result) => result[0].transcript).join(" "));
+  const text = finals.map((result) => result[0].transcript).join(" ");
+  const explicit = spokenLetters(text);
+  if (explicit) return explicit;
+  // Some engines collapse spoken letter names into a word (C H A T -> CHAT).
+  // Keep exactly that transcript for review; never use the expected answer.
+  const joined = text.trim().replace(/[.!?,;:]+$/g, "").trim();
+  return /^[a-z]{2,30}$/i.test(joined) ? joined.toUpperCase() : null;
+}
+
+function spellingReviewMessage(results) {
+  const finals = Array.from(results).filter((result) => result.isFinal && result.length);
+  const text = finals.map((result) => result[0].transcript).join(" ");
+  if (!spokenLetters(text)) {
+    return "El navegador agrupó las letras como una palabra. Revisa la secuencia antes de comprobar; esta lectura no permite verificar por sí sola cómo se pronunciaron las letras.";
+  }
+  const uncertain = finals.some((result) => {
+    const best = result[0];
+    return (best.confidence > 0 && best.confidence < 0.65)
+      || Array.from(result).slice(1).some((alternative) => {
+        const other = spokenLetters(alternative.transcript);
+        return other && other !== spokenLetters(best.transcript);
+      });
+  });
+  return uncertain
+    ? "La lectura es dudosa. Revisa las letras; si no coinciden con lo que dijiste, repite sin penalización."
+    : "Revisa todas las letras y pulsa «Comprobar deletreo».";
 }
 
 function voiceAvailability() {
@@ -103,7 +119,7 @@ class BrowserSpellingCapture {
       VOICE_ERRORS[event.error] || "No se pudo reconocer el deletreo. Puedes volver a intentarlo.");
     this.recognition.onend = () => {
       const letter = recognizedLetters(this.results);
-      this.finish(letter, letter ? "Revisa todas las letras y pulsa «Comprobar deletreo»."
+      this.finish(letter, letter ? spellingReviewMessage(this.results)
         : "No se entendió el deletreo con claridad. Repite los nombres de las letras en inglés, con una pausa breve entre ellas, sin decir la palabra completa.");
     };
   }

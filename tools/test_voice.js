@@ -119,7 +119,7 @@ async function testUncertainAndErrors() {
   run("openVoicePractice()");
   await run("playVoiceWord()");
   for (const alternatives of [
-    ["apple"], ["B something"], ["B", "D"], [{transcript: "A", confidence: 0.4}],
+    ["B something"], ["123"],
   ]) {
     run("recordVoiceSpelling()");
     deliver(captures.at(-1), ...alternatives);
@@ -127,6 +127,14 @@ async function testUncertainAndErrors() {
     assert.equal(run("voiceSession.letters.length"), 0);
     assert.equal(run("voiceSession.results.length"), 0);
     assert.equal(get("voiceRecord").disabled, false);
+  }
+  for (const alternatives of [["B", "D"], [{transcript: "A", confidence: 0.4}]]) {
+    run("recordVoiceSpelling()");
+    deliver(captures.at(-1), ...alternatives);
+    assert.notEqual(run("voicePending"), null);
+    assert.match(get("voiceStatus").textContent, /dudosa/);
+    assert.equal(run("voiceSession.results.length"), 0);
+    get("voiceClear").onclick();
   }
   run("recordVoiceSpelling()");
   deliver(captures.at(-1), {transcript: "A", confidence: 0});
@@ -182,6 +190,29 @@ async function testUncertainAndErrors() {
   deliver(draining, "A P P L E");
   assert.equal(run("voicePending"), "APPLE");
   assert.equal(timers.size, 0);
+}
+
+async function testJoinedSpelling() {
+  const {run, captures, get, context} = environment();
+  run("openVoicePractice()");
+  await run("playVoiceWord()");
+  for (const [transcript, expected] of [["CHAT.", "CHAT"], ["chat", "CHAT"], ["APLE", "APLE"], ["APPLE", "APPLE"]]) {
+    run("recordVoiceSpelling()");
+    deliver(captures.at(-1), {transcript, confidence: 0.4});
+    assert.equal(run("voicePending"), expected);
+    assert.match(get("voiceStatus").textContent, /agrupó/);
+    assert.equal(get("voiceCheck").disabled, false);
+    assert.equal(run("voiceSession.results.length"), 0);
+    get("voiceClear").onclick();
+  }
+  // CHAT must not become the target APPLE, and APLE must not regain a missing P.
+  run("recordVoiceSpelling()");
+  deliver(captures.at(-1), "APLE");
+  run("checkVoiceWord()");
+  assert.equal(run("voiceSession.results[0].response"), "APLE");
+  assert.equal(run("voiceSession.results[0].correct"), false);
+  context.packets = [result("CHAT")];
+  assert.equal(run("recognizedLetters(packets)"), "CHAT");
 }
 
 async function testLifecycleAndSupport() {
@@ -249,6 +280,7 @@ function testRealModules() {
   await testLettersAndGrading();
   await testUncertainAndErrors();
   await testLifecycleAndSupport();
+  await testJoinedSpelling();
   testRealModules();
   console.log("OK: deletreo continuo, resultados acumulativos, letras repetidas, ambigüedad, errores, cancelación y compatibilidad.");
 })().catch((error) => { console.error(error); process.exitCode = 1; });
