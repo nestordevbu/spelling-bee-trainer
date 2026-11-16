@@ -33,7 +33,7 @@ function newDictation() {
 
 function showDictation() {
   if (weekLoading || !weekId) return;
-  stopAudio();
+  cancelDictationAudio();
   if (dictation?.week !== practiceId()) {
     dictation = readStorage("spelling_bee_dictation_v45_" + practiceId(), null);
   }
@@ -266,20 +266,32 @@ $("dictationBack").onclick = () => {
     saveDictation();
   setScreen("home");
 };
-$("dictationRestart").onclick = () => {
-  if (
-    !window.confirm(
-      "¿Empezar otro dictado y borrar los trazos y la calificación de esta semana?",
-    )
-  ) {
-    return;
-  }
+function confirmDictationRestart() {
+  const dialog = $("dictationRestartDialog");
+  if (!dictation || !dialog.open) return;
+
+  // Invalidate playback callbacks before replacing the session. An old word
+  // must never start the timer or change the new dictation after a restart.
+  clearInterval(dictationTimer);
+  cancelDictationAudio();
+  writingSurface.stop();
+
   dictation = newDictation();
   $("dictationStatus").textContent =
     "Escucha la palabra para iniciar el tiempo.";
   saveDictation();
   renderDictation();
+  dialog.close();
+  $("dictationListen").focus();
+}
+
+$("dictationRestart").onclick = () => {
+  const dialog = $("dictationRestartDialog");
+  if (dictation && !dialog.open) dialog.showModal();
 };
+
+$("dictationRestartCancel").onclick = () => $("dictationRestartDialog").close();
+$("dictationRestartConfirm").onclick = confirmDictationRestart;
 window.addEventListener("pagehide", () => {
   if (dictation && (dictation.responses.length || dictation.phase !== "listen"))
     saveDictation();

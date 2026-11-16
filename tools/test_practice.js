@@ -23,7 +23,7 @@ function environment(extra = {}) {
   };
   const context = vm.createContext({
     $: get,
-    document: { getElementById: get, createElement: element, addEventListener() {} },
+    document: { getElementById: get, createElement: element, addEventListener() {}, querySelectorAll: () => [] },
     window: { addEventListener() {} },
     setInterval() {}, clearInterval() {}, Intl, Date, ...extra,
   });

@@ -1,5 +1,17 @@
 # Historial de versiones
 
+## 5.2 · 15 de noviembre de 2026
+
+- Reinicio del dictado disponible en cualquier momento, incluida la escritura,
+  la reproducción de palabras y la revisión pendiente o parcial.
+- Confirmación dentro de la página. Cancelar conserva el intento; confirmar
+  cancela reloj, audio y trazos activos antes de crear el nuevo dictado.
+- Los botones de audio se bloquean hasta el final real de la reproducción,
+  también en velocidad lenta. Las pulsaciones repetidas no interrumpen el clip
+  ni generan una cola de sonidos.
+- Pruebas de recuperación ante fallos de audio y protección frente a respuestas
+  tardías de una reproducción anterior al reinicio.
+
 ## 5.1 · 14 de noviembre de 2026
 
 - Mascotas de acierto y de ánimo al comprobar el deletreo por voz; se ocultan

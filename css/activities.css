@@ -399,6 +399,23 @@
   margin-top: 1rem;
 }
 
+.dictation-session-actions {
+  margin-top: 1rem;
+}
+
+#dictationRestartDialog {
+  width: min(32rem, calc(100% - 2rem));
+  padding: 1.25rem;
+  border: 0;
+  border-radius: 1rem;
+  color: #32214d;
+  box-shadow: 0 1rem 3rem #241c3a33;
+}
+
+#dictationRestartDialog::backdrop {
+  background: #241c3a80;
+}
+
 .grade-summary {
   font-weight: 750;
   color: #5131a1;

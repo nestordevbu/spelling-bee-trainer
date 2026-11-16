@@ -5,6 +5,30 @@ let audioContext;
 let activeClip;
 let chimeNodes = [];
 
+const AUDIO_BUTTON_SELECTOR = [
+  "[data-say-word]",
+  "[data-spell-word]",
+  "[data-say-example]",
+  "[data-play]",
+  "[data-clip]",
+  "#labListen",
+  "#dictationListen",
+  "#dictationRepeat",
+  "#voicePlay",
+  "#voicePlaySlow",
+].join(", ");
+
+function lockAudioButtons() {
+  const buttons = Array.from(document.querySelectorAll(AUDIO_BUTTON_SELECTOR));
+  const previousStates = buttons.map((button) => [button, button.disabled]);
+
+  for (const button of buttons) button.disabled = true;
+
+  return () => {
+    for (const [button, disabled] of previousStates) button.disabled = disabled;
+  };
+}
+
 function unlockAudio() {
   audioUnlocked = true;
   const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -28,6 +52,9 @@ function stopAudio() {
 
 // Resolve after playback so dictation can start timing when the word ends.
 function playClip(path, rate = 1, timeoutMs = 12000) {
+  // Ignore repeated requests rather than interrupting or queuing the current clip.
+  if (activeClip) return Promise.resolve(false);
+
   if (typeof pauseStudyVideo === "function") pauseStudyVideo();
   stopAudio();
   const audio = new Audio(path);
@@ -35,21 +62,44 @@ function playClip(path, rate = 1, timeoutMs = 12000) {
   audio.defaultPlaybackRate = rate;
   audio.preservesPitch = true;
   return new Promise((resolve) => {
+    const releaseButtons = lockAudioButtons();
+    let finished = false;
+
     function finish(played) {
+      if (finished) return;
+      finished = true;
       clearTimeout(watchdog);
       audio.onended = null;
       audio.onerror = null;
       audio.pause();
       if (activeClip?.finish === finish) activeClip = null;
+      releaseButtons();
       resolve(played);
     }
     const watchdog = setTimeout(() => finish(false), timeoutMs);
     activeClip = { finish };
     audio.onended = () => finish(true);
     audio.onerror = () => finish(false);
-    audio.play().catch(() => finish(false));
+    try {
+      Promise.resolve(audio.play()).catch(() => finish(false));
+    } catch {
+      finish(false);
+    }
   });
 }
+
+// New controls can appear while a clip plays. Block those clicks too, before
+// delegated activity handlers can count repetitions or start a new request.
+document.addEventListener(
+  "click",
+  (event) => {
+    if (activeClip && event.target.closest?.(AUDIO_BUTTON_SELECTOR)) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  },
+  true,
+);
 
 function playWord(word, rate = 1) {
   return playClip("assets/audio/words/" + word + ".wav", rate);

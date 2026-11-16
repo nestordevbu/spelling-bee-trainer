@@ -1,8 +1,8 @@
-# Spelling Bee Trainer v5.1
+# Spelling Bee Trainer v5.2
 
 ## Abrir el entrenador
 
-Extrae el ZIP en una carpeta. Abre `Spelling_Bee_Trainer_v5_1.html` con Chrome,
+Extrae el ZIP en una carpeta. Abre `Spelling_Bee_Trainer_v5_2.html` con Chrome,
 Edge, Firefox o Safari. El HTML de control y `index.html` usan los recursos de
 la misma carpeta, así que conserva `css/`, `js/`, `data/` y `assets/` junto
 a ambos. Si tu dispositivo abre el HTML en una vista previa de archivos,
@@ -24,6 +24,11 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
 [Guía de GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
 
 ## Qué incluye
+
+- **Reproducción sin interrupciones por clics repetidos**: los botones de audio
+  se bloquean mientras suena el clip, también a velocidad lenta y en deletreos.
+  Las pulsaciones adicionales se ignoran, sin reiniciar ni poner sonidos en cola.
+  Al terminar, fallar o salir de la actividad, los controles recuperan su estado.
 
 - **Videos de estudio**: abre la lista de cualquier semana o las 30 palabras del
   concurso para encontrar **Mira, escucha y deletrea**. Hay 60 clips MP4 (uno por
@@ -131,10 +136,17 @@ todas las respuestas.
 El navegador guarda los trazos y las calificaciones del dictado de cada semana
 en almacenamiento local. Puedes volver desde **Dictado manuscrito** con el
 mismo navegador y origen. El reloj sigue corriendo si sales durante una palabra.
-**Empezar otro dictado** reemplaza el intento de esa semana. Los avances del
+**Reiniciar dictado** está siempre disponible: al escuchar, escribir o revisar,
+aunque falten respuestas o calificaciones. La confirmación borra únicamente
+el intento de la semana o módulo actual y cancela su reloj y audio.
+Cancelar la confirmación conserva el intento y el plazo original. Los avances del
 HTML local y los de una URL publicada pertenecen a orígenes distintos.
 
 ## Código y verificación
+
+- `node tools/test_playback_dictation.js` comprueba el bloqueo durante la
+  reproducción, recuperación ante fallos y reinicio confirmado en todas las
+  fases del dictado, incluida la cancelación de audios pendientes.
 
 - `python tools/generate_study_videos.py` reconstruye los videos desde las listas,
   ilustraciones y audios existentes. Requiere Pillow y FFmpeg en el PATH (o
