@@ -220,23 +220,31 @@ function dictationReviewCard(response, index) {
   const marks = response.strokes.length ? "Con trazos" : "En blanco";
   const timing = response.timedOut ? " · Se agotó el tiempo" : "";
   detail.textContent = marks + " · Repeticiones: " + response.repeats + timing;
-  const label = document.createElement("label");
-  label.textContent = "Calificar «" + response.word + "»";
-  const select = document.createElement("select");
-  select.className = "activity-select";
-  select.append(
-    new Option("Pendiente", ""),
-    new Option("Correcta", "correct"),
-    new Option("Incorrecta", "incorrect"),
-  );
-  select.value = response.grade ?? "";
-  select.onchange = () => {
-    response.grade = select.value || null;
-    saveDictation();
-    updateDictationGrade();
-  };
-  label.append(select);
-  card.append(title, drawing, detail, label);
+  const grading = document.createElement("fieldset");
+  grading.className = "dictation-grade";
+  const legend = document.createElement("legend");
+  legend.textContent = "Calificar «" + response.word + "»";
+  const options = document.createElement("div");
+  options.className = "grade-options";
+  for (const [value, text] of [["correct", "Correcto"], ["incorrect", "Incorrecto"]]) {
+    const label = document.createElement("label");
+    label.className = "grade-option";
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "dictation-grade-" + index;
+    radio.value = value;
+    radio.checked = response.grade === value;
+    radio.onchange = () => {
+      if (!radio.checked) return;
+      response.grade = value;
+      saveDictation();
+      updateDictationGrade();
+    };
+    label.append(radio, text);
+    options.append(label);
+  }
+  grading.append(legend, options);
+  card.append(title, drawing, detail, grading);
   return card;
 }
 

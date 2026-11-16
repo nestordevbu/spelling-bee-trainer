@@ -2,6 +2,9 @@
 
 ## 5.2 · 15 de noviembre de 2026
 
+- Ajuste del 16 de noviembre: calificación del dictado con dos opciones
+  circulares, Correcto e Incorrecto; sin selector desplegable ni opción Pendiente.
+  Las respuestas sin revisar empiezan sin ninguna opción marcada.
 - Ajuste del 16 de noviembre: la confirmación de reinicio aparece dentro de
   la página, sin ventanas emergentes ni dependencia de diálogos del navegador.
 - Reinicio del dictado disponible en cualquier momento, incluida la escritura,

@@ -129,7 +129,8 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
 ## Revisar el dictado
 
 Tras guardar la última respuesta, abre **Revisión de un adulto**. Compara cada
-palabra dictada con el trazo y elige **Correcta** o **Incorrecta**. La vista
+palabra dictada con el trazo y marca **Correcto** o **Incorrecto** con los botones
+circulares. Ninguno aparece seleccionado hasta calificar la respuesta. La vista
 muestra cuántas palabras se han calificado y calcula la nota final al completar
 todas las respuestas.
 
