@@ -34,6 +34,7 @@ function newDictation() {
 function showDictation() {
   if (weekLoading || !weekId) return;
   cancelDictationAudio();
+  setDictationRestartConfirmation(false);
   if (dictation?.week !== practiceId()) {
     dictation = readStorage("spelling_bee_dictation_v45_" + practiceId(), null);
   }
@@ -259,6 +260,7 @@ $("dictationClear").onclick = () => {
   saveDictation();
 };
 $("dictationBack").onclick = () => {
+  setDictationRestartConfirmation(false);
   clearInterval(dictationTimer);
   cancelDictationAudio();
   writingSurface.stop();
@@ -266,9 +268,16 @@ $("dictationBack").onclick = () => {
     saveDictation();
   setScreen("home");
 };
+
+function setDictationRestartConfirmation(visible) {
+  $("dictationRestartConfirmation").hidden = !visible;
+  $("dictationRestart").setAttribute("aria-expanded", String(visible));
+
+  if (visible) $("dictationRestartCancel").focus();
+}
+
 function confirmDictationRestart() {
-  const dialog = $("dictationRestartDialog");
-  if (!dictation || !dialog.open) return;
+  if (!dictation || $("dictationRestartConfirmation").hidden) return;
 
   // Invalidate playback callbacks before replacing the session. An old word
   // must never start the timer or change the new dictation after a restart.
@@ -281,17 +290,20 @@ function confirmDictationRestart() {
     "Escucha la palabra para iniciar el tiempo.";
   saveDictation();
   renderDictation();
-  dialog.close();
+  setDictationRestartConfirmation(false);
   $("dictationListen").focus();
 }
 
 $("dictationRestart").onclick = () => {
-  const dialog = $("dictationRestartDialog");
-  if (dictation && !dialog.open) dialog.showModal();
+  if (dictation) setDictationRestartConfirmation(true);
 };
 
-$("dictationRestartCancel").onclick = () => $("dictationRestartDialog").close();
+$("dictationRestartCancel").onclick = () => {
+  setDictationRestartConfirmation(false);
+  $("dictationRestart").focus();
+};
 $("dictationRestartConfirm").onclick = confirmDictationRestart;
+
 window.addEventListener("pagehide", () => {
   if (dictation && (dictation.responses.length || dictation.phase !== "listen"))
     saveDictation();

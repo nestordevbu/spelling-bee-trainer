@@ -403,17 +403,17 @@
   margin-top: 1rem;
 }
 
-#dictationRestartDialog {
-  width: min(32rem, calc(100% - 2rem));
-  padding: 1.25rem;
-  border: 0;
+.dictation-restart-confirmation {
+  margin-top: 0.75rem;
+  padding: 1rem;
+  border: 1px solid #d8cbed;
   border-radius: 1rem;
+  background: #f7f2ff;
   color: #32214d;
-  box-shadow: 0 1rem 3rem #241c3a33;
 }
 
-#dictationRestartDialog::backdrop {
-  background: #241c3a80;
+.dictation-restart-confirmation h3 {
+  margin-top: 0;
 }
 
 .grade-summary {

@@ -1,6 +1,6 @@
 "use strict";
 
-// Exercise real audio/dictation code with controlled playback and dialog events.
+// Exercise real audio/dictation code with controlled playback and inline confirmation events.
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
@@ -29,19 +29,20 @@ function environment() {
       append(...children) { this.children.push(...children); },
       replaceChildren(...children) { this.children = children; },
       setAttribute() {}, focus() {},
-      showModal() { this.open = true; this.opens = (this.opens || 0) + 1; },
-      close() { this.open = false; },
     };
   }
 
   function get(name) {
-    if (!elements.has(name)) elements.set(name, element());
+    if (!elements.has(name)) {
+      elements.set(name, element());
+      if (name === "dictationRestartConfirmation") elements.get(name).hidden = true;
+    }
     return elements.get(name);
   }
 
   const context = vm.createContext({
     $: get,
-    window: { addEventListener() {} },
+    window: { addEventListener() {}, confirm() { throw new Error("Native confirmation must not be used"); } },
     document: {
       hidden: false,
       querySelectorAll: () => AUDIO_IDS.map(get),
@@ -150,7 +151,7 @@ async function testPlaybackFailureRecovery() {
 
 function openRestart(env) {
   env.get("dictationRestart").onclick();
-  assert.equal(env.get("dictationRestartDialog").open, true);
+  assert.equal(env.get("dictationRestartConfirmation").hidden, false);
 }
 
 function testRestartInEveryPhase() {
@@ -181,9 +182,9 @@ function testRestartInEveryPhase() {
 
     const before = run("JSON.stringify(dictation)");
     openRestart(env);
-    const opens = get("dictationRestartDialog").opens;
     get("dictationRestart").onclick();
-    assert.equal(get("dictationRestartDialog").opens, opens);
+    assert.equal(get("dictationRestartConfirmation").hidden, false);
+    assert.equal(run("JSON.stringify(dictation)"), before);
     get("dictationRestartCancel").onclick();
     assert.equal(run("JSON.stringify(dictation)"), before, "Cancelling must preserve the attempt");
 
@@ -197,13 +198,21 @@ function testRestartInEveryPhase() {
     assert.equal(run("dictationPlaying"), false);
     assert.equal(get("dictationClock").textContent, "00:30");
     assert.equal(get("dictationListen").disabled, false);
-    assert.equal(get("dictationRestartDialog").open, false);
+    assert.equal(get("dictationRestartConfirmation").hidden, true);
     assert.equal(env.intervals.size, 0);
     assert.equal(storage.get(otherModuleKey), '{"kept":true}');
   }
 
   assert(env.surfaceStops() >= 6);
+  openRestart(env);
+  get("dictationBack").onclick();
+  assert.equal(get("dictationRestartConfirmation").hidden, true);
+  const beforeUnconfirmed = run("JSON.stringify(dictation)");
+  get("dictationRestartConfirm").onclick();
+  assert.equal(run("JSON.stringify(dictation)"), beforeUnconfirmed);
   const html = read("index.html");
+  assert(!html.includes('id="dictationRestartDialog"'));
+  assert(!read("js/dictation.js").includes("showModal"));
   assert(html.indexOf('id="dictationRestart"') < html.indexOf('id="dictationPractice"'),
     "Restart must be outside both the practice and review containers");
 }

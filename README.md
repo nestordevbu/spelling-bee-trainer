@@ -139,6 +139,8 @@ mismo navegador y origen. El reloj sigue corriendo si sales durante una palabra.
 **Reiniciar dictado** está siempre disponible: al escuchar, escribir o revisar,
 aunque falten respuestas o calificaciones. La confirmación borra únicamente
 el intento de la semana o módulo actual y cancela su reloj y audio.
+La confirmación es un recuadro dentro de la página con **Sí, reiniciar** y
+**Continuar dictado**; no utiliza ventanas emergentes ni diálogos del navegador.
 Cancelar la confirmación conserva el intento y el plazo original. Los avances del
 HTML local y los de una URL publicada pertenecen a orígenes distintos.
 

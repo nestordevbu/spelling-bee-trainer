@@ -313,14 +313,21 @@
           <button id="dictationBack" class="secondary">← Inicio</button>
         </div>
         <div class="activity-actions dictation-session-actions">
-          <button id="dictationRestart" class="secondary">
+          <button
+            id="dictationRestart"
+            class="secondary"
+            aria-expanded="false"
+            aria-controls="dictationRestartConfirmation"
+          >
             🔄 Reiniciar dictado
           </button>
         </div>
-        <dialog
-          id="dictationRestartDialog"
+        <section
+          id="dictationRestartConfirmation"
+          class="dictation-restart-confirmation"
           aria-labelledby="dictationRestartTitle"
           aria-describedby="dictationRestartDescription"
+          hidden
         >
           <h3 id="dictationRestartTitle">¿Reiniciar este dictado?</h3>
           <p id="dictationRestartDescription">
@@ -328,14 +335,14 @@
             actual. Comenzarás de nuevo con las palabras de esta semana o módulo.
           </p>
           <div class="activity-actions">
-            <button id="dictationRestartCancel" class="secondary" autofocus>
+            <button id="dictationRestartCancel" class="secondary">
               Continuar dictado
             </button>
             <button id="dictationRestartConfirm" class="primary">
               Sí, reiniciar
             </button>
           </div>
-        </dialog>
+        </section>
         <div id="dictationPractice">
           <div class="dictation-progress">
             <strong id="dictationCount"></strong>

@@ -2,6 +2,8 @@
 
 ## 5.2 · 15 de noviembre de 2026
 
+- Ajuste del 16 de noviembre: la confirmación de reinicio aparece dentro de
+  la página, sin ventanas emergentes ni dependencia de diálogos del navegador.
 - Reinicio del dictado disponible en cualquier momento, incluida la escritura,
   la reproducción de palabras y la revisión pendiente o parcial.
 - Confirmación dentro de la página. Cancelar conserva el intento; confirmar
