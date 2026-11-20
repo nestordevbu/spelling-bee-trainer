@@ -24,6 +24,7 @@ LOCAL_PREFIX = (
     "const LOCAL_CONTENT = "
 )
 WEEK_3 = "bench catch chat graph kitchen phonics photo switch when whiskers".split()
+WEEK_4 = "bite cave five game make pine same time vine wave".split()
 CONTEST_WORDS = (
     "apple april arm august baby ball bedroom belt black boat book box brown butter cake "
     "canyon car card chair circle clap cloudy cold corn crayon cut desk dog down dress"
@@ -78,10 +79,10 @@ def check_audio(path):
 
 def check_weeks(manifest):
     check(manifest["schemaVersion"] == 1, "Versión de manifest inesperada")
-    check(manifest["defaultWeek"] == "week-03", "La semana inicial debe ser la 3")
+    check(manifest["defaultWeek"] == "week-04", "La semana inicial debe ser la 4")
     check([entry["id"] for entry in manifest["weeks"]] ==
-          ["week-01", "week-02", "week-03"],
-          "El selector semanal solo debe incluir las tres semanas")
+          ["week-01", "week-02", "week-03", "week-04"],
+          "El selector semanal debe incluir las cuatro semanas")
     check(manifest["contest"]["id"] == "contest-2026", "Falta la lista especial del concurso")
     entries = manifest["weeks"] + [manifest["contest"]]
     content = {}
@@ -95,6 +96,8 @@ def check_weeks(manifest):
               f"Vocabulario repetido o incompleto: {path}")
         if week["id"] == "week-03":
             check(words == WEEK_3, "Vocabulario de semana 3 inesperado")
+        if week["id"] == "week-04":
+            check(words == WEEK_4, "La semana 4 debe coincidir con la lámina del 16–20 de noviembre")
         if week["id"] == "contest-2026":
             check(words == CONTEST_WORDS, "La lista debe coincidir con las 30 palabras del cartel")
             event = week["event"]
@@ -144,6 +147,7 @@ def main():
     phonics = read_json(DATA / "phonics.json")
     content = {"data/manifest.json": manifest, **check_weeks(manifest), "data/phonics.json": phonics}
     check_lab(phonics)
+    content["data/guided-lesson.json"] = read_json(DATA / "guided-lesson.json")
     if args.sync_local:
         offline = LOCAL_PREFIX + json.dumps(content, ensure_ascii=False, indent=2) + ";\n"
         LOCAL.write_text(offline, encoding="utf-8")
@@ -164,8 +168,8 @@ def main():
         relative_file(path)
     for path in page.scripts:
         subprocess.run(["node", "--check", str(relative_file(path))], check=True)
-    print(f"OK: {len(page.scripts)} scripts, 3 semanas y concurso de 30 palabras, 26 letras y 14 combinaciones.")
-    print("OK: rutas relativas, audio WAV, 60 videos MP4 con posters y subtítulos, y HTML de control sincronizado.")
+    print(f"OK: {len(page.scripts)} scripts, 4 semanas y concurso de 30 palabras, 26 letras y 14 combinaciones.")
+    print("OK: rutas relativas, audio WAV, 70 videos MP4 con posters y subtítulos, y HTML de control sincronizado.")
 
 
 if __name__ == "__main__":

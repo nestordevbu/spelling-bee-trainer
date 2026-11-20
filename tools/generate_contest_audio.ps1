@@ -1,8 +1,9 @@
 # Run with Windows PowerShell to generate the included offline English clips.
+param([string]$ContentFile = 'data/contest-2026.json')
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Speech
 $projectRoot = Split-Path -Parent $PSScriptRoot
-$content = Get-Content -LiteralPath (Join-Path $projectRoot 'data/contest-2026.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+$content = Get-Content -LiteralPath (Join-Path $projectRoot $ContentFile) -Raw -Encoding UTF8 | ConvertFrom-Json
 $speaker = New-Object System.Speech.Synthesis.SpeechSynthesizer
 try {
     $voices = @($speaker.GetInstalledVoices() | Where-Object {
@@ -34,7 +35,7 @@ try {
             $speaker.SetOutputToNull()
         }
     }
-    Write-Output ('OK: contest audio generated with ' + $voice.VoiceInfo.Name)
+    Write-Output ('OK: ' + $content.id + ' audio generated with ' + $voice.VoiceInfo.Name)
 } finally {
     $speaker.Dispose()
 }

@@ -1,0 +1,386 @@
+{
+  "title": "Spelling By Contest · Matteo",
+  "video": "assets/videos/guided-lesson/lesson.mp4",
+  "duration": 308.3615873015873,
+  "chapters": [
+    {
+      "title": "You can do it Matteo",
+      "key": "intro",
+      "section": "intro",
+      "start": 0
+    },
+    {
+      "title": "Letra A",
+      "key": "a",
+      "section": "alphabet",
+      "start": 8.6
+    },
+    {
+      "title": "Letra B",
+      "key": "b",
+      "section": "alphabet",
+      "start": 9.609977324263038
+    },
+    {
+      "title": "Letra C",
+      "key": "c",
+      "section": "alphabet",
+      "start": 10.559954648526077
+    },
+    {
+      "title": "Letra D",
+      "key": "d",
+      "section": "alphabet",
+      "start": 11.659954648526078
+    },
+    {
+      "title": "Letra E",
+      "key": "e",
+      "section": "alphabet",
+      "start": 12.679954648526078
+    },
+    {
+      "title": "Letra F",
+      "key": "f",
+      "section": "alphabet",
+      "start": 13.719954648526077
+    },
+    {
+      "title": "Letra G",
+      "key": "g",
+      "section": "alphabet",
+      "start": 14.739954648526078
+    },
+    {
+      "title": "Letra H",
+      "key": "h",
+      "section": "alphabet",
+      "start": 15.769931972789117
+    },
+    {
+      "title": "Letra I",
+      "key": "i",
+      "section": "alphabet",
+      "start": 16.869931972789118
+    },
+    {
+      "title": "Letra J",
+      "key": "j",
+      "section": "alphabet",
+      "start": 17.929931972789117
+    },
+    {
+      "title": "Letra K",
+      "key": "k",
+      "section": "alphabet",
+      "start": 18.999909297052156
+    },
+    {
+      "title": "Letra L",
+      "key": "l",
+      "section": "alphabet",
+      "start": 20.009886621315196
+    },
+    {
+      "title": "Letra M",
+      "key": "m",
+      "section": "alphabet",
+      "start": 21.049886621315196
+    },
+    {
+      "title": "Letra N",
+      "key": "n",
+      "section": "alphabet",
+      "start": 22.059863945578236
+    },
+    {
+      "title": "Letra O",
+      "key": "o",
+      "section": "alphabet",
+      "start": 23.099863945578235
+    },
+    {
+      "title": "Letra P",
+      "key": "p",
+      "section": "alphabet",
+      "start": 24.119863945578235
+    },
+    {
+      "title": "Letra Q",
+      "key": "q",
+      "section": "alphabet",
+      "start": 25.169841269841275
+    },
+    {
+      "title": "Letra R",
+      "key": "r",
+      "section": "alphabet",
+      "start": 26.289841269841276
+    },
+    {
+      "title": "Letra S",
+      "key": "s",
+      "section": "alphabet",
+      "start": 27.419818594104314
+    },
+    {
+      "title": "Letra T",
+      "key": "t",
+      "section": "alphabet",
+      "start": 28.629795918367353
+    },
+    {
+      "title": "Letra U",
+      "key": "u",
+      "section": "alphabet",
+      "start": 29.859773242630393
+    },
+    {
+      "title": "Letra V",
+      "key": "v",
+      "section": "alphabet",
+      "start": 30.91977324263039
+    },
+    {
+      "title": "Letra W",
+      "key": "w",
+      "section": "alphabet",
+      "start": 31.99977324263039
+    },
+    {
+      "title": "Letra X",
+      "key": "x",
+      "section": "alphabet",
+      "start": 33.299773242630394
+    },
+    {
+      "title": "Letra Y",
+      "key": "y",
+      "section": "alphabet",
+      "start": 34.53977324263039
+    },
+    {
+      "title": "Letra Z",
+      "key": "z",
+      "section": "alphabet",
+      "start": 35.65977324263039
+    },
+    {
+      "title": "apple",
+      "key": "apple",
+      "section": "words",
+      "start": 36.76975056689342
+    },
+    {
+      "title": "April",
+      "key": "april",
+      "section": "words",
+      "start": 45.96857142857142
+    },
+    {
+      "title": "arm",
+      "key": "arm",
+      "section": "words",
+      "start": 55.4873469387755
+    },
+    {
+      "title": "August",
+      "key": "august",
+      "section": "words",
+      "start": 62.88616780045351
+    },
+    {
+      "title": "baby",
+      "key": "baby",
+      "section": "words",
+      "start": 73.93496598639454
+    },
+    {
+      "title": "ball",
+      "key": "ball",
+      "section": "words",
+      "start": 82.15374149659863
+    },
+    {
+      "title": "bedroom",
+      "key": "bedroom",
+      "section": "words",
+      "start": 90.3225850340136
+    },
+    {
+      "title": "belt",
+      "key": "belt",
+      "section": "words",
+      "start": 101.8315192743764
+    },
+    {
+      "title": "black",
+      "key": "black",
+      "section": "words",
+      "start": 110.19024943310656
+    },
+    {
+      "title": "boat",
+      "key": "boat",
+      "section": "words",
+      "start": 119.4790476190476
+    },
+    {
+      "title": "book",
+      "key": "book",
+      "section": "words",
+      "start": 127.81786848072561
+    },
+    {
+      "title": "box",
+      "key": "box",
+      "section": "words",
+      "start": 135.98671201814057
+    },
+    {
+      "title": "brown",
+      "key": "brown",
+      "section": "words",
+      "start": 143.81555555555553
+    },
+    {
+      "title": "butter",
+      "key": "butter",
+      "section": "words",
+      "start": 153.49442176870747
+    },
+    {
+      "title": "cake",
+      "key": "cake",
+      "section": "words",
+      "start": 164.01324263038546
+    },
+    {
+      "title": "canyon",
+      "key": "canyon",
+      "section": "words",
+      "start": 172.3521541950113
+    },
+    {
+      "title": "car",
+      "key": "car",
+      "section": "words",
+      "start": 183.19097505668933
+    },
+    {
+      "title": "card",
+      "key": "card",
+      "section": "words",
+      "start": 190.69986394557822
+    },
+    {
+      "title": "chair",
+      "key": "chair",
+      "section": "words",
+      "start": 199.0786394557823
+    },
+    {
+      "title": "circle",
+      "key": "circle",
+      "section": "words",
+      "start": 208.60757369614512
+    },
+    {
+      "title": "clap",
+      "key": "clap",
+      "section": "words",
+      "start": 219.2564172335601
+    },
+    {
+      "title": "cloudy",
+      "key": "cloudy",
+      "section": "words",
+      "start": 227.82526077097506
+    },
+    {
+      "title": "cold",
+      "key": "cold",
+      "section": "words",
+      "start": 238.28421768707483
+    },
+    {
+      "title": "corn",
+      "key": "corn",
+      "section": "words",
+      "start": 246.62303854875285
+    },
+    {
+      "title": "crayon",
+      "key": "crayon",
+      "section": "words",
+      "start": 255.15192743764175
+    },
+    {
+      "title": "cut",
+      "key": "cut",
+      "section": "words",
+      "start": 265.93079365079365
+    },
+    {
+      "title": "desk",
+      "key": "desk",
+      "section": "words",
+      "start": 273.59968253968253
+    },
+    {
+      "title": "dog",
+      "key": "dog",
+      "section": "words",
+      "start": 282.4185034013605
+    },
+    {
+      "title": "down",
+      "key": "down",
+      "section": "words",
+      "start": 289.7873469387755
+    },
+    {
+      "title": "dress",
+      "key": "dress",
+      "section": "words",
+      "start": 298.3962811791383
+    }
+  ],
+  "locale": "en-US",
+  "format": "contest-compilation",
+  "alphabetDuration": 28.769750566893425,
+  "introDuration": 8.0,
+  "wordCount": 30,
+  "sources": [
+    "assets/videos/contest-2026/apple.mp4",
+    "assets/videos/contest-2026/april.mp4",
+    "assets/videos/contest-2026/arm.mp4",
+    "assets/videos/contest-2026/august.mp4",
+    "assets/videos/contest-2026/baby.mp4",
+    "assets/videos/contest-2026/ball.mp4",
+    "assets/videos/contest-2026/bedroom.mp4",
+    "assets/videos/contest-2026/belt.mp4",
+    "assets/videos/contest-2026/black.mp4",
+    "assets/videos/contest-2026/boat.mp4",
+    "assets/videos/contest-2026/book.mp4",
+    "assets/videos/contest-2026/box.mp4",
+    "assets/videos/contest-2026/brown.mp4",
+    "assets/videos/contest-2026/butter.mp4",
+    "assets/videos/contest-2026/cake.mp4",
+    "assets/videos/contest-2026/canyon.mp4",
+    "assets/videos/contest-2026/car.mp4",
+    "assets/videos/contest-2026/card.mp4",
+    "assets/videos/contest-2026/chair.mp4",
+    "assets/videos/contest-2026/circle.mp4",
+    "assets/videos/contest-2026/clap.mp4",
+    "assets/videos/contest-2026/cloudy.mp4",
+    "assets/videos/contest-2026/cold.mp4",
+    "assets/videos/contest-2026/corn.mp4",
+    "assets/videos/contest-2026/crayon.mp4",
+    "assets/videos/contest-2026/cut.mp4",
+    "assets/videos/contest-2026/desk.mp4",
+    "assets/videos/contest-2026/dog.mp4",
+    "assets/videos/contest-2026/down.mp4",
+    "assets/videos/contest-2026/dress.mp4"
+  ]
+}

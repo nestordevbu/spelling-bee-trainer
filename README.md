@@ -25,13 +25,24 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
 
 ## Qué incluye
 
+- **Spelling By Contest · Matteo**: presentación personalizada, seguida del
+  abecedario completo en una sola imagen. Cada letra se resalta al escuchar su
+  nombre con la voz humana seleccionada del proyecto. A continuación aparecen
+  los 30 videos de estudio originales, unidos en el orden oficial. La tarjeta
+  del concurso abre el video con capítulos, repetición, pausa, subtítulos y
+  descarga MP4. La descarga conserva el video; los botones pertenecen al sitio.
+  Esta compilación sustituye a la práctica larga con avatar.
+  `python tools/combine_contest_video.py` permite reconstruirla con Pillow y
+  FFmpeg. `node tools/test_guided_lesson.js` verifica la lista oficial, las
+  fuentes de los clips, los capítulos y los controles.
+
 - **Reproducción sin interrupciones por clics repetidos**: los botones de audio
   se bloquean mientras suena el clip, también a velocidad lenta y en deletreos.
   Las pulsaciones adicionales se ignoran, sin reiniciar ni poner sonidos en cola.
   Al terminar, fallar o salir de la actividad, los controles recuperan su estado.
 
 - **Videos de estudio**: abre la lista de cualquier semana o las 30 palabras del
-  concurso para encontrar **Mira, escucha y deletrea**. Hay 60 clips MP4 (uno por
+  concurso para encontrar **Mira, escucha y deletrea**. Hay 70 clips MP4 (uno por
   entrada), con ilustración, palabra, traducción y letras resaltadas en sincronía
   con el audio en inglés. Se carga la primera palabra por defecto. Pulsa **Ver video**
   en una tarjeta para subir al reproductor e iniciar su video al cargar; al terminar,
@@ -94,8 +105,11 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
   la fecha de Hermosillo, muestra un mensaje especial el día del evento y
   evita números negativos después. Las ilustraciones de April y August
   muestran el número del mes (4 y 8); sus nombres llevan mayúscula inicial.
-- **Semana 1** (26–30 de octubre), **semana 2** (2–6 de noviembre) y
-  **semana 3** (9–13 de noviembre). La semana 3 se abre por defecto en la
+- **Semana 1** (26–30 de octubre), **semana 2** (2–6 de noviembre),
+  **semana 3** (9–13 de noviembre) y **semana 4** (16–20 de noviembre).
+  La semana 4 contiene bite, cave, five, game, make, pine, same, time, vine y wave,
+  con ilustraciones nuevas, traducciones, ejemplos, audios y videos.
+  La semana 4 se abre por defecto en la
   primera visita. El sitio recuerda la selección cuando hay almacenamiento local.
 - Los seis juegos de v4.3, la lista con traducciones y oraciones, la
   retroalimentación con mascotas, los premios, el repaso de errores y el
@@ -118,7 +132,7 @@ El archivo `.nojekyll` permite servir el contenido como sitio estático.
   Ambas categorías incluyen los personajes de acierto y error.
 - **Deletreo** en cada tarjeta de estudio de las semanas y el concurso:
   escucha la palabra, los nombres de sus letras en inglés y la palabra otra vez.
-  Los 59 clips únicos se incluyen en `assets/audio/spelling/`.
+  Los 69 clips únicos se incluyen en `assets/audio/spelling/`.
 - **Dictado manuscrito** con diez palabras de la semana o del módulo del concurso,
   en orden aleatorio.
   Pulsa **Escuchar e iniciar**. Los 30 segundos empiezan al terminar el primer
@@ -156,7 +170,7 @@ HTML local y los de una URL publicada pertenecen a orígenes distintos.
   `--ffmpeg RUTA`); también reconoce `imageio-ffmpeg` en `output/video-tools`.
   `--list week-03` permite reconstruir solo una lista. Estos programas se usan
   únicamente para generar archivos; el sitio publicado no necesita instalarlos.
-- `node tools/test_study_videos.js` verifica las listas de los 60 clips, archivos,
+- `node tools/test_study_videos.js` verifica las listas de los 70 clips, archivos,
   navegación, subtítulos, descarga, velocidades y pausa al ocultar la página.
 
 - `data/manifest.json` apunta a los JSON de cada semana. `data/phonics.json`
@@ -171,11 +185,15 @@ HTML local y los de una URL publicada pertenecen a orígenes distintos.
   definidos en segundos; la Z usa 40.03–40.89, correspondiente solo a “zee”.
   Requiere `numpy` y
   `soundfile` únicamente para esta reconstrucción. Después ejecuta
-  `python tools/generate_spelling_audio.py` para actualizar los 59 deletreos.
+  `python tools/generate_spelling_audio.py` para actualizar los 69 deletreos.
   La aplicación funciona sin instalar paquetes y sin conexión a internet.
 - `assets/words/` contiene las ilustraciones originales recortadas. La semana
   3 usa los recortes de la lámina del 9–13 de noviembre. Las palabras impresas
   de la lámina quedan fuera de los recortes.
+- `tools/week_04_image_prompts.json` documenta las diez ilustraciones generadas
+  con la herramienta integrada para la semana del 16–20 de noviembre.
+  `powershell -File tools/generate_contest_audio.ps1 -ContentFile data/week-04.json`
+  reconstruye los WAV faltantes con Microsoft Zira Desktop (en-US).
 - `js/games.js`, `js/lab.js`, `js/handwriting.js` y `js/dictation.js`
   contienen el código de las actividades. `js/core.js` carga el contenido
   y conserva el progreso. `js/audio.js` reproduce los clips.

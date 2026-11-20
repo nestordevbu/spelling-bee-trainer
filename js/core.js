@@ -101,9 +101,10 @@ async function readContent(path) {
 }
 
 function setScreen(id) {
+  if (id !== "guidedLesson" && typeof pauseGuidedLesson === "function") pauseGuidedLesson();
   if (id !== "wordList" && typeof pauseStudyVideo === "function") pauseStudyVideo();
   if (id !== "voicePractice" && typeof stopVoicePractice === "function") stopVoicePractice();
-  const screens = ["home", "game", "wordList", "soundLab", "dictation", "voicePractice"];
+  const screens = ["home", "game", "wordList", "soundLab", "dictation", "voicePractice", "guidedLesson"];
   for (const screen of screens) {
     $(screen).classList.toggle("hide", screen !== id);
   }

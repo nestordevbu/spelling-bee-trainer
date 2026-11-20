@@ -52,6 +52,7 @@
             </div>
           </div>
           <p class="muted">Elige un módulo: los seis juegos y el dictado tendrán solo sus 10 palabras.</p>
+          <button id="openGuidedLesson" class="primary wide">🎬 Práctica guiada completa · A–Z + 30 palabras</button>
           <details class="contest-details">
             <summary>Información del concurso</summary>
             <p id="contestGrades"></p>
@@ -170,6 +171,31 @@
         >
           ← Volver a los juegos
         </button>
+      </section>
+      <section id="guidedLesson" class="panel hide" aria-labelledby="guidedLessonTitle">
+        <div class="activity-heading">
+          <h2 id="guidedLessonTitle">🐝 Spelling By Contest · Matteo</h2>
+          <button id="guidedLessonBack" class="secondary">← Inicio</button>
+        </div>
+        <p id="guidedLessonDuration" class="muted"></p>
+        <p>¡You can do it Matteo! Primero sigue las 26 letras del abecedario en una sola imagen.
+          Después escucha y deletrea las 30 palabras del concurso con los videos de estudio.</p>
+        <video id="guidedLessonVideo" class="guided-lesson-video" controls playsinline preload="metadata"
+          poster="assets/videos/guided-lesson/poster.jpg" aria-label="Video de Matteo: abecedario y las 30 palabras del concurso">
+          <track kind="captions" src="assets/videos/guided-lesson/captions.vtt" srclang="es" label="Guía en pantalla">
+        </video>
+        <p>Capítulo: <strong id="guidedLessonChapter">Bienvenida</strong></p>
+        <div class="activity-actions">
+          <button id="guidedLessonPrevious" class="secondary" disabled>← Anterior</button>
+          <button id="guidedLessonRepeat" class="secondary" disabled>↻ Repetir capítulo</button>
+          <button id="guidedLessonNext" class="secondary" disabled>Siguiente →</button>
+        </div>
+        <p id="guidedLessonStatus" class="activity-status" role="status"></p>
+        <p class="muted">Puedes pausar el video para practicar y repetir cualquier letra o palabra.</p>
+        <details><summary>Elegir una letra (A–Z)</summary><div id="guidedLetterChapters" class="guided-chapters"></div></details>
+        <details><summary>Elegir una palabra del concurso</summary><div id="guidedWordChapters" class="guided-chapters"></div></details>
+        <p><a href="assets/videos/guided-lesson/lesson.mp4" download="Spelling-By-Contest-Matteo.mp4">Descargar el video completo (MP4)</a></p>
+        <p class="muted"><a href="credits-audio.html">Créditos de voces · Uso no comercial</a></p>
       </section>
       <section id="game" class="panel hide">
         <div class="row">
@@ -422,6 +448,7 @@
     <script src="js/core.js" defer></script>
     <script src="js/audio.js" defer></script>
     <script src="js/study-videos.js" defer></script>
+    <script src="js/guided-lesson.js" defer></script>
     <script src="js/games.js" defer></script>
     <script src="js/lab.js" defer></script>
     <script src="js/handwriting.js" defer></script>

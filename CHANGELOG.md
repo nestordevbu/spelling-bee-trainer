@@ -1,5 +1,16 @@
 # Historial de versiones
 
+## Contenido semanal · 19 de noviembre de 2026
+
+- Semana 4 (16–20 de noviembre): bite, cave, five, game, make, pine, same,
+  time, vine y wave, según la lámina escolar.
+- Diez ilustraciones nuevas sin las palabras escritas, traducciones y oraciones
+  de ejemplo; diez audios de palabra, diez de oración y diez deletreos.
+- Diez videos con letras sincronizadas, posters y subtítulos.
+- Semana 4 predeterminada para la primera visita; se conserva la selección
+  guardada y el progreso de las semanas anteriores y del concurso.
+- Verificación ampliada a cuatro semanas, 69 deletreos únicos y 70 videos.
+
 ## 5.2 · 15 de noviembre de 2026
 
 - Ajuste del 16 de noviembre: calificación del dictado con dos opciones

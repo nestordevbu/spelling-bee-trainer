@@ -1,0 +1,55 @@
+{
+  "tool": "built-in image_gen",
+  "images": [
+    {
+      "word": "bite",
+      "prompt": "Create one square children's educational vocabulary illustration: a glossy red apple with one very clear fresh bite taken out of its upper right side, pale apple flesh visible and one green leaf. Friendly polished colorful 3D cartoon illustration, isolated on pure white background, centered large subject, generous margins. This illustrates the verb 'bite' for a primary school American English spelling activity. No text, no letters, no captions, no border, no watermark. No face or people.",
+      "path": "assets/words/week-04-bite.webp"
+    },
+    {
+      "word": "cave",
+      "prompt": "One square primary-school vocabulary illustration. Friendly colorful polished 3D cartoon style, isolated on pure white, centered large subject, generous margins, clean simple silhouette. No labels, captions, letters, border or watermark. A small rocky cave entrance with a deep dark opening, tan and gray rocks, a few tiny green plants outside; exterior view, immediately recognizable as a cave.",
+      "path": "assets/words/week-04-cave.webp"
+    },
+    {
+      "word": "five",
+      "prompt": "One square primary-school vocabulary illustration. Friendly colorful polished 3D cartoon style, isolated on pure white, centered large subject, generous margins, clean simple silhouette. No labels, captions, letters, border or watermark. A single large bright orange numeral 5, playful rounded three-dimensional shape. No other numbers or writing.",
+      "path": "assets/words/week-04-five.webp"
+    },
+    {
+      "word": "game",
+      "prompt": "One square primary-school vocabulary illustration. Friendly colorful polished 3D cartoon style, isolated on pure white, centered large subject, generous margins, clean simple silhouette. No labels, captions, letters, border or watermark. A colorful simple square children's board game, with a few round playing pieces and one dice. No printed words, letters or numbers; dice dots are fine.",
+      "path": "assets/words/week-04-game.webp"
+    },
+    {
+      "word": "make",
+      "prompt": "One square primary-school vocabulary illustration. Friendly colorful polished 3D cartoon style, isolated on pure white, centered large subject, generous margins, clean simple silhouette. No labels, captions, letters, border or watermark. Two friendly cartoon hands making a simple paper craft on a desk, holding colored paper and a glue stick, with a finished little paper heart nearby. Focus on the action of making something.",
+      "path": "assets/words/week-04-make.webp"
+    },
+    {
+      "word": "pine",
+      "prompt": "One square primary-school vocabulary illustration. Friendly colorful polished 3D cartoon style, isolated on pure white, centered large subject, generous margins, clean simple silhouette. No labels, captions, letters, border or watermark. One entire healthy green pine tree, recognizable layered conifer branches and pointed top, short brown trunk visible.",
+      "path": "assets/words/week-04-pine.webp"
+    },
+    {
+      "word": "same",
+      "prompt": "One square primary-school vocabulary illustration. Friendly colorful polished 3D cartoon style, isolated on pure white, centered large subject, generous margins, clean simple silhouette. No labels, captions, letters, border or watermark. Two absolutely identical little blue toy cars, same size, same shape, same color, side by side with a small equals sign between them, conveying that they are the same.",
+      "path": "assets/words/week-04-same.webp"
+    },
+    {
+      "word": "time",
+      "prompt": "One square primary-school vocabulary illustration. Friendly colorful polished 3D cartoon style, isolated on pure white, centered large subject, generous margins, clean simple silhouette. No labels, captions, letters, border or watermark. One bright blue analog alarm clock with two bells and simple black hands, round white face with clear hour tick marks. No written words or numerals.",
+      "path": "assets/words/week-04-time.webp"
+    },
+    {
+      "word": "vine",
+      "prompt": "One square primary-school vocabulary illustration. Friendly colorful polished 3D cartoon style, isolated on pure white, centered large subject, generous margins, clean simple silhouette. No labels, captions, letters, border or watermark. A graceful climbing green vine with thin curling tendrils and many leaves, winding around a simple vertical wooden garden stake.",
+      "path": "assets/words/week-04-vine.webp"
+    },
+    {
+      "word": "wave",
+      "prompt": "One square primary-school vocabulary illustration. Friendly colorful polished 3D cartoon style, isolated on pure white, centered large subject, generous margins, clean simple silhouette. No labels, captions, letters, border or watermark. One beautiful curling ocean wave with a bright turquoise body and white foamy crest, isolated, no surfers or people.",
+      "path": "assets/words/week-04-wave.webp"
+    }
+  ]
+}

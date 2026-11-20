@@ -100,13 +100,13 @@ async function testStudyLists() {
   });
   vm.runInContext(read("js/core.js"), context);
   await vm.runInContext("initWeeks()", context);
-  assert.equal(vm.runInContext("weekId", context), "week-03");
-  assert.equal(elements.get("weekSelect").children.length, 3);
+  assert.equal(vm.runInContext("weekId", context), "week-04");
+  assert.equal(elements.get("weekSelect").children.length, 4);
   assert(!elements.get("weekSelect").children.some((item) => item.value === "contest-2026"));
   storage.set("spelling_bee_ceb_progress_v4_week-03", JSON.stringify({ 0: { score: 9 } }));
   assert.equal(await vm.runInContext("chooseWeek('contest-2026')", context), true);
-  assert.equal(elements.get("weekSelect").value, "week-03");
-  assert.equal(storage.get("spelling_bee_last_selected_week_v4"), "week-03");
+  assert.equal(elements.get("weekSelect").value, "week-04");
+  assert.equal(storage.get("spelling_bee_last_selected_week_v4"), "week-04");
   assert.equal(elements.get("weeklyControls").hidden, true);
   assert.equal(elements.get("backToWeeks").hidden, false);
   assert.equal(vm.runInContext("WORDS.length", context), 30);
@@ -201,6 +201,19 @@ async function testStudyLists() {
   await vm.runInContext("playDictationWord(true)", context);
   assert.equal(calls.length, count);
   assert.equal(vm.runInContext("dictation.repeats", context), 3);
+  await vm.runInContext("chooseWeek('week-04')", context);
+  const weeklyWords = local["data/week-04.json"].words.map(({word}) => word);
+  assert.deepEqual(Array.from(vm.runInContext("practiceWords().map(({w}) => w)", context)), weeklyWords);
+  assert.equal(vm.runInContext("progressKey()", context), "spelling_bee_ceb_progress_v4_week-04");
+  for (let game = 0; game < 6; game++) {
+    vm.runInContext(`start(${game})`, context);
+    const deck = Array.from(vm.runInContext("deck", context));
+    assert.equal(deck.length, 10);
+    assert.deepEqual([...deck].sort(), [...weeklyWords].sort());
+  }
+  assert.deepEqual(Array.from(vm.runInContext("newDictation().deck", context)).sort(), [...weeklyWords].sort());
+  vm.runInContext("openWordList()", context);
+  assert.equal((elements.get("wordListItems").innerHTML.match(/data-watch-video=/g) || []).length, 10);
   await vm.runInContext("chooseWeek('week-03')", context);
   assert.equal(vm.runInContext("WORDS.length", context), 10);
   assert.equal(vm.runInContext("completed[0].score", context), 9);
@@ -246,5 +259,5 @@ async function testSpellingPlayback() {
   testCountdown();
   await testStudyLists();
   await testSpellingPlayback();
-  console.log("OK: abecedario, fechas, selector semanal, 3 módulos de 10 palabras, progreso y dictado independientes, 6 juegos y velocidades de audio.");
+  console.log("OK: abecedario, fechas, 4 semanas, semana 4 en los 6 juegos y dictado, 3 módulos del concurso, progreso independiente y velocidades de audio.");
 })().catch((error) => { console.error(error); process.exitCode = 1; });

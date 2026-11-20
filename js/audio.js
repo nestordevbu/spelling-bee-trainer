@@ -56,6 +56,7 @@ function playClip(path, rate = 1, timeoutMs = 12000) {
   if (activeClip) return Promise.resolve(false);
 
   if (typeof pauseStudyVideo === "function") pauseStudyVideo();
+  if (typeof pauseGuidedLesson === "function") pauseGuidedLesson();
   stopAudio();
   const audio = new Audio(path);
   audio.playbackRate = rate;

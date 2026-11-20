@@ -32,7 +32,7 @@ const context = vm.createContext({
     addEventListener(name, handler) { if (name === "visibilitychange") visibility = handler; } },
 });
 vm.runInContext(fs.readFileSync(path.join(root, "js/study-videos.js"), "utf8"), context);
-for (const id of ["week-01", "week-02", "week-03", "contest-2026"]) {
+for (const id of ["week-01", "week-02", "week-03", "week-04", "contest-2026"]) {
   const list = JSON.parse(fs.readFileSync(path.join(root, "data", id + ".json"), "utf8"));
   context.weekId = id;
   context.WORDS = list.words.map(({ word }) => ({ w: word }));
@@ -92,5 +92,5 @@ vm.runInContext("watchStudyVideo(WORDS[0].w, originButton)", context);
 setImmediate(() => {
   assert.match(get("studyVideoStatus").textContent, /Pulsa reproducir/);
   assert(!elements.has("studyVideoSelect"), "No word selector should be needed");
-  console.log("OK: 60 videos, default word, card playback, scroll and return, autoplay fallback, navigation, speed and pause.");
+  console.log("OK: 70 videos, default word, card playback, scroll and return, autoplay fallback, navigation, speed and pause.");
 });

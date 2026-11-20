@@ -62,6 +62,7 @@ $("studyVideoSpeed").onchange = () => {
   $("studyVideo").playbackRate = Number($("studyVideoSpeed").value);
 };
 $("studyVideo").onplay = () => {
+  if (typeof pauseGuidedLesson === "function") pauseGuidedLesson();
   stopAudio();
   $("studyVideo").playbackRate = Number($("studyVideoSpeed").value);
 };

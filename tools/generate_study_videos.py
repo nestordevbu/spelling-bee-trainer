@@ -111,7 +111,7 @@ def generate(ffmpeg, list_id, item):
             "-f", "concat", "-safe", "0", "-i", str(concat),
             "-i", str(ROOT / f"assets/audio/spelling/{word}.wav"),
             "-af", "adelay=500:all=1,apad", "-t", f"{position:.6f}",
-            "-r", "24", "-c:v", "libx264", "-preset", "fast", "-crf", "25",
+            "-vf", "fps=24", "-fps_mode", "cfr", "-c:v", "libx264", "-preset", "fast", "-crf", "25",
             "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "80k",
             "-movflags", "+faststart", str(target / f"{word}.mp4"),
         ], check=True)

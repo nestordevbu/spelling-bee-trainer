@@ -495,3 +495,7 @@
   background: #f4efff;
   border-radius: 12px;
 }
+.guided-lesson-video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 18px; background: #efeaff; }
+.guided-chapters { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 0; }
+#guidedLesson details { padding: 12px 0; }
+#guidedLesson summary { cursor: pointer; font-weight: 700; color: #603bc4; }
